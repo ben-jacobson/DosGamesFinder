@@ -1,0 +1,26 @@
+.border-on-sides {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #eeeeee;
+
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+}
+
+.test-borders {
+    border-style: solid;
+    border-width: 1px;
+    border-color: dimgray;
+}
+
+.main-content {
+    margin-top: 20px;
+}
+
+.card {
+    margin-top: 40px; 
+}
+
+.ad-break {
+    margin-top: 40px;
+}
