@@ -1,208 +1,127 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="bootstrap.min.css" />
+        <link rel="stylesheet" href="main.css" />
+        <title>Bootstrap 4 Template</title>
+    </head>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="bootstrap.min.css" />
-    <link rel="stylesheet" href="main.css" />
-    <title>Bootstrap 4 Template</title>
-</head>
-
-<body>
-    <!-- Header / Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class='container'>
-            <a class="navbar-brand" href="#">Brand</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">A-Z</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Genre
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Genre 1</a>
-                            <a class="dropdown-item" href="#">Genre 2</a>
-                            <a class="dropdown-item" href="#">Genre 3</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Publishers</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Year Released
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">60-70s</a>
-                            <a class="dropdown-item" href="#">70-80s</a>
-                            <a class="dropdown-item" href="#">80-90s</a>
-                        </div>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <!-- main content -->
-    <div class='container main-content'>
-        <div class='row'>
-            <div class="col-sm-12 main-content">
-                <!-- listings -->
-                <div class='container listing'>
-                    <div class='row page-header'>
-                        <!-- first row is page title -->
-                        <div class='page-title col-sm-12'>
-                            <h1>Page Title</h1>
-                        </div>
-                    </div>
-                    <div class='row games-list-row'>
-                        <!-- all rows from here on are 3 per row cards -->
-                        <!-- after two rows, serve an ad-->
-                        <div class='col-sm-4'>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Card title</h4>
-                                    <p class='card-genre'><a href='#'>Action</a></p>
-                                    <p class="card-text">
-                                        Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                        Description will be read from database, and then truncated to set length for
-                                        this page...
-                                    </p>
-                                    <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                        Games</a> 1980</p>
-                                    <p class="card-user-rating">ooooo</p>
-                                    <!-- will need some jQuery to create this from images / custom font-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class='col-sm-4'>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Card title</h4>
-                                    <p class='card-genre'><a href='#'>Action</a></p>
-                                    <p class="card-text">
-                                        Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                        Description will be read from database, and then truncated to set length for
-                                        this page...
-                                    </p>
-                                    <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                        Games</a> 1980</p>
-                                    <p class="card-user-rating">ooooo</p>
-                                    <!-- will need some jQuery to create this from images / custom font-->
-                                </div>
-                            </div>
-                        </div>
-                        <div class='col-sm-4'>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Card title</h4>
-                                    <p class='card-genre'><a href='#'>Action</a></p>
-                                    <p class="card-text">
-                                        Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                        Description will be read from database, and then truncated to set length for
-                                        this page...
-                                    </p>
-                                    <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                        Games</a> 1980</p>
-                                    <p class="card-user-rating">ooooo</p>
-                                    <!-- will need some jQuery to create this from images / custom font-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='row games-list-row'>
-                            <!-- all rows from here on are 3 per row cards -->
-                            <!-- after two rows, serve an ad-->
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                    </div> 
-                    <div class='row text-center ad-break '>  
-                        <!-- container for ad break after two rows of cards -->
-                        <div class='col-sm-12'>   
-                            <img src="https://via.placeholder.com/728x90" /> 
-                        </div>
-                    </div>
+    <body>
+        <!-- Backbone templates -->
+        <script id="main-content-view" type="text/template">
+            <div class='row'>   // with all of these templates below. We've simply copied the raw HTML. the outer containers may need to be replaced with tagNames + classNames, etc
+                <div class="col-sm-12 main-content">
+                    <div class='container listing'><!-- listings --></div>
                 </div>
             </div>
-        </div>
-    </div>
+        </script>
 
-    <script src="vendor/jquery-3.2.1.slim.min.js"></script>
-    <script src="vendor/popper.min.js"></script>
-    <script src="vendor/bootstrap.min.js"></script>
-</body>
+        <script id="page-header-listView" type="text/template">
+            // template for page header which appears on all pages
+            <div class='row page-header'>
+                <div class='page-title col-sm-12'>
+                    <h1>Page Title</h1>
+                </div>
+            </div>    
+        </script>
+
+        <script id="row-listView" type="text/template">
+            // template for one, 3 column row used in game search results. We may not need this since it's just a container. 
+            <div class='row games-list-row'></div>
+        </script>
+
+        <script id="game-card-listView" type="text/template">
+            // template for one single game card. fits into the 3 column design, used for search results, a-z, etc
+            <div class='col-sm-4'>
+                <div class="card">
+                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
+                    <div class="card-body">
+                        <h4 class="card-title">Card title</h4>
+                        <p class='card-genre'><a href='#'>Action</a></p>
+                        <p class="card-text">
+                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
+                            Description will be read from database, and then truncated to set length for
+                            this page...
+                        </p>
+                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
+                            Games</a> 1980</p>
+                        <p class="card-user-rating">ooooo</p>
+                        <!-- will need some jQuery to create this from images / custom font-->
+                    </div>
+                </div>
+            </div>    
+        </script>
+
+        <script id="adbreak-listView" type="text/template">
+            <div class='row text-center ad-break '>
+                <div class='col-sm-12'>
+                    <img src="https://via.placeholder.com/728x90" />
+                </div>
+            </div>
+        </script>
+
+        <!-- Header / Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class='container'>
+                <a class="navbar-brand" href="#">Brand</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">A-Z</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                Genre
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Genre 1</a>
+                                <a class="dropdown-item" href="#">Genre 2</a>
+                                <a class="dropdown-item" href="#">Genre 3</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Publishers</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                Year Released
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">60-70s</a>
+                                <a class="dropdown-item" href="#">70-80s</a>
+                                <a class="dropdown-item" href="#">80-90s</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!-- main content -->
+        <div class='container main-content'></div>
+
+        <script src="vendor/jquery-3.2.1.slim.min.js" type="text/javascript"></script>
+        <script src="vendor/underscore-min.js" type="text/javascript"></script>
+        <script src="vendor/backbone-min.js" type="text/javascript"></script>
+        <script src="vendor/popper.min.js" type="text/javascript"></script>
+        <script src="vendor/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/app.js" type="text/javascript"></script>
+    </body>
 
 </html>
