@@ -1,5 +1,9 @@
-.main-content {
+.main-container {
     margin-top: 20px;
+}
+
+.page-title {
+    margin-top: 20px; 
 }
 
 .card {
