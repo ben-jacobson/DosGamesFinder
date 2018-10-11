@@ -66,7 +66,12 @@ $( document ).ready(function() {
 
             render: function() {    // simply render a row, which is the first 3 items it receives in the collection. 
                 for (var i = 0; i < this.row_length; i++) {
-                    this.render_card(this.collection.at(i));
+                    if (this.collection.at(i) == undefined) {
+                        break;
+                    }
+                    else {
+                        this.render_card(this.collection.at(i));
+                    }
                 }
                 return this; 
             }       
@@ -83,21 +88,46 @@ $( document ).ready(function() {
             initialize: function() {
                 this.render();
             },
+
+            return_collection_of_three_games: function(index) {   
+                var three_games = new App.Collections.DosGames;
+                    
+                for (var i = 0; i < 3; i++) {
+                    if (index + i >= this.collection.length) {
+                        break;
+                    }
+                    else {
+                        var extracted_game_model = this.collection.at(index + i);
+                        three_games.add(extracted_game_model);
+                    }
+                }
+                return three_games;                                               
+            }, 
             
             render: function() {
                 // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
-                //var DosGameCardListViewRow = new App.Views.DosGameCardListViewRow({collection: row_of_three});
-                //this.$el.append(DosGameCardListViewRow.el);
+                for (var i = 0; i < this.collection.length; i += 3) { 
+                    var row_collection = this.return_collection_of_three_games(i);
+                    var DosGameCardListViewRow = new App.Views.DosGameCardListViewRow({collection: row_collection});
+                    this.$el.append(DosGameCardListViewRow.el);
+                }
                 return this;
             }
         });
 
-        // create 6 identical DosGame objects and insert into the test collection , each using the models default values. just for testing purposes
-        var DosGames = new App.Collections.DosGames; // todo - refactor to have the collection read off Django
+        // create 12 identical DosGame objects and insert into the test collection , each using the models default values. just for testing purposes
+        // for debugging purposes, we want to name them letters of the alphabet, so that we can test sorting, splitting, etc
+        var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-        for (var i = 0; i < 12; i++) {
-            DosGames.add(new App.Models.DosGame);
+        var DosGames = new App.Collections.DosGames; // todo - refactor to have the collection read off Django
+        for (var i = 0; i < 28; i++) {
+            Dosgame = new App.Models.DosGame({title: alphabet[i % alphabet.length]}); 
+            DosGames.add(Dosgame);
         }
+        //console.log(DosGames);
+
+        //var test_game = DosGames.add(new App.Models.DosGame);
+        //console.log(test_game);
 
         var DosGamesListView = new App.Views.DosGamesListView({collection: DosGames});
         console.log('done'); // just for debugging purpose
