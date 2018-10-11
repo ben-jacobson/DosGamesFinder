@@ -11,6 +11,14 @@
 
 <body>
     <!-- Backbone Templates-->
+    <script id="page-header" type="text/template">
+        <div id='pageHeader' class='row page-header'>
+            <div class='page-title col-sm-12'>
+                <h1>Page Title</h1>
+            </div>
+        </div>
+    </script>
+
     <script id="game-card-listView" type="text/template">
         <div class="card">
             <img class="card-img-top" src="<%= screenshot %>" alt="<% title %> screenshot">
@@ -23,6 +31,14 @@
             </div>
         </div>
     </script>    
+
+    <script id="listview-adbreak" type="text/template">
+        <!-- div id='adBreakRow' class='row text-center ad-break ' -->  
+            <div class='col-sm-12'>   
+                <img src="<%= ad_img_url %>" /> 
+            </div>
+        <!-- /div -->
+    </script>
 
     <!-- Header / Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -85,72 +101,6 @@
                         <!-- first row is page title -->
                         <div class='page-title col-sm-12'>
                             <h1>Page Title</h1>
-                        </div>
-                    </div>
-
-                    <div class='row games-list-row'>
-                            <!-- all rows from here on are 3 per row cards -->
-                            <!-- after two rows, serve an ad-->
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='col-sm-4'>
-                                <div class="card">
-                                    <img class="card-img-top" src="https://via.placeholder.com/320x200" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Card title</h4>
-                                        <p class='card-genre'><a href='#'>Action</a></p>
-                                        <p class="card-text">
-                                            Description goes here - Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                            Description will be read from database, and then truncated to set length for
-                                            this page...
-                                        </p>
-                                        <p class="card-publisher-and-date font-weight-light"></p><a href='#'>Publisher
-                                            Games</a> 1980</p>
-                                        <p class="card-user-rating">ooooo</p>
-                                        <!-- will need some jQuery to create this from images / custom font-->
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-
-                    <div id='adBreakRow' class='row text-center ad-break '>  
-                        <!-- container for ad break after two rows of cards -->
-                        <div class='col-sm-12'>   
-                            <img src="https://via.placeholder.com/728x90" /> 
                         </div>
                     </div>
 

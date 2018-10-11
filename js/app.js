@@ -22,6 +22,12 @@ $( document ).ready(function() {
             }
         });
 
+        App.Models.Ad = Backbone.Model.extend({  // placeholder for now
+            defaults: {
+                ad_img_url: "https://via.placeholder.com/728x90", 
+            }
+        });
+
         // ===============
         // = Collections
         // ===============
@@ -50,7 +56,6 @@ $( document ).ready(function() {
         });
 
         App.Views.DosGameCardListViewRow = Backbone.View.extend({
-            //el: '#listViewRow',
             tagName: 'div',
             className: 'row games-list-row', 
             row_length: 3, 
@@ -76,6 +81,21 @@ $( document ).ready(function() {
                 return this; 
             }       
         }); 
+
+        App.Views.ListViewAdBreak = Backbone.View.extend({
+            tagName: 'div',
+            className: 'row text-center ad-break', 
+            adbreak_template: _.template($('#listview-adbreak').html()),
+
+            initialize: function() {
+                this.render(); 
+            },
+
+            render: function() {
+                this.$el.html(this.adbreak_template(this.model.toJSON()));
+                return this; 
+            }              
+        });
 
         App.Views.DosGamesListView = Backbone.View.extend({
             // enter the full collection into this view, the view will split the collection into as many
@@ -105,11 +125,25 @@ $( document ).ready(function() {
             }, 
             
             render: function() {
+                // render the page title
+                // var PageTitle = new App.Views.PageTitle;
+                // this.$el.append(PageTitle);
+
                 // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
                 for (var i = 0; i < this.collection.length; i += 3) { 
+                    // create a row of dos games
                     var row_collection = this.return_collection_of_three_games(i);
                     var DosGameCardListViewRow = new App.Views.DosGameCardListViewRow({collection: row_collection});
                     this.$el.append(DosGameCardListViewRow.el);
+                    console.log('render row ' + i);
+
+                    // every three rows, serve an ad
+                    if (i % 9 == 6) { // you wouldn't believe how much math that took to pull off...
+                        var adModel = new App.Models.Ad;
+                        var ListViewAdBreak = new App.Views.ListViewAdBreak({model: adModel});
+                        this.$el.append(ListViewAdBreak.el);
+                        console.log('serve ad'); 
+                    } 
                 }
                 return this;
             }
