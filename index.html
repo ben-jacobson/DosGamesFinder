@@ -12,10 +12,8 @@
 <body>
     <!-- Backbone Templates-->
     <script id="page-header" type="text/template">
-        <div id='pageHeader' class='row page-header'>
-            <div class='page-title col-sm-12'>
-                <h1>Page Title</h1>
-            </div>
+        <div class='page-title col-sm-12'>
+            <h1><%= page_title %></h1>
         </div>
     </script>
 
@@ -33,11 +31,9 @@
     </script>    
 
     <script id="listview-adbreak" type="text/template">
-        <!-- div id='adBreakRow' class='row text-center ad-break ' -->  
-            <div class='col-sm-12'>   
-                <img src="<%= ad_img_url %>" /> 
-            </div>
-        <!-- /div -->
+        <div class='col-sm-12'>   
+            <img src="<%= ad_img_url %>" /> 
+        </div>
     </script>
 
     <!-- Header / Navigation -->
@@ -95,16 +91,7 @@
     <div class='container main-content'>
         <div class='row'>
             <div class="col-sm-12 main-content">
-                <!-- listings -->
-                <div id='listView' class='container listing'>
-                    <div id='pageHeader' class='row page-header'>
-                        <!-- first row is page title -->
-                        <div class='page-title col-sm-12'>
-                            <h1>Page Title</h1>
-                        </div>
-                    </div>
-
-                </div>
+                <div id='appWindow' class='container listing'></div>
             </div>
         </div>
     </div>

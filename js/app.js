@@ -39,6 +39,21 @@ $( document ).ready(function() {
         // ===============
         // = Views
         // ===============
+
+        App.Views.PageTitle = Backbone.View.extend({
+            tagName: 'div',
+            className: 'row page-header',
+            page_header_template: _.template($('#page-header').html()),
+
+            initialize: function(page_title) {
+                this.page_title = page_title;
+                this.render();
+            },
+            render: function() {
+                this.$el.html(this.page_header_template({page_title: this.page_title})); 
+                return this; 
+            }
+        });
         
         App.Views.DosGameCardListViewCol = Backbone.View.extend({
             tagName: 'div',
@@ -50,7 +65,7 @@ $( document ).ready(function() {
             },
 
             render: function() {
-                this.$el.html(this.dosgame_card_template(this.model.toJSON())); // this is how to compile the template
+                this.$el.html(this.dosgame_card_template(this.model.toJSON())); 
                 return this; 
             }        
         });
@@ -101,7 +116,7 @@ $( document ).ready(function() {
             // enter the full collection into this view, the view will split the collection into as many
             // 3 column rows it can. Render a page title, then a pattern of 2 rows then adbreak, repeat.
 
-            el: '#listView',
+            el: '#appWindow',
             tagName: 'div',
             className: 'container listing',
 
@@ -126,8 +141,8 @@ $( document ).ready(function() {
             
             render: function() {
                 // render the page title
-                // var PageTitle = new App.Views.PageTitle;
-                // this.$el.append(PageTitle);
+                var PageTitle = new App.Views.PageTitle("Games List A-Z");
+                this.$el.append(PageTitle.el);
 
                 // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
                 for (var i = 0; i < this.collection.length; i += 3) { 
@@ -135,14 +150,14 @@ $( document ).ready(function() {
                     var row_collection = this.return_collection_of_three_games(i);
                     var DosGameCardListViewRow = new App.Views.DosGameCardListViewRow({collection: row_collection});
                     this.$el.append(DosGameCardListViewRow.el);
-                    console.log('render row ' + i);
+                    //console.log('render row ' + i);
 
                     // every three rows, serve an ad
                     if (i % 9 == 6) { // you wouldn't believe how much math that took to pull off...
                         var adModel = new App.Models.Ad;
                         var ListViewAdBreak = new App.Views.ListViewAdBreak({model: adModel});
                         this.$el.append(ListViewAdBreak.el);
-                        console.log('serve ad'); 
+                        //console.log('serve ad'); 
                     } 
                 }
                 return this;
