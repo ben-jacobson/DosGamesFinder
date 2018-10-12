@@ -4,6 +4,7 @@ $(function() {
     // ===============
 
     App.Views.PageNavigation = Backbone.View.extend({
+        // View for rendering the page navigation bar 
         el: '#page-navigation-container', 
         page_navigation_template: _.template($('#page-navigation').html()),
 
@@ -14,7 +15,6 @@ $(function() {
             this.$el.html(this.page_navigation_template()); 
             return this; 
         }        
-
     });
 
     App.Views.PageTitle = Backbone.View.extend({
@@ -40,7 +40,6 @@ $(function() {
     
     App.Views.DosGameCardListViewCol = Backbone.View.extend({
         // View for rendering the individual cards, within the row, of the listView
-
         tagName: 'div',
         className: 'col-sm-4',  // the card view uses a 12 column grid, each card takes 4 columns.  
         dosgame_card_template: _.template($('#game-card-listView').html()),
@@ -57,7 +56,6 @@ $(function() {
 
     App.Views.DosGameCardListViewRow = Backbone.View.extend({
         // view for rendering a row of dos game cards in list view
-
         tagName: 'div',
         className: 'row games-list-row', 
         row_length: 3, 
@@ -86,7 +84,6 @@ $(function() {
 
     App.Views.ListViewAdBreak = Backbone.View.extend({
         // View for rendering ad breaks between rows in list view
-
         tagName: 'div',
         className: 'row text-center ad-break', 
         adbreak_template: _.template($('#listview-adbreak').html()),
@@ -105,7 +102,6 @@ $(function() {
         // One of the main app views
         // enter the full collection into this view, the view will split the collection into as many
         // 3 column rows it can. Render a page title, then a pattern of 3 rows then adbreak, repeat.
-
         el: '#appWindow',
         tagName: 'div',
         className: 'container listing',
@@ -132,7 +128,7 @@ $(function() {
         render: function() {
             // render the page title
             var PageTitle = new App.Views.PageTitle("Games List A-Z");
-            this.$el.append(PageTitle.el);
+            this.$el.html(PageTitle.el);
 
             // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
             for (var i = 0; i < this.collection.length; i += 3) { 
@@ -150,6 +146,25 @@ $(function() {
                     //console.log('serve ad'); 
                 } 
             }
+            return this;
+        }
+    });
+
+    App.Views.DosGamesDetailView = Backbone.View.extend({
+        el: '#appWindow',
+        tagName: 'div',
+        className: 'container listing',
+        detailView_template: _.template($('#game-detailView').html()),
+
+        initialize: function() {
+            this.render();
+        },
+        
+        render: function() {
+            // render the page title
+            //var PageTitle = new App.Views.PageTitle(this.model.get('title'));
+            //this.$el.html(PageTitle.el);
+            this.$el.html(this.detailView_template(this.model.toJSON()));         
             return this;
         }
     });

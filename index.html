@@ -62,7 +62,6 @@
             </nav>        
         </script>
 
-
         <script id="page-title" type="text/template">
             <div class='page-title col-sm-12'>
                 <h1><%= page_title %></h1>
@@ -71,7 +70,7 @@
 
         <script id="game-card-listView" type="text/template">
             <div class="card">
-                <img class="card-img-top" src="<%= screenshot %>" alt="<% title %> screenshot">
+                <img class="card-img-top" src="<%= screenshot1 %>" alt="<% title %> screenshot">
                 <div class="card-body">
                     <h4 class="card-title"><%= title %></h4>
                     <p class='card-genre'><a href='#'><%= genre %></a></p>
@@ -80,7 +79,27 @@
                     <p class="card-user-rating"><%= rating %></p>
                 </div>
             </div>
-        </script>    
+        </script>   
+        
+        <script id="game-detailView" type="text/template">
+            <div class='row detailView-margin'>
+                <div class='col-sm-8'>
+                    <h1><%= title %></h1 >
+                    <p><%= description %></p>
+                    <p class="detail-publisher-and-date font-weight-light"></p>Publisher - <a href='#'><%= publisher %></a></p>
+                    <p class="detail-year-released">Released - <%= year_released %><p>
+                    <p class='detail-genre'>Genre - <a href='#'><%= genre %></a></p>
+                    <p class="detail-user-rating">User Rating - <%= rating %></p>
+                </div>
+                <div class='col-sm-4'>
+                    <img class='detailView-screenshot' src="<%= screenshot1 %>" alt="<% title %> screenshot">
+                    <img class='detailView-screenshot' src="<%= screenshot2 %>" alt="<% title %> screenshot">
+                    <img class='detailView-screenshot' src="<%= screenshot3 %>" alt="<% title %> screenshot">
+                    <img class='detailView-screenshot' src="<%= screenshot4 %>" alt="<% title %> screenshot">
+                    <img class='detailView-screenshot' src="<%= screenshot5 %>" alt="<% title %> screenshot">
+                </div>
+            </div>
+        </script>
 
         <script id="listview-adbreak" type="text/template">
             <div class='col-sm-12'>   

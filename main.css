@@ -6,10 +6,18 @@
     margin-top: 20px; 
 }
 
+.detailView-margin {
+    margin-top: 20px;
+}
+
 .card {
     margin-top: 40px; 
 }
 
 .ad-break {
     margin-top: 40px;
+}
+
+.detailView-screenshot {
+    margin-bottom: 20px;
 }
