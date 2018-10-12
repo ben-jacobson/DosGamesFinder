@@ -2,7 +2,8 @@ $(function() {
     window.App = {
         Models: {},
         Collections: {}, 
-        Views: {}
+        Views: {},
+        Router: {}                        
     };
 });
 
