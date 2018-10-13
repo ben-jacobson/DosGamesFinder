@@ -1,10 +1,11 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="bootstrap.min.css" />
-        <link rel="stylesheet" href="main.css" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
         <title>Dos Games Finder</title>
     </head>
 
@@ -120,17 +121,17 @@
         </div>
 
         <!-- Javascript source -->
-        <script src="vendor/jquery-3.2.1.slim.min.js" type="text/javascript"></script>
-        <script src="vendor/underscore-min.js" type="text/javascript"></script>
-        <script src="vendor/backbone-min.js" type="text/javascript"></script>
-        <script src="vendor/popper.min.js" type="text/javascript"></script>
-        <script src="vendor/bootstrap.min.js" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/jquery-3.2.1.slim.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/underscore-min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/backbone-min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/popper.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/bootstrap.min.js' %}" type="text/javascript"></script>
         
-        <script src="js/config.js" type="text/javascript"></script>
-        <script src="js/models.js" type="text/javascript"></script>
-        <script src="js/collections.js" type="text/javascript"></script>
-        <script src="js/views.js" type="text/javascript"></script>
-        <script src="js/routers.js" type="text/javascript"></script>
+        <script src="{% static 'app_js/config.js' %}" type="text/javascript"></script>
+        <script src="{% static 'app_js/models.js' %}" type="text/javascript"></script>
+        <script src="{% static 'app_js/collections.js' %}" type="text/javascript"></script>
+        <script src="{% static 'app_js/views.js' %}" type="text/javascript"></script>
+        <script src="{% static 'app_js/routers.js' %}" type="text/javascript"></script>
     </body>
 
 </html>

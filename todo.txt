@@ -1,5 +1,14 @@
-Backbone.JS - DosGamesFinder planner
+DosGamesFinder todo list
 
+-Put in CSS, our JS, vendor JS and images in the correct folders in Django
+-set up an index view to render template
+-set up postgresql
+-start creating models
+
+
+
+
+BackboneJS Structure
 
 Models
 -Each title, to be stored by Django
