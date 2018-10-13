@@ -15,9 +15,12 @@ Including another URLconf
 """
 
 from django.urls import path
+
+from django.contrib import admin
 from dosgamesfinder import views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', views.HomeView.as_view(), name='home'),
 ]

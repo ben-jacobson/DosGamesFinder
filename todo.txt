@@ -1,36 +1,4 @@
 DosGamesFinder todo list
 
--Put in CSS, our JS, vendor JS and images in the correct folders in Django
--set up an index view to render template
--set up postgresql
--start creating models
-
-
-
-
-BackboneJS Structure
-
-Models
--Each title, to be stored by Django
-
-Collection
--Collection of game models
-
-Views
--Central view area, receives view data from whatever state the app is in, eg game detailView, game listView, or publisher list, or whatever other view it needs to switch to.
-
--Page title
--Genre drop down menu items
--Year released drop down menu items
--Page title in central view area
-
--star rating system
--game listView + individual game-card
--game detailView
-
--ad placement
--pagination
-
-Notes on page behaviour
--Publishers will move central view to full list of A-Z publishers, clicking the button again will rank them Z-A
--A-Z will show all games a-z, pressing once more will reverse order, Z-A
+- Start creating models
+- Then create serialisers for our REST API calls to retrieve data from

@@ -78,9 +78,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dosgamesfinder',
+        'USER': 'dos_games_finder_admin',
+        'PASSWORD': 'dos_games_finder_password',
+        'HOST': 'localhost',
+        'PORT': '',
+        'TEST': {
+            'NAME': 'dosgamesfinder_test', 
+        },        
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
