@@ -1,9 +1,9 @@
 from django.test import TestCase
-from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_test_game_and_publisher_package
+from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_breaker_string#, create_test_game_and_publisher_package
 from dosgamesfinder.models import Publisher, DosGame, Screenshot
 
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
+from django.db import IntegrityError, DataError
 
 class ModelTests(TestCase): 
     def test_create_publisher(self):
@@ -45,11 +45,11 @@ class ModelTests(TestCase):
         )
 
         # does it raise exceptions on full_clean and save? 
-        with self.assertRaises(IntegrityError): 
-            test_dosgame.save()
-
         with self.assertRaises(ValidationError):
             test_dosgame.full_clean()
+
+        with self.assertRaises(IntegrityError): 
+            test_dosgame.save()
 
     def test_cannot_create_screenshot_without_game(self):
         '''
@@ -63,11 +63,12 @@ class ModelTests(TestCase):
         )
 
         # does it raise exceptions on full_clean and save? 
+        with self.assertRaises(ValidationError):
+            test_screenshot.full_clean()
+
         with self.assertRaises(IntegrityError): 
             test_screenshot.save()
 
-        with self.assertRaises(ValidationError):
-            test_screenshot.full_clean()
 
     def test_many_to_one_relationship_between_game_and_screenshot(self):
         '''
@@ -105,9 +106,10 @@ class ModelTests(TestCase):
         '''
         Unit Test - Check that default ordering of all game items is A-Z
         '''
-        a = create_test_game_and_publisher_package(title='a')
-        b = create_test_game_and_publisher_package(title='b')
-        c = create_test_game_and_publisher_package(title='c')
+        test_publisher = create_test_publisher()
+        a = create_test_dosgame(publisher=test_publisher, title='a')
+        b = create_test_dosgame(publisher=test_publisher, title='b')
+        c = create_test_dosgame(publisher=test_publisher, title='c')
         
         test_db_ordering = DosGame.objects.all()
         self.assertEqual([a, b, c], [g for g in test_db_ordering])
@@ -123,29 +125,49 @@ class ModelTests(TestCase):
         test_db_ordering = Publisher.objects.all()
         self.assertEqual([a, b, c], [g for g in test_db_ordering])
 
-    def test_min_max_of_fields(self):
+    def test_max_length_of_publisher_fields(self):
         '''
-        Unit Test - This test knows the minimum and maximum length of each field and tests
+        Unit Test - This test knows the minimum and maximum length of the publisher field and tests that assertions are being raised correctly
         '''
-        pass
 
-    def test_publisher_name_unique(self):
+        # check that the right assertions are being raised
+        with self.assertRaises(DataError): 
+            create_test_publisher(name=create_breaker_string(129))
+
+    def test_max_length_of_dosgame_fields(self):
+        '''
+        Unit Test - This test knows the minimum and maximum length of the dosgame field and tests that assertions are being raised correctly
+        '''
+        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
+        test_breaker_string = create_breaker_string(256)
+
+        # Test the dosgame.title length
+        with self.assertRaises(DataError): 
+            create_test_dosgame(publisher=create_test_publisher(), title=test_breaker_string, genre=test_breaker_string)
+
+    def test_max_length_of_screenshot_fields(self):
+        '''
+        Unit Test - This test knows the minimum and maximum length of the screenshot fields and tests that assertions are being raised correctly
+        '''
+        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
+        test_breaker_string = create_breaker_string(256)
+        test_publisher = create_test_publisher()
+        test_dosgame = create_test_dosgame(publisher=test_publisher)
+
+        # Test the dosgame.title length
+        with self.assertRaises(DataError): 
+            create_test_screenshot(game=test_dosgame, img_src=test_breaker_string)
+
+    def test_publisher_name_is_unique(self):
         '''
         Unit Test - Ensure that the publishers name is unique in the database
         '''
         # create and save the first publisher
-        first_publisher = create_test_publisher(name='test')
-        first_publisher.save()
+        create_test_publisher(name='test')
         
-        # create the second, but don't save it just yet 
-        second_publisher = create_test_publisher(name='test')
-
-        # does it raise exceptions on full_clean and save? 
+        # does it raise an Integrity error? 
         with self.assertRaises(IntegrityError): 
-            second_publisher.save()
-
-        with self.assertRaises(ValidationError):
-            second_publisher.full_clean()
+            create_test_publisher(name='test')
 
     def test_publisher_returns_name_string(self):
         '''

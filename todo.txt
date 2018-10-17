@@ -1,4 +1,4 @@
 DosGamesFinder todo list
-
-- Start creating models
+- Figure out a system for download locations. eg likely ManyToOne association
+- Complete current suite of model unit tests
 - Then create serialisers for our REST API calls to retrieve data from

@@ -47,8 +47,15 @@ def create_test_dosgame(publisher,
     test_dosgame.save()
     return test_dosgame
 
+def create_breaker_string(length):
+    test_breaker_string = ''
 
-def create_test_game_and_publisher_package( publisher_name='Test Software',
+    for _ in range(256):       # using the _ as an iterator lets you remain anonymous.
+        test_breaker_string += '.'
+
+    return test_breaker_string    
+
+'''def create_test_game_and_publisher_package( publisher_name='Test Software',
                                             title='FooBar Adventures', 
                                             genre='Action', 
                                             description='FooBar Adventures is a 1991 classic Dos game', 
@@ -58,10 +65,10 @@ def create_test_game_and_publisher_package( publisher_name='Test Software',
                                             img_width=320, 
                                             img_height=200):
 
-    '''
-    Test Helper Function - Creates a publisher object, a dosgame and a screenshot object for testing purposes. Returns only the Dosgame
-    '''
+    '/''
+    #Test Helper Function - Creates a publisher object, a dosgame and a screenshot object for testing purposes. Returns only the Dosgame
+    '/''
     test_publisher = create_test_publisher(name=publisher_name)
     test_dosgame = create_test_dosgame(publisher=test_publisher, title=title, genre=genre, description=description, date_releated=date_releated, user_rating=user_rating)
     create_test_screenshot(game=test_dosgame, img_src=img_src, img_width=img_width, img_height=img_height)    
-    return test_dosgame
+    return test_dosgame'''
