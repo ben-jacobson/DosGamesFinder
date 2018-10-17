@@ -1,4 +1,14 @@
 DosGamesFinder todo list
-- Figure out a system for download locations. eg likely ManyToOne association
-- Complete current suite of model unit tests
-- Then create serialisers for our REST API calls to retrieve data from
+
+Model Layer:
+- Continue writing model unit tests as per TDD approach
+- Figure out a system for storing download/purchase locations. eg likely ManyToOne association like we've got with screenshots
+
+View Layer:
+- write unit tests to verify JSON output of serializers
+- Then create serialisers for our REST API calls to retrieve data from db
+
+Backbone:
+- Refactor the Collections to take data from Django models
+
+
