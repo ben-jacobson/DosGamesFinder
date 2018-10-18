@@ -36,10 +36,10 @@ class Screenshot(models.Model):
 class DownloadLocation(models.Model):
     game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='download_locations')     # ManyToOne - DosGame can have multiple DownLoad locations, but the Download Location can only have one DosGame
     href = models.URLField(max_length=255)
-    location_name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
 
     def __str__(self):
-        return self.location_name
+        return self.name
 
     class Meta:
-        ordering = ('location_name',)    
+        ordering = ('name',)    

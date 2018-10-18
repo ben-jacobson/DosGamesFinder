@@ -49,14 +49,14 @@ def create_test_dosgame(publisher,
 
 def create_test_download_location(  game, 
                                     href='http://www.google.com', 
-                                    location_name='GOG'):
+                                    name='GOG'):
     '''
     Helper Function - create a test download location and save to db. Returns the object
     '''
     test_download_location = DownloadLocation(
         game=game,
         href=href,
-        location_name=location_name
+        name=name
     )
     test_download_location.save()
     return test_download_location

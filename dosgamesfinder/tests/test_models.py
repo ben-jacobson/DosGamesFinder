@@ -240,9 +240,9 @@ class DownloadLocationModelTests(TestCase):
         Unit Test - Check that default ordering of all download locations is A-Z
         '''
         test_dosgame = create_test_dosgame(publisher=create_test_publisher())
-        a = create_test_download_location(game=test_dosgame, location_name='a')
-        b = create_test_download_location(game=test_dosgame, location_name='b')
-        c = create_test_download_location(game=test_dosgame, location_name='c')
+        a = create_test_download_location(game=test_dosgame, name='a')
+        b = create_test_download_location(game=test_dosgame, name='b')
+        c = create_test_download_location(game=test_dosgame, name='c')
         
         test_db_ordering = DownloadLocation.objects.all()
         self.assertEqual([a, b, c], [d for d in test_db_ordering])
@@ -253,7 +253,7 @@ class DownloadLocationModelTests(TestCase):
         '''
         test_download_location_name = 'GOG'
         test_dosgame = create_test_dosgame(publisher=create_test_publisher())
-        test_download_location = create_test_download_location(game=test_dosgame, location_name=test_download_location_name)
+        test_download_location = create_test_download_location(game=test_dosgame, name=test_download_location_name)
         self.assertEqual(test_download_location_name, test_download_location.__str__())
     
     def test_cannot_create_download_location_without_game(self):
@@ -263,7 +263,7 @@ class DownloadLocationModelTests(TestCase):
         # attempt to create a download location without a game. Can't use helper function, since that function does it correctly
         test_download_location = DownloadLocation(
             href="www.google.com",
-            location_name="GOG"
+            name="GOG"
         )
 
         # does it raise exceptions on full_clean and save? 
