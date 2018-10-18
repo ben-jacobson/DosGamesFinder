@@ -4,6 +4,9 @@ class Publisher(models.Model):
     name = models.CharField(max_length=255, unique=True)        # not used as a primary key, but is unique
     description = models.TextField()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         ordering = ('name',)
 
@@ -15,6 +18,9 @@ class DosGame(models.Model):
     user_rating = models.IntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         ordering = ('title',)
         
@@ -23,3 +29,6 @@ class Screenshot(models.Model):
     img_src = models.URLField(max_length=255)
     img_width = models.IntegerField()
     img_height = models.IntegerField()
+
+    def __str__(self):
+        return self.img_src
