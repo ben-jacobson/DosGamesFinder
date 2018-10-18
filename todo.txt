@@ -1,16 +1,6 @@
 DosGamesFinder todo list
 
-Model Layer:
-- Continue writing model unit tests as per TDD approach
-    -Each model test needs:
-        -A Create test 
-        -Test max length 
-        -Test for unique  
-        -Test Name String 
-        -Default ordering test 
-        -If manyToOne or ManyToMany, then test that todo 
-        -If manyToOne or ManyToMany, then test cannot create without 
-- Figure out a system for storing download/purchase locations. eg likely ManyToOne association like we've got with screenshots
+Model Layer complete
 
 View Layer:
 - write unit tests to verify JSON output of serializers

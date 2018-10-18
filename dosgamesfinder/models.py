@@ -25,10 +25,21 @@ class DosGame(models.Model):
         ordering = ('title',)
         
 class Screenshot(models.Model):
-    game = models.ForeignKey(DosGame, on_delete=models.CASCADE)     # ManyToOne - DosGame can have multiple Screenshots, but the Screenshot can only have one DosGame
+    game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='screenshots')     # ManyToOne - DosGame can have multiple Screenshots, but the Screenshot can only have one DosGame
     img_src = models.URLField(max_length=255)
     img_width = models.IntegerField()
     img_height = models.IntegerField()
 
     def __str__(self):
         return self.img_src
+
+class DownloadLocation(models.Model):
+    game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='download_locations')     # ManyToOne - DosGame can have multiple DownLoad locations, but the Download Location can only have one DosGame
+    href = models.URLField(max_length=255)
+    location_name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.location_name
+
+    class Meta:
+        ordering = ('location_name',)    

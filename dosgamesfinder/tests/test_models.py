@@ -1,6 +1,6 @@
 from django.test import TestCase
-from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_breaker_string#, create_test_game_and_publisher_package
-from dosgamesfinder.models import Publisher, DosGame, Screenshot
+from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_test_download_location, create_breaker_string#, create_test_game_and_publisher_package
+from dosgamesfinder.models import Publisher, DosGame, Screenshot, DownloadLocation
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, DataError
@@ -39,7 +39,7 @@ class DosGameModelTests(TestCase):
 
     def test_dosgame_returns_str_name(self):
         '''
-        Unit Test - Ensure that the dosgame returns it's name when calling the models name() method
+        Unit Test - Ensure that the dosgame returns it's name when calling the models __str__() method
         '''
         test_name = 'Adventures in Testingville'
         test_dosgame = create_test_dosgame(publisher=create_test_publisher(), title=test_name)
@@ -79,7 +79,7 @@ class DosGameModelTests(TestCase):
 
         # and then test
         test_dosgame_db = DosGame.objects.get(title=test_dosgame.title)
-        test_set_of_screenshots = test_dosgame_db.screenshot_set.all()
+        test_set_of_screenshots = test_dosgame_db.screenshots.all()
         self.assertEquals([screenshot2, screenshot1], [s for s in test_set_of_screenshots])
 
     def test_many_to_one_relationship_between_game_and_publisher(self):
@@ -98,10 +98,21 @@ class DosGameModelTests(TestCase):
         self.assertIn(test_dosgame, Publisher.objects.get(name=test_publisher.name).dosgame_set.all())     
 
     def test_many_to_one_relationship_between_game_and_download_location(self):
-        pass
+        '''
+        Unit Test - Create a game, assign it some download locations, check that the db relationships work as expected. 
+        '''
+        # create a publisher and a game
+        test_publisher = create_test_publisher()
+        test_dosgame = create_test_dosgame(publisher=test_publisher)
 
-    def test_cannot_create_game_without_download_location(self):
-        pass
+        # create two download locations for the game
+        download1 = create_test_download_location(game=test_dosgame)
+        download2 = create_test_download_location(game=test_dosgame)
+
+        # and then test
+        test_dosgame_db = DosGame.objects.get(title=test_dosgame.title)
+        test_set_of_download_locations = test_dosgame_db.download_locations.all()
+        self.assertEquals([download2, download1], [d for d in test_set_of_download_locations])
 
 class ScreenshotModelTests(TestCase):
     def test_create_screenshot(self):
@@ -128,7 +139,7 @@ class ScreenshotModelTests(TestCase):
 
     def test_screenshot_return_str_src(self):
         '''
-        Unit Test - Ensure that the screenshot returns it's src when calling the models name() method
+        Unit Test - Ensure that the screenshot returns it's src when calling the models __str__() method
         '''
         test_img_src = 'https://via.placeholder.com/320x200'
         test_dosgame = create_test_dosgame(publisher=create_test_publisher())
@@ -203,15 +214,64 @@ class PublisherModelTests(TestCase):
 
 class DownloadLocationModelTests(TestCase):
     def test_create_download_location(self):
-        pass
+        '''
+        Unit Test - Ensure that download location objects are being saved to the db. 
+        '''             
+        test_publisher = create_test_publisher() # can't create a game without assigning a publisher
+        test_dosgame = create_test_dosgame(publisher=test_publisher)
+        test_download_location = create_test_download_location(game=test_dosgame)
+        self.assertEquals([test_download_location], [s for s in DownloadLocation.objects.all()])
 
     def test_max_length_of_download_location_href(self):
-        pass
-    
-    def test_download_location_returns_str_src(self):
-        pass
-    
+        '''
+        Unit Test - This test knows the minimum and maximum length of the screenshot fields and tests that assertions are being raised correctly
+        '''
+        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
+        test_breaker_string = create_breaker_string(128)
+        test_publisher = create_test_publisher()
+        test_dosgame = create_test_dosgame(publisher=test_publisher)
 
+        # Test the dosgame.title length
+        with self.assertRaises(DataError): 
+            create_test_download_location(game=test_dosgame, href=test_breaker_string)
+    
+    def test_default_ordering_of_download_locations(self):
+        '''
+        Unit Test - Check that default ordering of all download locations is A-Z
+        '''
+        test_dosgame = create_test_dosgame(publisher=create_test_publisher())
+        a = create_test_download_location(game=test_dosgame, location_name='a')
+        b = create_test_download_location(game=test_dosgame, location_name='b')
+        c = create_test_download_location(game=test_dosgame, location_name='c')
+        
+        test_db_ordering = DownloadLocation.objects.all()
+        self.assertEqual([a, b, c], [d for d in test_db_ordering])
+
+    def test_download_location_returns_name_src(self):
+        '''
+        Unit Test - Ensure that the download location returns it's src when calling the models __str__() method
+        '''
+        test_download_location_name = 'GOG'
+        test_dosgame = create_test_dosgame(publisher=create_test_publisher())
+        test_download_location = create_test_download_location(game=test_dosgame, location_name=test_download_location_name)
+        self.assertEqual(test_download_location_name, test_download_location.__str__())
+    
+    def test_cannot_create_download_location_without_game(self):
+        '''
+        Unit Test - Ensure that you aren't able to create download location objects without a game. 
+        '''
+        # attempt to create a download location without a game. Can't use helper function, since that function does it correctly
+        test_download_location = DownloadLocation(
+            href="www.google.com",
+            location_name="GOG"
+        )
+
+        # does it raise exceptions on full_clean and save? 
+        with self.assertRaises(ValidationError):
+            test_download_location.full_clean()
+
+        with self.assertRaises(IntegrityError): 
+            test_download_location.save()
 
 
 
