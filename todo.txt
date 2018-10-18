@@ -1,16 +1,12 @@
 DosGamesFinder todo list
 
-Model Layer complete
-
 View Layer:
 - write unit tests to verify JSON output of serializers
 - Then create serialisers for our REST API calls to retrieve data from db
 
+Model Layer:
+- Create a structure for creating game name slugs
+- Create a get_absolute_url() method for the serializers to use
+
 Backbone:
-- Refactor the Collections to take data from Django models
-
-
-
-
-
-
+- Refactor the Collections to take data from Django models and finish the rendering
