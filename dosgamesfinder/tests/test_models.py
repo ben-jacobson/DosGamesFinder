@@ -37,7 +37,7 @@ class DosGameModelTests(TestCase):
         test_db_ordering = DosGame.objects.all()
         self.assertEqual([a, b, c], [g for g in test_db_ordering])
 
-    def test_dosgame_returns_str_name(self):
+    def test_name_method_returns_dosgame_name(self):
         '''
         Unit Test - Ensure that the dosgame returns it's name when calling the models __str__() method
         '''
@@ -137,7 +137,7 @@ class ScreenshotModelTests(TestCase):
         with self.assertRaises(DataError): 
             create_test_screenshot(game=test_dosgame, img_src=test_breaker_string)
 
-    def test_screenshot_return_str_src(self):
+    def test_name_method_returns_screenshot_src(self):
         '''
         Unit Test - Ensure that the screenshot returns it's src when calling the models __str__() method
         '''
@@ -193,7 +193,7 @@ class PublisherModelTests(TestCase):
         test_db_ordering = Publisher.objects.all()
         self.assertEqual([a, b, c], [g for g in test_db_ordering])
 
-    def test_publisher_returns_str_name(self):
+    def test_name_method_returns_publisher_name(self):
         '''
         Unit Test - Ensure that the publisher returns it's name when calling the models name() method
         '''
@@ -247,7 +247,7 @@ class DownloadLocationModelTests(TestCase):
         test_db_ordering = DownloadLocation.objects.all()
         self.assertEqual([a, b, c], [d for d in test_db_ordering])
 
-    def test_download_location_returns_name_src(self):
+    def test_name_method_returns_download_location_name(self):
         '''
         Unit Test - Ensure that the download location returns it's src when calling the models __str__() method
         '''
@@ -255,7 +255,22 @@ class DownloadLocationModelTests(TestCase):
         test_dosgame = create_test_dosgame(publisher=create_test_publisher())
         test_download_location = create_test_download_location(game=test_dosgame, name=test_download_location_name)
         self.assertEqual(test_download_location_name, test_download_location.__str__())
-    
+
+    '''def test_unicode_method_returns_serialized_object(self):
+        '/''
+        Unit Test - In our app, we're using REST API serializers which rely on the model __unicode__ method to return a representation of the object
+        '/''
+        test_href = 'asdf'
+        test_name = 'asdfasdf'
+
+        test_game = create_test_dosgame(publisher=create_test_publisher())
+        test_download_location = create_test_download_location(game=test_game, href=test_href, name=test_name)
+        test_expected_output = {
+            'href': test_href,
+            'name': test_name
+        }
+        self.assertEqual(test_expected_output, test_download_location.__unicode__())'''
+
     def test_cannot_create_download_location_without_game(self):
         '''
         Unit Test - Ensure that you aren't able to create download location objects without a game. 
