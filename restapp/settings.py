@@ -24,8 +24,7 @@ SECRET_KEY = 'h$zyp=z$!o=2^_mh7c6r3+ep%sm=n7oipaeg^e47a%20zzzn!e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '172.0.0.1', 'localhost', 'testserver', ]
 
 
 # Application definition
@@ -126,3 +125,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django REST Framework settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '50/day',
+        'user': '1000/day'
+    }
+}  

@@ -70,7 +70,7 @@ $(function() {
         },
 
         render: function() {    // simply render a row, which is the first 3 items it receives in the collection. 
-            for (var i = 0; i < this.row_length; i++) {
+            for (let i = 0; i < this.row_length; i++) {
                 if (this.collection.at(i) == undefined) {
                     break;
                 }
@@ -113,7 +113,7 @@ $(function() {
         return_collection_of_three_games: function(index) {   
             var three_games = new App.Collections.DosGames;
                 
-            for (var i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 if (index + i >= this.collection.length) {
                     break;
                 }
@@ -131,7 +131,7 @@ $(function() {
             this.$el.html(PageTitle.el);
 
             // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
-            for (var i = 0; i < this.collection.length; i += 3) { 
+            for (let i = 0; i < this.collection.length; i += 3) { 
                 // create a row of dos games
                 var row_collection = this.return_collection_of_three_games(i);
                 var DosGameCardListViewRow = new App.Views.DosGameCardListViewRow({collection: row_collection});

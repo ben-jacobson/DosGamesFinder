@@ -1,15 +1,16 @@
 DosGamesFinder todo list
 
-Serializer:
-- implement throttling
-
-View Layer:
-- write our LayoutAndStyling tests
+View Layer - complete
 
 Model Layer:
-- Refactor these unit tests to use the SetUp method - so as to minimize code repetition
 - Create a structure for creating game name slugs
 - Create a get_absolute_url() method for the serializers to use if needed
 
 Backbone:
 - Refactor the Collections to take data from Django models and finish the rendering
+
+After initial deployment
+- Implement caching
+- Figure out how to disable the API browser
+- Re-factor the API so that it requries a user to login
+- Look at locust.io to do load testing (not just for load balancing, but to test API throttling too)

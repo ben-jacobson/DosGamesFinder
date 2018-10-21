@@ -6,8 +6,8 @@ from dosgamesfinder import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomeView.as_view(), name='home'),
-    path('dosgames/', views.DosGameList.as_view(), name='DosGamesListView'),
-    path('dosgames/<int:pk>/', views.DosGameDetail.as_view(), name='DosGamesDetailView'),
+    path('api/dosgames/', views.DosGameList.as_view(), name='DosGamesListView'),
+    path('api/dosgames/<int:pk>/', views.DosGameDetail.as_view(), name='DosGamesDetailView'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

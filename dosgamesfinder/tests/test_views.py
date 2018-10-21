@@ -11,7 +11,25 @@ class LayoutAndStylingTest(TestCase):
         ''' 
         Unit Test - Test that the JS script tags and CSS href tags have been rendered in the browser 
         '''
-        pass
+        expected_lines = [
+            '<link rel="stylesheet" href="/static/css/bootstrap.min.css" />',
+            '<link rel="stylesheet" href="/static/css/main.css" />',        
+            '<script src="/static/vendor_js/jquery-3.2.1.slim.min.js" type="text/javascript"></script>',
+            '<script src="/static/vendor_js/underscore-min.js" type="text/javascript"></script>',
+            '<script src="/static/vendor_js/backbone-min.js" type="text/javascript"></script>',
+            '<script src="/static/vendor_js/popper.min.js" type="text/javascript"></script>',
+            '<script src="/static/vendor_js/bootstrap.min.js" type="text/javascript"></script>',
+            '<script src="/static/app_js/config.js" type="text/javascript"></script>',
+            '<script src="/static/app_js/models.js" type="text/javascript"></script>',
+            '<script src="/static/app_js/collections.js" type="text/javascript"></script>',
+            '<script src="/static/app_js/views.js" type="text/javascript"></script>',
+            '<script src="/static/app_js/routers.js" type="text/javascript"></script>',
+        ]
+        response = self.client.get(reverse('home'))
+
+        # each and every one of these lines should appear in the response HTML
+        for line in expected_lines:
+            self.assertContains(response, line)
 
 class ListViewPermissionsTests(TestCase):
     '''
