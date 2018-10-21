@@ -2,21 +2,29 @@ from rest_framework import serializers
 from dosgamesfinder.models import Publisher, DosGame, Screenshot, DownloadLocation
 
 class DownloadLocationSerializer(serializers.ModelSerializer):
+    http_method_names = ['get', ]       # we only want to allow get requests
+
     class Meta:
         model = DownloadLocation
         exclude = ('id', 'game', ) # if you use exclude, you don't need the fields = '__all__' as above 
 
 class ScreenshotSerializer(serializers.ModelSerializer):
+    http_method_names = ['get', ]       # we only want to allow get requests
+
     class Meta:
         model = Screenshot
         exclude = ('id', 'game', )   
 
 class PublisherSerializer(serializers.ModelSerializer):
+    http_method_names = ['get', ]       # we only want to allow get requests
+
     class Meta:
         model = Publisher
         fields = '__all__'        
 
 class DosGameSerializer(serializers.ModelSerializer):
+    http_method_names = ['get', ]       # we only want to allow get requests
+
     # in order to serialize nested relationships, we nest them here. 
     screenshots = ScreenshotSerializer(many=True, read_only=True)
     download_locations = DownloadLocationSerializer(many=True, read_only=True)

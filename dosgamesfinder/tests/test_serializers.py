@@ -84,34 +84,10 @@ class DosGameSerializerTests(TestCase):
             'description'
         ] 
         self.assertEqual(set(known_keys), set(expected_fields))
-      
-class DosGamesSerializerPermissionsTests(TestCase):
-    def test_can_send_get_request_to_listview_endpoint(self):
-        #response = self.client.get(reverse('DosGamesListView'))
-        #self.assertEqual(response.status_code, 200)
+
+    def test_throttling_information_is_shown(self):
+        # this test assumes that if the throttle information is given, that it will be adhered to
+        # Writing a test to actually that that throttling will be very time and resource intensive, we just need to trust that DRF functions as expected
         pass
 
-    def test_can_send_get_request_to_detailview_endpoint(self):
-        #test_dosgame = create_test_dosgame(publisher=create_test_publisher())
-        #response = self.client.get(reverse('DosGamesDetailView', kwargs={'pk': test_dosgame.id}))
-        #self.assertEqual(response.status_code, 200)        
-        pass
-
-    def test_cannot_send_put_request_to_endpoint(self):
-        pass
-
-    def test_cannot_send_post_request_to_endpoint(self):
-        pass
-    
-    def test_cannot_send_delete_request_to_endpoint(self):
-        pass
-
-    def test_cannot_send_patch_request_to_endpoint(self):
-        pass
-
-    def test_cannot_send_head_request_to_endpoint(self):
-        pass
-
-    def test_cannot_send_options_request_to_endpoint(self):
-        pass
-       
+        

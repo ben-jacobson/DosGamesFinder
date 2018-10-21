@@ -6,10 +6,10 @@ from rest_framework import generics
 class HomeView(TemplateView):
     template_name = "index.html"
 
-class DosGameList(generics.ListCreateAPIView):
+class DosGameList(generics.ListAPIView):
     queryset = DosGame.objects.all()
     serializer_class = DosGameSerializer
 
-class DosGameDetail(generics.RetrieveUpdateDestroyAPIView):
+class DosGameDetail(generics.ListAPIView):
     queryset = DosGame.objects.all()
     serializer_class = DosGameSerializer

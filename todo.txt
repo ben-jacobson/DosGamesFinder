@@ -1,13 +1,15 @@
 DosGamesFinder todo list
 
+Serializer:
+- implement throttling
+
 View Layer:
-- write unit tests to verify JSON output of serializers
-- Then create serialisers for our REST API calls to retrieve data from db
+- write our LayoutAndStyling tests
 
 Model Layer:
-- Create a structure for creating game name slugs
-- Create a get_absolute_url() method for the serializers to use
 - Refactor these unit tests to use the SetUp method - so as to minimize code repetition
+- Create a structure for creating game name slugs
+- Create a get_absolute_url() method for the serializers to use if needed
 
 Backbone:
 - Refactor the Collections to take data from Django models and finish the rendering
