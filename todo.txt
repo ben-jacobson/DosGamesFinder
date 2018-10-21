@@ -7,6 +7,7 @@ View Layer:
 Model Layer:
 - Create a structure for creating game name slugs
 - Create a get_absolute_url() method for the serializers to use
+- Refactor these unit tests to use the SetUp method - so as to minimize code repetition
 
 Backbone:
 - Refactor the Collections to take data from Django models and finish the rendering

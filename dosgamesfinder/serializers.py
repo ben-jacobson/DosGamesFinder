@@ -4,12 +4,12 @@ from dosgamesfinder.models import Publisher, DosGame, Screenshot, DownloadLocati
 class DownloadLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = DownloadLocation
-        exclude = ('id', 'game', )   
+        exclude = ('id', 'game', ) # if you use exclude, you don't need the fields = '__all__' as above 
 
 class ScreenshotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Screenshot
-        exclude = ('id', 'game', )   # if you use exclude, you don't need the fields = '__all__' as above 
+        exclude = ('id', 'game', )   
 
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,10 +17,6 @@ class PublisherSerializer(serializers.ModelSerializer):
         fields = '__all__'        
 
 class DosGameSerializer(serializers.ModelSerializer):
-    #publisher = serializers.PrimaryKeyRelatedField(many=False)
-    #screenshots = serializers.StringRelatedField(many=True) # you can use StringRelatedFields for simple string representations
-    #download_locations = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
     # in order to serialize nested relationships, we nest them here. 
     screenshots = ScreenshotSerializer(many=True, read_only=True)
     download_locations = DownloadLocationSerializer(many=True, read_only=True)
