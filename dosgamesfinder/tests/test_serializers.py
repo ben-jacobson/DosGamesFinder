@@ -32,11 +32,13 @@ class DosGameSerializerTests(TestCase):
             'download_locations', 
             'publisher', 
             'title', 
+            'slug',
             'genre',
             'description',
             'date_releated',
             'user_rating', 
         ]
+        # A cool side effect of using set - the order of each list doesn't matter.
         self.assertEqual(set(known_keys), set(expected_fields))
 
     def test_related_screenshots_data_is_returned(self):

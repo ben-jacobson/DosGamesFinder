@@ -102,6 +102,12 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         test_set_of_download_locations = test_dosgame_db.download_locations.all()
         self.assertEquals([download2, download1], [d for d in test_set_of_download_locations])
 
+    def test_slug_creation(self):
+        test_name = 'Make this a slug'
+        create_test_dosgame(publisher=self.test_publisher, title=test_name)
+        dosgame_in_db = DosGame.objects.get(title=test_name)
+        self.assertEquals(dosgame_in_db.slug, 'make-this-a-slug')
+
 class ScreenshotModelTests(test_objects_mixin, TestCase):
     def test_create_screenshot(self):
         '''

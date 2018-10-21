@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 class Publisher(models.Model):
     name = models.CharField(max_length=255, unique=True)        # not used as a primary key, but is unique
@@ -11,6 +12,7 @@ class Publisher(models.Model):
         ordering = ('name',)
 
 class DosGame(models.Model):
+    slug = models.SlugField(unique=True, max_length=128)    
     title = models.CharField(max_length=128)
     genre = models.CharField(max_length=128)
     description = models.TextField()
@@ -18,6 +20,10 @@ class DosGame(models.Model):
     user_rating = models.IntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(DosGame, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.title
 

@@ -3,7 +3,6 @@ DosGamesFinder todo list
 View Layer - complete
 
 Model Layer:
-- Create a structure for creating game name slugs
 - Create a get_absolute_url() method for the serializers to use if needed
 
 Backbone:
