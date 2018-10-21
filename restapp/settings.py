@@ -26,7 +26,6 @@ SECRET_KEY = 'h$zyp=z$!o=2^_mh7c6r3+ep%sm=n7oipaeg^e47a%20zzzn!e'
 DEBUG = True
 ALLOWED_HOSTS = [ '172.0.0.1', 'localhost', 'testserver', ]
 
-
 # Application definition
 
 INSTALLED_APPS = [

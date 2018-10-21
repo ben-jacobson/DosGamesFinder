@@ -108,6 +108,11 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         dosgame_in_db = DosGame.objects.get(title=test_name)
         self.assertEquals(dosgame_in_db.slug, 'make-this-a-slug')
 
+    def test_get_absolute_url(self):
+        test_name = 'Make this a url'
+        test_dosgame = create_test_dosgame(publisher=self.test_publisher, title=test_name)
+        self.assertEqual(test_dosgame.get_absolute_url(), '/api/dosgames/make-this-a-url/')
+
 class ScreenshotModelTests(test_objects_mixin, TestCase):
     def test_create_screenshot(self):
         '''
@@ -199,6 +204,11 @@ class PublisherModelTests(test_objects_mixin, TestCase):
         # does it raise an Integrity error? 
         with self.assertRaises(IntegrityError): 
             create_test_publisher(name='test')
+
+    def test_get_absolute_url(self):
+        test_name = 'Make this a url'
+        test_publisher = create_test_publisher(name=test_name)
+        self.assertEqual(test_publisher.get_absolute_url(), '/api/publishers/make-this-a-url/')
 
 class DownloadLocationModelTests(test_objects_mixin, TestCase):
     def test_create_download_location(self):

@@ -1,9 +1,18 @@
 from django.db import models
+from django.urls import reverse
 from django.template.defaultfilters import slugify
 
 class Publisher(models.Model):
+    slug = models.SlugField(unique=True, max_length=255)    
     name = models.CharField(max_length=255, unique=True)        # not used as a primary key, but is unique
     description = models.TextField()
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Publisher, self).save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('PublisherDetailView', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
@@ -23,7 +32,10 @@ class DosGame(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(DosGame, self).save(*args, **kwargs)
-        
+    
+    def get_absolute_url(self):
+        return reverse('DosGamesDetailView', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.title
 

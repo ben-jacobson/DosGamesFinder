@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from dosgamesfinder.serializers import DosGameSerializer
+from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer
 from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_test_download_location
 
 class DosGameSerializerTests(TestCase): 
@@ -82,6 +82,7 @@ class DosGameSerializerTests(TestCase):
         known_keys = self.serializer.data['publisher'].keys()
         expected_fields = [
             'id', 
+            'slug',
             'name',
             'description'
         ] 
@@ -92,4 +93,29 @@ class DosGameSerializerTests(TestCase):
         # Writing a test to actually that that throttling will be very time and resource intensive, we just need to trust that DRF functions as expected
         pass
 
-        
+class PublisherSerializerTests(TestCase): 
+    '''
+    Unit tests for DosGamesSerializer, and all nested Serializers. 
+    '''
+    def setUp(self):
+        # for all tests, set up a few test objects accessible to entire class
+        self.test_publisher_name = 'Test Software Inc'
+        self.test_publisher = create_test_publisher(name=self.test_publisher_name) 
+
+        # create the serializer object, which in turn creates the nested serialisers also tested
+        self.serializer = PublisherSerializer(instance=self.test_publisher)
+
+    def test_publisher_data_is_returned(self):
+        self.assertEqual(self.serializer.data['name'], self.test_publisher_name)
+
+    def test_publisher_data_contains_expected_fields_only(self):
+        known_keys = self.serializer.data.keys()        
+        expected_fields = [
+            'id', 
+            'slug',
+            'name',
+            'description'
+        ]
+        self.assertEqual(set(known_keys), set(expected_fields))
+
+      

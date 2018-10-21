@@ -1,9 +1,10 @@
 DosGamesFinder todo list
 
-View Layer - complete
+View Layer:
+-
 
 Model Layer:
-- Create a get_absolute_url() method for the serializers to use if needed
+- 
 
 Backbone:
 - Refactor the Collections to take data from Django models and finish the rendering
