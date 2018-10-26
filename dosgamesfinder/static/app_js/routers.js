@@ -5,9 +5,28 @@ $(function() {
     App.Router = Backbone.Router.extend({
         routes: {
             '': 'index',
+            'test': 'test',
             'game': 'game'
         },
         index: function() {
+            // initialize our collection
+            var dosgames_collection = new App.Collections.DosGames();
+
+            // initialize our views
+            var PageNavigation = new App.Views.PageNavigation();
+            var DosGamesListView = new App.Views.DosGamesListView({collection: dosgames_collection});
+
+            // fetch our objects from the server, the view will update as per event listeners
+            dosgames_collection.fetch();
+
+            /*dosgames_collection.fetch().done(function() {
+                //console.log(dosgames_collection.at(0));
+                DosGamesListView.render();
+            });*/  
+
+            console.log('finished');
+        },
+        test: function() {
             var PageNavigation = new App.Views.PageNavigation;
 
             // create 12 identical DosGame objects and insert into the test collection , each using the models default values. just for testing purposes
@@ -15,12 +34,12 @@ $(function() {
             var alphabet = 'abcdefghijklmnopqrstuvwxyz';
         
             var DosGames = new App.Collections.DosGames; // todo - refactor to have the collection read off Django
-            for (var i = 0; i < 28; i++) {
+            for (let i = 0; i < 28; i++) {
                 Dosgame = new App.Models.DosGame({title: alphabet[i % alphabet.length]}); 
                 DosGames.add(Dosgame);
             }
         
-            var DosGamesListView = new App.Views.DosGamesListView({collection: DosGames});        
+            var DosGamesListView = new App.Views.DosGamesListView({collection: DosGames});                    
         },
         game: function() { 
             var PageNavigation = new App.Views.PageNavigation;
@@ -32,9 +51,9 @@ $(function() {
                 genre: 'Action',
                 publisher: 'Id Software',
                 year_released: '1993',
-                rating: 'ooooo',
+                user_rating: 'ooooo',
             });
-        
+
             var DosGamesDetailView = new App.Views.DosGamesDetailView({model: test_dos_game});
         }                
     });

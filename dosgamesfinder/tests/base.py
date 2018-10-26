@@ -31,7 +31,7 @@ def create_test_dosgame(publisher,
                         title='FooBar Adventures', 
                         genre='Action', 
                         description='FooBar Adventures is a 1991 classic Dos game', 
-                        date_releated='1991', 
+                        year_released='1991', 
                         user_rating=4):
     '''
     Test Helper Function - Creates a test dosgame object and saves to test db. Returns the dosgame object
@@ -40,7 +40,7 @@ def create_test_dosgame(publisher,
         title=title,
         genre=genre,
         description=description,
-        date_releated=date_releated,
+        year_released=year_released,
         user_rating=user_rating,
         publisher=publisher,
     )

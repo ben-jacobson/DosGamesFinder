@@ -59,7 +59,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
             title="The game with no publisher",
             genre="Puzzle",
             description="This game has no publisher. Was it ever released? Did it even get made? ",
-            date_releated=1991,
+            year_released=1991,
             user_rating=1,
         )
 

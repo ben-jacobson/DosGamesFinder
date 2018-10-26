@@ -35,7 +35,7 @@ class DosGameSerializerTests(TestCase):
             'slug',
             'genre',
             'description',
-            'date_releated',
+            'year_released',
             'user_rating', 
         ]
         # A cool side effect of using set - the order of each list doesn't matter.

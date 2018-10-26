@@ -14,7 +14,7 @@ class LayoutAndStylingTest(TestCase):
         expected_lines = [
             '<link rel="stylesheet" href="/static/css/bootstrap.min.css" />',
             '<link rel="stylesheet" href="/static/css/main.css" />',        
-            '<script src="/static/vendor_js/jquery-3.2.1.slim.min.js" type="text/javascript"></script>',
+            '<script src="/static/vendor_js/jquery-3.3.1.min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/underscore-min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/backbone-min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/popper.min.js" type="text/javascript"></script>',

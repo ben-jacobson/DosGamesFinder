@@ -77,7 +77,7 @@
                     <p class='card-genre'><a href='#'><%= genre %></a></p>
                     <p class="card-text"><%= description %></p>
                     <p class="card-publisher-and-date font-weight-light"></p><a href='#'><%= publisher %></a> <%= year_released %></p>
-                    <p class="card-user-rating"><%= rating %></p>
+                    <p class="card-user-rating"><%= user_rating %></p>
                 </div>
             </div>
         </script>   
@@ -90,7 +90,7 @@
                     <p class="detail-publisher-and-date font-weight-light"></p>Publisher - <a href='#'><%= publisher %></a></p>
                     <p class="detail-year-released">Released - <%= year_released %><p>
                     <p class='detail-genre'>Genre - <a href='#'><%= genre %></a></p>
-                    <p class="detail-user-rating">User Rating - <%= rating %></p>
+                    <p class="detail-user-rating">User Rating - <%= user_rating %></p>
                 </div>
                 <div class='col-sm-4'>
                     <img class='detailView-screenshot' src="<%= screenshot1 %>" alt="<% title %> screenshot">
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Javascript source -->
-        <script src="{% static 'vendor_js/jquery-3.2.1.slim.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'vendor_js/jquery-3.3.1.min.js' %}" type="text/javascript"></script>
         <script src="{% static 'vendor_js/underscore-min.js' %}" type="text/javascript"></script>
         <script src="{% static 'vendor_js/backbone-min.js' %}" type="text/javascript"></script>
         <script src="{% static 'vendor_js/popper.min.js' %}" type="text/javascript"></script>

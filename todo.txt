@@ -1,13 +1,10 @@
 DosGamesFinder todo list
 
-View Layer:
--
-
 Model Layer:
-- 
+- Refactor to not allow urls to access ID's directly, this allows for webscraping too easily. 
 
 Backbone:
-- Refactor the Collections to take data from Django models and finish the rendering
+- Somehow implement the screenshots and download locations relationship in the Backbone models
 
 After initial deployment
 - Implement caching

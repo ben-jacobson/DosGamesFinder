@@ -107,7 +107,8 @@ $(function() {
         className: 'container listing',
 
         initialize: function() {
-            this.render();
+            //this.render();
+            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
         },
 
         return_collection_of_three_games: function(index) {   
@@ -128,7 +129,7 @@ $(function() {
         render: function() {
             // render the page title
             var PageTitle = new App.Views.PageTitle("Games List A-Z");
-            this.$el.html(PageTitle.el);
+            this.$el.html(PageTitle.el); 
 
             // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
             for (let i = 0; i < this.collection.length; i += 3) { 
@@ -157,7 +158,8 @@ $(function() {
         detailView_template: _.template($('#game-detailView').html()),
 
         initialize: function() {
-            this.render();
+            //this.render();
+            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
         },
         
         render: function() {

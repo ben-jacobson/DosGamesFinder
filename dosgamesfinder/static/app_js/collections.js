@@ -4,6 +4,7 @@ $(function() {
     // ===============
 
     App.Collections.DosGames = Backbone.Collection.extend({
-        model: App.Models.DosGame
+        url: 'http://localhost:8000/api/dosgames',  
+        model: App.Models.DosGame,
     });
 });
