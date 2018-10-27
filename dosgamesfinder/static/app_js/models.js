@@ -5,11 +5,13 @@ $(function () {
 
     App.Models.DosGame = Backbone.Model.extend({
         defaults: {
-            screenshot1: 'https://via.placeholder.com/320x200',
+            /* screenshot1: 'https://via.placeholder.com/320x200',
             screenshot2: 'https://via.placeholder.com/320x200',
             screenshot3: 'https://via.placeholder.com/320x200',
             screenshot4: 'https://via.placeholder.com/320x200',
-            screenshot5: 'https://via.placeholder.com/320x200',
+            screenshot5: 'https://via.placeholder.com/320x200',*/ 
+
+            main_screenshot: 'https://via.placeholder.com/320x200',
 
             id: '',
             slug: '',
@@ -19,17 +21,17 @@ $(function () {
             year_released: '',
             user_rating: '',
 
-            publisher_name: '',
-            publisher_slug: '',
         },
 
         initialize: function (attrs) {
-            // we know that the DosGame object in the API cannot be created without a publisher
-            // essentially this flattens this relationship to make things simpler            
-            this.set({
-                publisher_name: attrs.publisher.name,   // name of publisher
-                publisher_slug: attrs.publisher.slug,   // slug for publisher DetailView, used to create a href
-            });
+            // some initial data validation takes place here, just incase of missing data, 
+            // we'll fill in with placeholder data
+            
+            // if we get data where there is no screenshots, stay with the default. 
+            // Otherwise, set it to screenshot 0
+            if (attrs.screenshots.length != 0) {
+                this.set('main_screenshot', attrs.screenshots[0].img_src); // set default screenshot to first one
+            }
         },
     });
 

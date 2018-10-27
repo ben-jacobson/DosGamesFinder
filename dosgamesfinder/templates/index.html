@@ -71,12 +71,12 @@
 
         <script id="game-card-listView" type="text/template">
             <div class="card">
-                <img class="card-img-top" src="<%= screenshot1 %>" alt="<% title %> screenshot">
+                <img class="card-img-top" src="<%= main_screenshot %>" alt="<% title %> screenshot">
                 <div class="card-body">
-                    <h4 class="card-title"><%= title %></h4>
-                    <p class='card-genre'><a href='#'><%= genre %></a></p>
+                    <h4 class="card-title"><a href='/api/dosgames/<%= slug %>'><%= title %></a></h4>
+                    <p class='card-genre'><a href='/api/genres/<%= genre %>'><%= genre %></a></p>
                     <p class="card-text"><%= description %></p>
-                    <p class="card-publisher-and-date font-weight-light"></p><a href='#'><%= publisher %></a> <%= year_released %></p>
+                    <p class="card-publisher-and-date font-weight-light"></p><a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a> <%= year_released %></p>
                     <p class="card-user-rating"><%= user_rating %></p>
                 </div>
             </div>

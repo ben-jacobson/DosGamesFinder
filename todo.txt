@@ -1,13 +1,19 @@
 DosGamesFinder todo list
 
+Serializers: 
+- Create a genre serializer, lists all genres for the menu bar
+- Create a serializer that filters games by genre
+
 Model Layer:
 - Refactor to not allow urls to access ID's directly, this allows for webscraping too easily. 
+- Convert our genre relationship to be a foreign key instead
 
 Backbone:
-- Somehow implement the screenshots and download locations relationship in the Backbone models
+- Put some validation in our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
+- Create new views for screenshots and download locations, that use the same DosGame model
 
 After initial deployment
 - Implement caching
-- Figure out how to disable the API browser
+- Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
 - Re-factor the API so that it requries a user to login
 - Look at locust.io to do load testing (not just for load balancing, but to test API throttling too)

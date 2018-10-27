@@ -18,12 +18,6 @@ $(function() {
 
             // fetch our objects from the server, the view will update as per event listeners
             dosgames_collection.fetch();
-
-            /*dosgames_collection.fetch().done(function() {
-                //console.log(dosgames_collection.at(0));
-                DosGamesListView.render();
-            });*/  
-
             console.log('finished');
         },
         test: function() {
