@@ -158,14 +158,11 @@ $(function() {
         detailView_template: _.template($('#game-detailView').html()),
 
         initialize: function() {
-            //this.render();
-            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+            this.render();
+            this.model.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
         },
         
         render: function() {
-            // render the page title
-            //var PageTitle = new App.Views.PageTitle(this.model.get('title'));
-            //this.$el.html(PageTitle.el);
             this.$el.html(this.detailView_template(this.model.toJSON()));         
             return this;
         }
