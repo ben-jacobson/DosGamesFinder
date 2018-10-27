@@ -147,6 +147,7 @@ $(function() {
                     //console.log('serve ad'); 
                 } 
             }
+            //console.log('ListView rendered');
             return this;
         }
     });
@@ -157,13 +158,22 @@ $(function() {
         className: 'container listing',
         detailView_template: _.template($('#game-detailView').html()),
 
-        initialize: function() {
-            this.render();
-            this.model.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+        initialize: function(args) {
+            this.collection = args.collection;
+            this.requested_game_slug = args.game_slug;
+            this.collection.on('sync', this.retrieve_model_and_render, this); // whenever we finish re-syncing to database, only then we want to render
         },
         
+        retrieve_model_and_render: function() {      
+            // retrieve the model from the collection and render it      
+            this.model = this.collection.findWhere({slug: this.requested_game_slug});    // slugs are designed in db to be unique, so we can use the get method for this
+            //console.log(this.model);
+            this.render();
+        },
+
         render: function() {
             this.$el.html(this.detailView_template(this.model.toJSON()));         
+            //console.log('DetailView rendered');
             return this;
         }
     });

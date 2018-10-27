@@ -73,7 +73,7 @@
             <div class="card">
                 <img class="card-img-top" src="<%= main_screenshot %>" alt="<% title %> screenshot">
                 <div class="card-body">
-                    <h4 class="card-title"><a href='/api/dosgames/<%= slug %>'><%= title %></a></h4>
+                    <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
                     <p class='card-genre'><a href='/api/genres/<%= genre %>'><%= genre %></a></p>
                     <p class="card-text"><%= description %></p>
                     <p class="card-publisher-and-date font-weight-light"></p><a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a> <%= year_released %></p>
@@ -87,9 +87,9 @@
                 <div class='col-sm-8'>
                     <h1><%= title %></h1 >
                     <p><%= description %></p>
-                    <p class="detail-publisher-and-date font-weight-light"></p>Publisher - <a href='#'><%= publisher %></a></p>
+                    <p class="detail-publisher-and-date font-weight-light">Publisher - <a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a></p>
                     <p class="detail-year-released">Released - <%= year_released %><p>
-                    <p class='detail-genre'>Genre - <a href='#'><%= genre %></a></p>
+                    <p class='detail-genre'>Genre - <a href='/api/genres/<%= genre %>'><%= genre %></a></p>
                     <p class="detail-user-rating">User Rating - <%= user_rating %></p>
                 </div>
                 <div class='col-sm-4'>

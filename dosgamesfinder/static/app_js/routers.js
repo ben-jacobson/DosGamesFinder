@@ -5,40 +5,28 @@ $(function () {
     App.Router = Backbone.Router.extend({
         routes: {
             '': 'index',
-            'game': 'game',
-            'test': 'test',
+            'game/:request_slug': 'game',
+            'publisher/:request_slug': 'publisher',
+            //'test': 'test',
         },
 
         index: function () {
-            // initialize our collection
-            var dosgames_collection = new App.Collections.DosGames();
-
-            // initialize our views
-            var PageNavigation = new App.Views.PageNavigation();
             var DosGamesListView = new App.Views.DosGamesListView({ collection: dosgames_collection });
-
-            // fetch our objects from the server, the view will update as per event listeners
-            dosgames_collection.fetch();
-            console.log('finished');
+            dosgames_collection.fetch(); // fetch new data off the server according to parameters, eg sorting, pagination
         },
 
-        game: function () {
-            var PageNavigation = new App.Views.PageNavigation;
-
-            test_dos_game = new App.Models.DosGame({
-                screenshot: 'https://via.placeholder.com/320x200',
-                title: 'Doom',
-                description: 'Doom is a 1993 first-person shooter video game by id Software. It is considered one of the most significant and influential titles in video game history, for having helped to pioneer the now-ubiquitous first-person shooter.',
-                genre: 'Action',
-                publisher: 'Id Software',
-                year_released: '1993',
-                user_rating: '5',
-            });
-
-            var DosGamesDetailView = new App.Views.DosGamesDetailView({ model: test_dos_game });
+        game: function (request_slug) {
+            // we pass the entire collection into the DetailView, so that the view can use event listeners to update data
+            var DosGamesDetailView = new App.Views.DosGamesDetailView({ collection: dosgames_collection, game_slug: request_slug });
+            dosgames_collection.fetch(); // fetch new data off the server according to parameters, eg sorting, pagination
         },
 
-        test: function () {
+        publisher: function(request_slug) {
+
+
+        }, 
+
+        /* test: function () {
             var PageNavigation = new App.Views.PageNavigation;
 
             // create 24 identical DosGame objects and insert into the test collection , each using the models default values. just for testing purposes
@@ -58,8 +46,37 @@ $(function () {
             DosGamesListView.render(); // since there is no fetch event to trigger, we need to run ourselves.
         },
 
+        game: function (slug) {
+            console.log('slug = ' + slug); 
+
+            var PageNavigation = new App.Views.PageNavigation;
+
+            test_dos_game = new App.Models.DosGame({
+                screenshot: 'https://via.placeholder.com/320x200',
+                title: 'Doom',
+                description: 'Doom is a 1993 first-person shooter video game by id Software. It is considered one of the most significant and influential titles in video game history, for having helped to pioneer the now-ubiquitous first-person shooter.',
+                genre: 'Action',
+                publisher: 'Id Software',
+                year_released: '1993',
+                user_rating: '5',
+            });
+
+            var DosGamesDetailView = new App.Views.DosGamesDetailView({ model: test_dos_game });
+        },        
+        
+        */ 
     });
 
+    // draw our navigation bar
+    var PageNavigation = new App.Views.PageNavigation;
+
+    // initialize our collection
+    var dosgames_collection = new App.Collections.DosGames();
+    //dosgames_collection.fetch(); // initial fetch of default data. not entirely necessary
+
+    // put in place our routers
     var router = new App.Router();
     Backbone.history.start();
+
+    console.log('EOF');
 });
