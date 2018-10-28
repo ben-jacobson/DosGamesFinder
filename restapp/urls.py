@@ -9,11 +9,12 @@ urlpatterns = [
 
     path('api/dosgames/', views.DosGameList.as_view(), name='DosGamesListView'),
     path('api/dosgames/<slug:slug>/', views.DosGameDetail.as_view(), name='DosGamesDetailView'),      
-    path('api/dosgames/<int:pk>/', views.DosGameDetail.as_view(), name='DosGamesDetailView'),          # Both paths are valid
 
     path('api/publishers/', views.PublisherList.as_view(), name='PublisherListView'),
     path('api/publishers/<slug:slug>/', views.PublisherDetail.as_view(), name='PublisherDetailView'),      
-    path('api/publishers/<int:pk>/', views.PublisherDetail.as_view(), name='PublisherDetailView'),              
+
+    path('api/genres/', views.GenreList.as_view(), name='GenreListView'),
+    path('api/genres/<slug:slug>/', views.GenreDetail.as_view(), name='GenreDetailView'),    
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

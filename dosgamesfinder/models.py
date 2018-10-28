@@ -4,8 +4,8 @@ from django.template.defaultfilters import slugify
 
 class Publisher(models.Model):
     slug = models.SlugField(unique=True, max_length=255)    
-    name = models.CharField(unique=True, max_length=255, blank=False)        # not used as a primary key, but is unique
-    description = models.TextField()
+    name = models.CharField(unique=True, max_length=255, blank=False)     
+    description = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -20,13 +20,30 @@ class Publisher(models.Model):
     class Meta:
         ordering = ('name',)
 
+class Genre(models.Model):
+    slug = models.SlugField(unique=True, max_length=255)    
+    name = models.CharField(unique=True, max_length=255, blank=False)        
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Genre, self).save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('GenreDetailView', kwargs={'slug': self.slug})
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)        
+
 class DosGame(models.Model):
     slug = models.SlugField(unique=True, max_length=128)    
     title = models.CharField(max_length=128, blank=False)
-    genre = models.CharField(max_length=128)
-    description = models.TextField()
-    year_released = models.IntegerField()
-    user_rating = models.IntegerField()
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)      # ManyToOne - Genre can have multiple DosGames, but the DosGame can only have one Genre
+    description = models.TextField(blank=True)                  
+    year_released = models.PositiveIntegerField()
+    user_rating = models.PositiveIntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
 
     def save(self, *args, **kwargs):
@@ -45,8 +62,8 @@ class DosGame(models.Model):
 class Screenshot(models.Model):
     game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='screenshots')     # ManyToOne - DosGame can have multiple Screenshots, but the Screenshot can only have one DosGame
     img_src = models.URLField(max_length=255)
-    img_width = models.IntegerField()
-    img_height = models.IntegerField()
+    img_width = models.PositiveIntegerField()
+    img_height = models.PositiveIntegerField()
 
     def __str__(self):
         return self.img_src

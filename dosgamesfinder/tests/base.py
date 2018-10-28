@@ -1,4 +1,4 @@
-from dosgamesfinder.models import DosGame, Publisher, Screenshot, DownloadLocation
+from dosgamesfinder.models import DosGame, Publisher, Genre, Screenshot, DownloadLocation
 
 def create_test_publisher(name='Test Software'):    
     '''
@@ -10,6 +10,16 @@ def create_test_publisher(name='Test Software'):
     )
     test_publisher.save()
     return test_publisher
+
+def create_test_genre(name='Adventure'):    
+    '''
+    Test Helper Function - Creates a test genre object and saves to test db. Returns the genre object
+    '''     
+    test_genre = Genre(
+        name=name, 
+    )
+    test_genre.save()
+    return test_genre    
 
 def create_test_screenshot( game, 
                             img_src='https://via.placeholder.com/320x200', 
@@ -28,8 +38,8 @@ def create_test_screenshot( game,
     return test_screenshot
 
 def create_test_dosgame(publisher, 
+                        genre,
                         title='FooBar Adventures', 
-                        genre='Action', 
                         description='FooBar Adventures is a 1991 classic Dos game', 
                         year_released='1991', 
                         user_rating=4):
@@ -68,3 +78,12 @@ def create_breaker_string(length):
         test_breaker_string += '.'
 
     return test_breaker_string    
+
+class test_objects_mixin():
+    '''
+    A lot of these test classes have the same setUp method, created a quick mixin for DRY purposes
+    '''
+    def setUp(self):
+        self.test_publisher = create_test_publisher()
+        self.test_genre = create_test_genre()
+        self.test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre)

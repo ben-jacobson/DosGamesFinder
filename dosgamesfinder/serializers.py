@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from dosgamesfinder.models import Publisher, DosGame, Screenshot, DownloadLocation
+from dosgamesfinder.models import Publisher, Genre, DosGame, Screenshot, DownloadLocation
 
 class DownloadLocationSerializer(serializers.ModelSerializer):
     http_method_names = ['get', ]       # we only want to allow get requests
@@ -22,6 +22,13 @@ class PublisherSerializer(serializers.ModelSerializer):
         model = Publisher
         fields = '__all__'        
 
+class GenreSerializer(serializers.ModelSerializer):
+    http_method_names = ['get', ]       # we only want to allow get requests
+
+    class Meta:
+        model = Genre
+        fields = '__all__'        
+
 class DosGameSerializer(serializers.ModelSerializer):
     http_method_names = ['get', ]       # we only want to allow get requests
 
@@ -29,6 +36,7 @@ class DosGameSerializer(serializers.ModelSerializer):
     screenshots = ScreenshotSerializer(many=True, read_only=True)
     download_locations = DownloadLocationSerializer(many=True, read_only=True)
     publisher = PublisherSerializer(many=False, read_only=True)
+    genre = GenreSerializer(many=False, read_only=True)
 
     class Meta:
         model = DosGame

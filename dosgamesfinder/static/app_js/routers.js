@@ -23,7 +23,6 @@ $(function () {
 
         publisher: function(request_slug) {
 
-
         }, 
 
         /* test: function () {

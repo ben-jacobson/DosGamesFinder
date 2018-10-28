@@ -1,19 +1,22 @@
 DosGamesFinder todo list
 
-Serializers: 
-- Create a genre serializer, lists all genres for the menu bar
-- Create a serializer that filters games by genre
+Minisprint
+- Scrape some data from an online source so that we can test with a larger data set
+- DetailView Serializer isn't working correctly, need it to only return one result
+- Backbone - Set up our DetailView to read off the API and sync to data returned by the DetailView Serializer. 
+ 
+Minisprint
+- Refactor to not allow API urls to access ID's directly, this allows for webscraping too easily. 
+- Backbone - Put some validation in our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
 
-Model Layer:
-- Refactor to not allow urls to access ID's directly, this allows for webscraping too easily. 
-- Convert our genre relationship to be a foreign key instead
-
-Backbone:
-- Put some validation in our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
-- Create new views for screenshots and download locations, that use the same DosGame model
+Minisprint
+- Backbone - Create new views for screenshots and download locations, that use the same DosGame model
+- Set up the navigation to read genres from the API
 
 After initial deployment
-- Implement caching
+- Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
+- Customize the admin so that slugs are automatically generated
+- Implement some caching
 - Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
 - Re-factor the API so that it requries a user to login
-- Look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
+- Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)

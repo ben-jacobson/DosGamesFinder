@@ -1,17 +1,9 @@
 from django.test import TestCase
-from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_test_download_location, create_breaker_string#, create_test_game_and_publisher_package
-from dosgamesfinder.models import Publisher, DosGame, Screenshot, DownloadLocation
+from .base import create_test_publisher, create_test_genre, create_test_screenshot, create_test_dosgame, create_test_download_location, create_breaker_string, test_objects_mixin
+from dosgamesfinder.models import Publisher, Genre, DosGame, Screenshot, DownloadLocation
 
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, DataError
-
-class test_objects_mixin():
-    '''
-    All classes below have the same setUp method, created a quick mixin for DRY purposes
-    '''
-    def setUp(self):
-        self.test_publisher = create_test_publisher()
-        self.test_dosgame = create_test_dosgame(publisher=self.test_publisher)
 
 class DosGameModelTests(test_objects_mixin, TestCase): 
     def test_create_dosgame(self):
@@ -20,24 +12,24 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         '''             
         self.assertEquals(self.test_dosgame, DosGame.objects.get(title=self.test_dosgame.title))
 
-    def test_max_length_of_dosgame_fields(self):
+    def test_max_length_of_dosgame_title_fields(self):
         '''
         Unit Test - This test knows the minimum and maximum length of the dosgame field and tests that assertions are being raised correctly
         '''
         # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
-        test_breaker_string = create_breaker_string(256)
+        breaker_string = create_breaker_string(513)
 
         # Test the dosgame.title length
         with self.assertRaises(DataError): 
-            create_test_dosgame(publisher=self.test_publisher, title=test_breaker_string, genre=test_breaker_string)
+            create_test_dosgame(publisher=self.test_publisher, title=breaker_string, genre=self.test_genre)
 
     def test_default_ordering_of_games(self):
         '''
         Unit Test - Check that default ordering of all game items is A-Z
         '''
-        a = create_test_dosgame(publisher=self.test_publisher, title='a')
-        b = create_test_dosgame(publisher=self.test_publisher, title='b')
-        c = create_test_dosgame(publisher=self.test_publisher, title='c')
+        a = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='a')
+        b = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='b')
+        c = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='c')
         
         test_db_ordering = DosGame.objects.all()
         self.assertEqual([a, b, c, self.test_dosgame], [g for g in test_db_ordering])
@@ -47,7 +39,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         Unit Test - Ensure that the dosgame returns it's name when calling the models __str__() method
         '''
         test_name = 'Adventures in Testingville'
-        test_dosgame = create_test_dosgame(publisher=self.test_publisher, title=test_name)
+        test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=test_name)
         self.assertEqual(test_name, test_dosgame.__str__())
 
     def test_cannot_create_game_without_publisher(self):
@@ -57,7 +49,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         # attempt to create a game without a publisher. Can't use helper function, since that function does it correctly
         test_dosgame = DosGame(
             title="The game with no publisher",
-            genre="Puzzle",
+            genre=self.test_genre,
             description="This game has no publisher. Was it ever released? Did it even get made? ",
             year_released=1991,
             user_rating=1,
@@ -69,6 +61,25 @@ class DosGameModelTests(test_objects_mixin, TestCase):
 
         with self.assertRaises(IntegrityError): 
             test_dosgame.save()
+
+    def test_cannot_create_game_without_genre(self):
+        '''
+        Unit Test - Ensure that you aren't able to create game objects without a genre. 
+        '''        
+        # attempt to create a game without a genre. Can't use helper function, since that function does it correctly
+        test_dosgame = DosGame(
+            title="The game with no genre",
+            description="This game has no genre. Is it even a game?",
+            year_released=1990,
+            user_rating=2,
+        )
+
+        # does it raise exceptions on full_clean and save? 
+        with self.assertRaises(ValidationError):
+            test_dosgame.full_clean()
+
+        with self.assertRaises(IntegrityError): 
+            test_dosgame.save()  
 
     def test_many_to_one_relationship_between_game_and_screenshot(self):
         '''
@@ -89,6 +100,12 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         '''
         self.assertIn(self.test_dosgame, Publisher.objects.get(name=self.test_publisher.name).dosgame_set.all())     
 
+    def test_many_to_one_relationship_between_game_and_genre(self):
+        '''
+        Unit Test - Create a genre, assign it a game, check that the db relationships work as expected. 
+        '''
+        self.assertIn(self.test_dosgame, Genre.objects.get(name=self.test_genre.name).dosgame_set.all())  
+
     def test_many_to_one_relationship_between_game_and_download_location(self):
         '''
         Unit Test - Create a game, assign it some download locations, check that the db relationships work as expected. 
@@ -104,13 +121,13 @@ class DosGameModelTests(test_objects_mixin, TestCase):
 
     def test_slug_creation(self):
         test_name = 'Make this a slug'
-        create_test_dosgame(publisher=self.test_publisher, title=test_name)
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=test_name)
         dosgame_in_db = DosGame.objects.get(title=test_name)
         self.assertEquals(dosgame_in_db.slug, 'make-this-a-slug')
 
     def test_get_absolute_url(self):
         test_name = 'Make this a url'
-        test_dosgame = create_test_dosgame(publisher=self.test_publisher, title=test_name)
+        test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=test_name)
         self.assertEqual(test_dosgame.get_absolute_url(), '/api/dosgames/make-this-a-url/')
 
 class ScreenshotModelTests(test_objects_mixin, TestCase):
@@ -161,7 +178,7 @@ class ScreenshotModelTests(test_objects_mixin, TestCase):
 class PublisherModelTests(test_objects_mixin, TestCase):
     def test_create_publisher(self):
         '''
-        Unit Test - Ensure that publisher objects are being saved to the db. 
+        Unit Test - Ensure that publisher objects are being saved to the db. And that they don't need to be associated with any DosGame objects
         '''        
         self.assertIn(self.test_publisher, [p for p in Publisher.objects.all()])
         self.assertEquals(self.test_publisher.name, Publisher.objects.get(name=self.test_publisher.name).name)
@@ -209,6 +226,58 @@ class PublisherModelTests(test_objects_mixin, TestCase):
         test_name = 'Make this a url'
         test_publisher = create_test_publisher(name=test_name)
         self.assertEqual(test_publisher.get_absolute_url(), '/api/publishers/make-this-a-url/')
+
+
+class GenreModelTests(test_objects_mixin, TestCase):
+    def test_create_genre(self):
+        '''
+        Unit Test - Ensure that genre objects are being saved to the db. And that they don't need to be associated with any DosGame objects
+        '''        
+        self.assertIn(self.test_genre, [g for g in Genre.objects.all()])
+        self.assertEquals(self.test_genre.name, Genre.objects.get(name=self.test_genre.name).name)
+
+    def test_max_length_of_genre_fields(self):
+        '''
+        Unit Test - This test knows the minimum and maximum length of the genre field and tests that assertions are being raised correctly
+        '''
+        # check that the right assertions are being raised
+        with self.assertRaises(DataError): 
+            create_test_genre(name=create_breaker_string(256))
+
+    def test_default_ordering_of_genres(self):
+        '''
+        Unit Test - check that default ordering of all genre is A-Z
+        '''
+        a = create_test_genre(name='a')
+        b = create_test_genre(name='b') # the self.test_genre's name is 'Adventure', so will fit between a and b 
+        c = create_test_genre(name='c')
+        
+        test_db_ordering = Genre.objects.all()
+        self.assertEqual([a, self.test_genre, b, c], [g for g in test_db_ordering])
+
+    def test_name_method_returns_genre_name(self):
+        '''
+        Unit Test - Ensure that the genre returns it's name when calling the models name() method
+        '''
+        test_name = 'Test Software Inc'
+        test_genre = create_test_genre(name=test_name)
+        self.assertEqual(test_name, test_genre.__str__())
+
+    def test_genre_is_unique(self):
+        '''
+        Unit Test - Ensure that the genre name is unique in the database
+        '''
+        # create and save the first publisher
+        create_test_genre(name='test')
+        
+        # does it raise an Integrity error? 
+        with self.assertRaises(IntegrityError): 
+            create_test_genre(name='test') 
+
+    def test_get_absolute_url(self):
+        test_name = 'Make this a url'
+        test_genre = create_test_genre(name=test_name)
+        self.assertEqual(test_genre.get_absolute_url(), '/api/genres/make-this-a-url/')    
 
 class DownloadLocationModelTests(test_objects_mixin, TestCase):
     def test_create_download_location(self):
@@ -264,8 +333,6 @@ class DownloadLocationModelTests(test_objects_mixin, TestCase):
 
         with self.assertRaises(IntegrityError): 
             test_download_location.save()
-
-
 
 
 

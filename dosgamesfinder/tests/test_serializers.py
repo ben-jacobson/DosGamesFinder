@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer
-from .base import create_test_publisher, create_test_screenshot, create_test_dosgame, create_test_download_location
+from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer, GenreSerializer
+from .base import create_test_publisher, create_test_genre, create_test_screenshot, create_test_dosgame, create_test_download_location
 
 class DosGameSerializerTests(TestCase): 
     '''
@@ -11,9 +11,11 @@ class DosGameSerializerTests(TestCase):
         # for all tests, set up a few test objects accessible to entire class
         self.test_dosgame_name = 'Foobar Adventures'
         self.test_publisher_name = 'Test Software Inc'
-        
+
+        self.test_genre_name = 'Adventure'
+        self.test_genre = create_test_genre(name=self.test_genre_name) 
         self.test_publisher = create_test_publisher(name=self.test_publisher_name) 
-        self.test_dosgame = create_test_dosgame(publisher=self.test_publisher, title=self.test_dosgame_name)
+        self.test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=self.test_dosgame_name)
         self.test_screenshot_one = create_test_screenshot(game=self.test_dosgame)
         self.test_screenshot_two = create_test_screenshot(game=self.test_dosgame)
         self.test_download_location = create_test_download_location(game=self.test_dosgame)
@@ -29,7 +31,7 @@ class DosGameSerializerTests(TestCase):
         expected_fields = [
             'id',
             'screenshots', 
-            'download_locations', 
+            'download_locations',  
             'publisher', 
             'title', 
             'slug',
@@ -88,6 +90,20 @@ class DosGameSerializerTests(TestCase):
         ] 
         self.assertEqual(set(known_keys), set(expected_fields))
 
+    def test_related_genre_data_is_returned(self):
+        serialized_genre_data = self.serializer.data['genre']['name'] # the first entry should match self.test_screenshot_one
+        expected_genre_data = self.test_genre.name
+        self.assertEqual(serialized_genre_data, expected_genre_data)
+
+    def test_related_genre_has_specified_fields_only(self):
+        known_keys = self.serializer.data['genre'].keys()
+        expected_fields = [
+            'id', 
+            'slug',
+            'name',
+        ] 
+        self.assertEqual(set(known_keys), set(expected_fields))        
+
     def test_throttling_information_is_shown(self):
         # this test assumes that if the throttle information is given, that it will be adhered to
         # Writing a test to actually that that throttling will be very time and resource intensive, we just need to trust that DRF functions as expected
@@ -115,6 +131,30 @@ class PublisherSerializerTests(TestCase):
             'slug',
             'name',
             'description'
+        ]
+        self.assertEqual(set(known_keys), set(expected_fields))
+
+class GenreSerializerTests(TestCase): 
+    '''
+    Unit tests for GenreSerializer 
+    '''
+    def setUp(self):
+        # for all tests, set up a few test objects accessible to entire class
+        self.test_genre_name = 'Adventure'
+        self.test_genre = create_test_genre(name=self.test_genre_name) 
+
+        # create the serializer object, which in turn creates the nested serialisers also tested
+        self.serializer = GenreSerializer(instance=self.test_genre)
+
+    def test_genre_data_is_returned(self):
+        self.assertEqual(self.serializer.data['name'], self.test_genre_name)
+
+    def test_genre_data_contains_expected_fields_only(self):
+        known_keys = self.serializer.data.keys()        
+        expected_fields = [
+            'id', 
+            'slug',
+            'name',
         ]
         self.assertEqual(set(known_keys), set(expected_fields))
 
