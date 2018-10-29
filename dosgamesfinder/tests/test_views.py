@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
 
 from .base import create_test_publisher, create_test_genre, create_test_dosgame, test_objects_mixin
+
 
 HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
@@ -130,10 +132,9 @@ class DosGameDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
-    def test_cannot_access_dosgame_api_via_pk(self):
-        pass
-        #response = self.client.get(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
-        #self.assertEqual(response.status_code, HTTP_NOT_FOUND)
+    def test_cannot_access_dosgame_detailview_via_pk(self):
+        with self.assertRaises(NoReverseMatch):
+            self.client.get(reverse('DosGamesDetailView', kwargs={'pk': self.test_dosgame.id}))
 
     def test_can_send_get_request_to_endpoint(self):
         response = self.client.get(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
@@ -199,6 +200,10 @@ class PublisherDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
+    def test_cannot_access_publisher_detailview_via_pk(self):
+        with self.assertRaises(NoReverseMatch):
+            self.client.get(reverse('PublisherDetailView', kwargs={'pk': self.test_publisher.id}))
+
     def test_can_send_get_request_to_endpoint(self):
         response = self.client.get(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_OK)
@@ -263,6 +268,10 @@ class GenreDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
+    def test_cannot_access_genre_detailview_via_pk(self):
+        with self.assertRaises(NoReverseMatch):
+            self.client.get(reverse('GenreDetailView', kwargs={'pk': self.test_genre.id}))
+
     def test_can_send_get_request_to_endpoint(self):
         response = self.client.get(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_OK)

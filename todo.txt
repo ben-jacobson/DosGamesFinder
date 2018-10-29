@@ -1,7 +1,6 @@
 DosGamesFinder todo list
 
 Minisprint
-- Refactor to not allow API urls to access ID's directly, this allows for webscraping too easily. 
 - Backbone - Put some validation in our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
 
 Minisprint
