@@ -41,6 +41,10 @@ $(function () {
         },
     });
 
+    App.Models.Genre = Backbone.Model.extend();
+
+    App.Models.Publisher = Backbone.Model.extend();
+
     App.Models.Ad = Backbone.Model.extend({  // placeholder for now
         defaults: {
             ad_img_url: "https://via.placeholder.com/728x90",
