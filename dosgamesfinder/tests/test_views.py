@@ -5,6 +5,7 @@ from .base import create_test_publisher, create_test_genre, create_test_dosgame,
 
 HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
+HTTP_NOT_FOUND = 404
 
 class LayoutAndStylingTest(TestCase):
     def test_static_files_have_been_passed_to_browser(self):
@@ -93,7 +94,6 @@ class SerializerDetailViewTests(test_objects_mixin, TestCase):
         self.assertContains(response, b.name)
         self.assertNotContains(response, c.name)        
 
-
 class DosGameListViewPermissionsTests(TestCase):
     '''
     Unit Tests - Testing the ListView API endpoints, check that the various HTTP request methods return expected response codes
@@ -126,43 +126,41 @@ class DosGameListViewPermissionsTests(TestCase):
         response = self.client.patch(reverse('DosGamesListView'))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
        
-class DosGameDetailViewPermissionTests(TestCase):
+class DosGameDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
-    def setUp(self):
-        # for these tests, we'll need a test dosgame in the database
-        self.test_publisher = create_test_publisher()
-        self.test_genre = create_test_genre()
-        self.test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre)
-        self.test_dosgame_id = {'slug': self.test_dosgame.slug}
+    def test_cannot_access_dosgame_api_via_pk(self):
+        pass
+        #response = self.client.get(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
+        #self.assertEqual(response.status_code, HTTP_NOT_FOUND)
 
     def test_can_send_get_request_to_endpoint(self):
-        response = self.client.get(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.get(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_head_request_to_endpoint(self):
-        response = self.client.head(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.head(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_options_request_to_endpoint(self):
-        response = self.client.options(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.options(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_cannot_send_put_request_to_endpoint(self):
-        response = self.client.put(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.put(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_post_request_to_endpoint(self):
-        response = self.client.post(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.post(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
     
     def test_cannot_send_delete_request_to_endpoint(self):
-        response = self.client.delete(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.delete(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_patch_request_to_endpoint(self):
-        response = self.client.patch(reverse('DosGamesDetailView', kwargs=self.test_dosgame_id))
+        response = self.client.patch(reverse('DosGamesDetailView', kwargs=self.test_dosgame_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
                
 class PublisherListViewPermissionsTests(TestCase):
@@ -197,41 +195,36 @@ class PublisherListViewPermissionsTests(TestCase):
         response = self.client.patch(reverse('PublisherListView'))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
        
-class PublisherDetailViewPermissionTests(TestCase):
+class PublisherDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
-    def setUp(self):
-        # for these tests, we'll need a test dosgame in the database
-        self.test_publisher = create_test_publisher()
-        self.test_publisher_id = {'slug': self.test_publisher.slug}
-
     def test_can_send_get_request_to_endpoint(self):
-        response = self.client.get(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.get(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_head_request_to_endpoint(self):
-        response = self.client.head(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.head(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_options_request_to_endpoint(self):
-        response = self.client.options(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.options(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_cannot_send_put_request_to_endpoint(self):
-        response = self.client.put(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.put(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_post_request_to_endpoint(self):
-        response = self.client.post(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.post(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
     
     def test_cannot_send_delete_request_to_endpoint(self):
-        response = self.client.delete(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.delete(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_patch_request_to_endpoint(self):
-        response = self.client.patch(reverse('PublisherDetailView', kwargs=self.test_publisher_id))
+        response = self.client.patch(reverse('PublisherDetailView', kwargs=self.test_publisher_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
                
 class GenreListViewPermissionsTests(TestCase):
@@ -266,40 +259,35 @@ class GenreListViewPermissionsTests(TestCase):
         response = self.client.patch(reverse('GenreListView'))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
        
-class GenreDetailViewPermissionTests(TestCase):
+class GenreDetailViewPermissionTests(test_objects_mixin, TestCase):
     '''
     Unit Tests - Testing the DetailView API endpoints, check that the various HTTP request methods return expected response codes
     '''
-    def setUp(self):
-        # for these tests, we'll need a test dosgame in the database
-        self.test_genre = create_test_genre()
-        self.test_genre_id = {'slug': self.test_genre.slug}
-
     def test_can_send_get_request_to_endpoint(self):
-        response = self.client.get(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.get(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_head_request_to_endpoint(self):
-        response = self.client.head(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.head(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_can_send_options_request_to_endpoint(self):
-        response = self.client.options(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.options(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_OK)
 
     def test_cannot_send_put_request_to_endpoint(self):
-        response = self.client.put(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.put(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_post_request_to_endpoint(self):
-        response = self.client.post(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.post(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
     
     def test_cannot_send_delete_request_to_endpoint(self):
-        response = self.client.delete(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.delete(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
 
     def test_cannot_send_patch_request_to_endpoint(self):
-        response = self.client.patch(reverse('GenreDetailView', kwargs=self.test_genre_id))
+        response = self.client.patch(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
                

@@ -1,14 +1,13 @@
 DosGamesFinder todo list
 
 Minisprint
-- Scrape some data from an online source so that we can test with a larger data set
-- DetailView Serializer isn't working correctly, need it to only return one result
-- Backbone - Set up our DetailView to read off the API and sync to data returned by the DetailView Serializer. 
- 
-Minisprint
 - Refactor to not allow API urls to access ID's directly, this allows for webscraping too easily. 
 - Backbone - Put some validation in our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
 
+Minisprint
+- Scrape some data from an online source so that we can test with a larger data set
+- Backbone - Set up our DetailView to read off the API and sync to data returned by the DetailView Serializer. 
+ 
 Minisprint
 - Backbone - Create new views for screenshots and download locations, that use the same DosGame model
 - Set up the navigation to read genres from the API
