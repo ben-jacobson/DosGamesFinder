@@ -9,10 +9,11 @@ $(function() {
         page_navigation_template: _.template($('#page-navigation').html()),
 
         initialize: function() {
-            this.render();
+            //this.render();
+            this.collection.on('sync', this.render, this); 
         },
         render: function() {
-            this.$el.html(this.page_navigation_template()); 
+            this.$el.html(this.page_navigation_template({genres: this.collection})); 
             return this; 
         }        
     });

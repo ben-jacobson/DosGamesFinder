@@ -21,7 +21,6 @@ $(function () {
         },
 
         initialize: function (attrs) {
-            var self = this;    // this is called a 'closure', is for ensuring we aren't causing issues by calling this. in our functions below
             // some initial data validation takes place here, just incase of missing data, 
             // we'll fill in with placeholder data
             //console.log(attrs);
@@ -29,18 +28,20 @@ $(function () {
             // if we get data where there is no screenshots, stay with the default. 
             // Otherwise, set it to screenshot 0
 
-            if (attrs.screenshots != undefined && attrs != undefined) {
-                if (attrs.screenshots.length != 0) {
-                    self.set('main_screenshot', attrs.screenshots[0].img_src); // set default screenshot to first one
-                } //else {
-                //    console.log(`No screenshots  for ${attrs.title}`);
-                //}
-    
-                // if we receive no download locations for our game, set a flag for our view to use
+            //if (attrs.screenshots != undefined && attrs != undefined) {
+            if (attrs != undefined) {
+                if (attrs.screenshots != undefined && attrs.screenshots.length != 0) {
+                    this.set('main_screenshot', attrs.screenshots[0].img_src); // set default screenshot to first one
+                } 
+                /* else {
+                    console.log(`No screenshots  for ${attrs.title}`);
+                }*/
+            
+                // same as above, but with download locations. If we receive no download locations for our game, set a flag for our view to use
                 if (attrs.download_locations != undefined && attrs.download_locations.length == 0) {
                     //console.log(`No download locations for ${attrs.title}`);
-                    self.set('download_locations', false);
-                }
+                    this.set('download_locations', false);
+                }    
             }
         }, 
     });

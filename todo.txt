@@ -1,7 +1,6 @@
 DosGamesFinder todo list
 
 Set up tasks
-- Backbone - Set up the navigation to read genres from the Genre collections
 - Backbone - Create new views for PublisherListView and PublisherDetailView - don't worry about the design aspect yet, we'll work on that later
 - Backbone - Within DosGameDetailView, create new Views for screenshots and download locations that read off API
 

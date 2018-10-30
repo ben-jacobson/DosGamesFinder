@@ -25,8 +25,12 @@ $(function () {
         }, 
     });
 
+    // collect our genre objects so as to create the genre drop down as part of the page navigation
+    var genre_collection = new App.Collections.Genres();
+    genre_collection.fetch();
+
     // draw our navigation bar
-    var PageNavigation = new App.Views.PageNavigation;
+    var PageNavigation = new App.Views.PageNavigation({collection: genre_collection});
 
     // initialize our collection
     var dosgames_collection = new App.Collections.DosGames();
