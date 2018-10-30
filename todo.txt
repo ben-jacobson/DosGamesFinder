@@ -1,8 +1,8 @@
 DosGamesFinder todo list
 
 Set up tasks
-- Backbone - Create new views for PublisherListView and PublisherDetailView - don't worry about the design aspect yet, we'll work on that later
-- Backbone - Within DosGameDetailView, create new Views for screenshots and download locations that read off API
+- Backbone - Within DosGameDetailView, set up a view for getting multiple screenshots onto the page 
+- Backbone - Within DosGameDetailView, set up the view for download locations
 
 Getting some live data into the app
 - Scrape some data from an online source so that we can test with a larger data set
@@ -13,6 +13,10 @@ Deployment tasks
 - Are we ready to deploy?  
 
 After initial deployment
+- Implement the Publisher ListView and DetailView
+- Implement a system for filtering all games by publisher
+- Implement the year released filters and drop down menu
+- Implement a search bar
 - Look at using QUnit to develop our unit tests for our Backbone code
 - If we haven't already, write some functional tests 
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
