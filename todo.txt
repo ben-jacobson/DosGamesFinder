@@ -1,7 +1,6 @@
 DosGamesFinder todo list
 
 Set up tasks
-- Backbone - refactor DetailView to use the DRF DetailView API, instead of reading from the collection
 - Backbone - Set up the navigation to read genres from the Genre collections
 - Backbone - Create new views for PublisherListView and PublisherDetailView - don't worry about the design aspect yet, we'll work on that later
 - Backbone - Within DosGameDetailView, create new Views for screenshots and download locations that read off API
@@ -10,6 +9,9 @@ Getting some live data into the app
 - Scrape some data from an online source so that we can test with a larger data set
 - Write some code to convert this scraped data into database entries, we won't manually enter this of course
 - Backbone - Test that during our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
+
+Deployment tasks
+- Are we ready to deploy?  
 
 After initial deployment
 - Look at using QUnit to develop our unit tests for our Backbone code
