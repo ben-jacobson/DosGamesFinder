@@ -71,13 +71,13 @@
 
         <script id="game-card-listView" type="text/template">
             <div class="card">
-                <img class="card-img-top" src="<%= main_screenshot %>" alt="<% title %> screenshot">
+                <img class="card-img-top" src="<%= main_screenshot %>" alt="<%= title %> Screenshot">
                 <div class="card-body">
                     <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
                     <p class='card-genre'><a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
                     <p class="card-text"><%= description %></p>
                     <p class="card-publisher-and-date font-weight-light"></p><a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a> <%= year_released %></p>
-                    <p class="card-user-rating"><%= user_rating %></p>
+                    <!-- p class="card-user-rating"><%= user_rating %></p -->
                 </div>
             </div>
         </script>   
@@ -90,10 +90,15 @@
                     <p class="detail-publisher-and-date font-weight-light">Publisher - <a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a></p>
                     <p class="detail-year-released">Released - <%= year_released %><p>
                     <p class='detail-genre'>Genre - <a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
-                    <p class="detail-user-rating">User Rating - <%= user_rating %></p>
+                    <!-- p class="detail-user-rating">User Rating - <%= user_rating %></p -->
                 </div>
                 <div class='col-sm-4'>
-                    <img class='detailView-screenshot' src="<%= main_screenshot %>" alt="<% title %> screenshot">
+                    <% if (screenshots.length == 0) { %>
+                        <img class='detailView-screenshot' width=320 height=200 src="<%= main_screenshot %>" alt="<%= title %> screenshot">
+                    <% } %>
+                    <% _.each(screenshots, function(screenshot) { %>
+                        <img class='detailView-screenshot' width=320 height=200 src="<%= screenshot.img_src %>" alt="<%= title %> screenshot">
+                    <% }); %>  
                 </div>
             </div>
         </script>
