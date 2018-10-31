@@ -91,6 +91,15 @@
                     <p class="detail-year-released">Released - <%= year_released %><p>
                     <p class='detail-genre'>Genre - <a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
                     <!-- p class="detail-user-rating">User Rating - <%= user_rating %></p -->
+                    <h5>Download From</h5>
+                    <% if (download_locations.length == 0) { %>
+                        <p>Sorry, we don't have links for this game yet. Please check back later.</p>
+                    <% } %>
+                    <ul>
+                        <% _.each(download_locations, function(download_location) { %>
+                            <li><p class='download-location'><a href='<%= download_location.href %>'><%= download_location.name %></a></p></li>
+                        <% }); %>
+                    </ul>
                 </div>
                 <div class='col-sm-4'>
                     <% if (screenshots.length == 0) { %>

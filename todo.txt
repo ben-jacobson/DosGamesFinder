@@ -1,21 +1,18 @@
 DosGamesFinder todo list
 
-Set up tasks
-- Backbone - Within DosGameDetailView, set up the view for download locations
-
 Getting some live data into the app
 - Scrape some data from an online source so that we can test with a larger data set
 - Write some code to convert this scraped data into database entries, we won't manually enter this of course
 - Backbone - Test that during our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
 
 Deployment tasks
-- Are we ready to deploy?  
+- Are we ready to deploy? Any bugs? 
 
 After initial deployment
 - Implement the user rating system
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
-- Implement the year released filters and drop down menu
+- Implement the year released  filters and drop down menu
 - Implement a search bar
 - Look at using QUnit to develop our unit tests for our Backbone code
 - If we haven't already, write some functional tests 
