@@ -75,7 +75,7 @@
                 <div class="card-body">
                     <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
                     <p class='card-genre'><a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
-                    <p class="card-text"><%= description %></p>
+                    <p class="card-text"><%= short_description %></p>
                     <p class="card-publisher-and-date font-weight-light"></p><a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a> <%= year_released %></p>
                     <!-- p class="card-user-rating"><%= user_rating %></p -->
                 </div>
@@ -86,7 +86,7 @@
             <div class='row detailView-margin'>
                 <div class='col-sm-8'>
                     <h1><%= title %></h1 >
-                    <p><%= description %></p>
+                    <p><%= long_description %></p>
                     <p class="detail-publisher-and-date font-weight-light">Publisher - <a href='/api/publishers/<%= publisher.slug %>'><%= publisher.name %></a></p>
                     <p class="detail-year-released">Released - <%= year_released %><p>
                     <p class='detail-genre'>Genre - <a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
