@@ -71,7 +71,7 @@
 
         <script id="game-card-listView" type="text/template">
             <div class="card">
-                <img class="card-img-top" src="<%= main_screenshot %>" alt="<%= title %> Screenshot">
+                <img class="card-img-top" src="https://s3.amazonaws.com/dosgamesfinder<%= main_screenshot %>" alt="<%= title %> Screenshot">
                 <div class="card-body">
                     <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
                     <p class='card-genre'><a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
@@ -103,10 +103,10 @@
                 </div>
                 <div class='col-sm-4'>
                     <% if (screenshots.length == 0) { %>
-                        <img class='detailView-screenshot' width=320 height=200 src="<%= main_screenshot %>" alt="<%= title %> screenshot">
+                        <img class='detailView-screenshot' width=320 height=200 src="https://s3.amazonaws.com/dosgamesfinder<%= main_screenshot %>" alt="<%= title %> screenshot">
                     <% } %>
                     <% _.each(screenshots, function(screenshot) { %>
-                        <img class='detailView-screenshot' width=320 height=200 src="<%= screenshot.img_src %>" alt="<%= title %> screenshot">
+                        <img class='detailView-screenshot' width=320 height=200 src="https://s3.amazonaws.com/dosgamesfinder<%= screenshot.img_src %>" alt="<%= title %> screenshot">
                     <% }); %>  
                 </div>
             </div>

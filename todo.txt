@@ -1,9 +1,14 @@
 DosGamesFinder todo list
 
 Getting some live data into the app
-- Scrape some data from an online source so that we can test with a larger data set
-- Write some code to convert this scraped data into database entries, we won't manually enter this of course
+- Import the download locations into the app
 - Backbone - Test that during our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
+- create a proper 'screenshot not found' image 
+
+A few tidying up features:
+- Set up the screenshot so that it's also a link to DetailView
+- Set up the cards so that they are uniform in vertical size, note that the image and description both seem to influence this. Cut off excess description with ... or [more]
+- Figure out why the app is so slow!
 
 Deployment tasks
 - Are we ready to deploy? Any bugs? 

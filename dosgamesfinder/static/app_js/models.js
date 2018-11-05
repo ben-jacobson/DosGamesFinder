@@ -9,7 +9,7 @@ $(function () {
 
         defaults: {
             //id: '',       // don't want to create a default ID
-            main_screenshot: 'https://via.placeholder.com/320x200',
+            main_screenshot: 'https://via.placeholder.com/320x200',     
             slug: 'slug',
             title: 'title',
             genre: 'genre',
@@ -22,14 +22,11 @@ $(function () {
         initialize: function (attrs) {
         // Data Validation - in case of missing data, fill it out here 
             // first check that we have an attributes argument to use. 
-
-            // we need to rely on getters and setters to introduce an array into the model
             if (attrs != undefined) {
+                // assign the main screenshot as the first screenshot from the array, ListView relies on this as the thumbnail. Otherwise, it will default to what's specified in defaults above
                 if (attrs.screenshots != undefined && attrs.screenshots.length != 0) {
                     this.set('main_screenshot', attrs.screenshots[0].img_src);
                 }
-
-                // fill in missing download location data if necessary
             }
         }, 
     });

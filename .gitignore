@@ -1,2 +1,4 @@
 *.py[cod]
 *.vscode
+data_to_import.json
+dbase_build.py
