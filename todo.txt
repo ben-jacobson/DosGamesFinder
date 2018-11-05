@@ -1,30 +1,27 @@
 DosGamesFinder todo list
 
-Getting some live data into the app
-- Import the download locations into the app
-- Backbone - Test that during our DosGame model initilization, since our template will read some JSON data, it needs to ensure that if no data is returned by API, then some placeholder information takes its place.
-- create a proper 'screenshot not found' image 
-
 A few tidying up features:
-- Set up the screenshot so that it's also a link to DetailView
 - Set up the cards so that they are uniform in vertical size, note that the image and description both seem to influence this. Cut off excess description with ... or [more]
-- Figure out why the app is so slow!
+- Figure out why the app is so slow! Maybe we need some pagination?
+- create a proper 'screenshot not found' placeholder image 
+- do some testing, any bugs to address before intial deployment? 
 
 Deployment tasks
-- Are we ready to deploy? Any bugs? 
+- Install Fabric
+- Create our FabFile
 
 After initial deployment
 - Implement the user rating system
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
-- Implement the year released  filters and drop down menu
-- Implement a search bar
-- Look at using QUnit to develop our unit tests for our Backbone code
+- Implement the year released filters and drop down menu
+- Implement the search bar
 - If we haven't already, write some functional tests 
-- Look at the DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
+- Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
 - Customize the admin so that slugs are automatically generated
 - Implement some caching
 - Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
-- Re-factor the API so that it requries a user to login
+- Re-factor the API so that it requries a user login even for read access. just to prevent scraping from bots, of course someone with some know-how will figure this out. 
 - Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
+- Look at using QUnit to develop our unit tests for our Backbone code

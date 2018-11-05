@@ -71,7 +71,7 @@
 
         <script id="game-card-listView" type="text/template">
             <div class="card">
-                <img class="card-img-top" src="https://s3.amazonaws.com/dosgamesfinder<%= main_screenshot %>" alt="<%= title %> Screenshot">
+                <a href='#game/<%= slug %>'><img class="card-img-top" src="https://s3.amazonaws.com/dosgamesfinder<%= main_screenshot %>" alt="<%= title %> Screenshot"></a>
                 <div class="card-body">
                     <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
                     <p class='card-genre'><a href='/api/genres/<%= genre.slug %>'><%= genre.name %></a></p>
@@ -97,7 +97,7 @@
                     <% } %>
                     <ul>
                         <% _.each(download_locations, function(download_location) { %>
-                            <li><p class='download-location'><a href='<%= download_location.href %>'><%= download_location.name %></a></p></li>
+                            <li><p class='download-location'><a href='https://s3.amazonaws.com/dosgamesfinder<%= download_location.href %>'><%= download_location.name %></a></p></li>
                         <% }); %>
                     </ul>
                 </div>
