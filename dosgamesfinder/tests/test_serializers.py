@@ -36,7 +36,8 @@ class DosGameSerializerTests(TestCase):
             'title', 
             'slug',
             'genre',
-            'description',
+            'short_description',
+            'long_description',
             'year_released',
             'user_rating', 
         ]

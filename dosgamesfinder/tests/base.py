@@ -40,7 +40,7 @@ def create_test_screenshot( game,
 def create_test_dosgame(publisher, 
                         genre,
                         title='FooBar Adventures', 
-                        description='FooBar Adventures is a 1991 classic Dos game', 
+                        long_description='FooBar Adventures is a 1991 classic Dos game', 
                         year_released='1991', 
                         user_rating=4):
     '''
@@ -49,7 +49,7 @@ def create_test_dosgame(publisher,
     test_dosgame = DosGame(
         title=title,
         genre=genre,
-        description=description,
+        long_description=long_description,
         year_released=year_released,
         user_rating=user_rating,
         publisher=publisher,

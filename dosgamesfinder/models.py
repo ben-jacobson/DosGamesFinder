@@ -41,15 +41,30 @@ class DosGame(models.Model):
     slug = models.SlugField(unique=True, max_length=128)    
     title = models.CharField(max_length=128, blank=False)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)      # ManyToOne - Genre can have multiple DosGames, but the DosGame can only have one Genre
-    description = models.TextField(blank=True)                  
+    
+    long_description = models.TextField(blank=True)         
+    short_description = models.CharField(max_length=256, blank=True)
+
     year_released = models.PositiveIntegerField()
     user_rating = models.PositiveIntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        self.create_short_description()
         super(DosGame, self).save(*args, **kwargs)
-    
+
+    def create_short_description(self):
+        '''
+        In creating new DosGame objects, we create our long descriptions and this function will truncate to automatically create a short_description
+        '''
+        if len(self.long_description) <= 256:       # copy long to short if the length is right
+            self.short_description = self.long_description
+        else:
+            truncated_string = self.long_description[:(255 - 3)]
+            truncated_string += '...'
+            self.short_description = truncated_string
+
     def get_absolute_url(self):
         return reverse('DosGamesDetailView', kwargs={'slug': self.slug})
 

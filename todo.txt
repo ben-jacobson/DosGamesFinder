@@ -1,6 +1,8 @@
 DosGamesFinder todo list
 
 A few tidying up features:
+- Truncating descriptions - finish creating our truncator function, then phase our the use of Description. 
+
 - Set up the cards so that they are uniform in vertical size, note that the image and description both seem to influence this. Cut off excess description with ... or [more]
 - Figure out why the app is so slow! Maybe we need some pagination?
 - create a proper 'screenshot not found' placeholder image 
@@ -8,9 +10,15 @@ A few tidying up features:
 
 Deployment tasks
 - Install Fabric
+- Spin up AWS EC2 instance (No need at the moment for elastic beanstalk, we can redeploy if there is a need for scaling in future)
+- Set up PostGres on remote server
+- Set up nginx or gunicorn on remote server
+- Figure out how to best approach serving static files using our WSGI
 - Create our FabFile
+- Run our dbase_build script on the remote server then remove it (should not be part of dev environment, perhaps our fabfile can remove it for us post deployment)
 
 After initial deployment
+- At the moment, base urls for S3 storage are hard coded into our template, what might be a better way to do this? eg maybe we make use of our serializer to return this data with STR() functions in django? 
 - Implement the user rating system
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
@@ -20,8 +28,9 @@ After initial deployment
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
 - Customize the admin so that slugs are automatically generated
-- Implement some caching
+- Implement caching
 - Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
 - Re-factor the API so that it requries a user login even for read access. just to prevent scraping from bots, of course someone with some know-how will figure this out. 
 - Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
 - Look at using QUnit to develop our unit tests for our Backbone code
+- Go back and write some functional tests, then set up Jenkins for CI

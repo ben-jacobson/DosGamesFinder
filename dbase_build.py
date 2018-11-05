@@ -44,7 +44,7 @@ def return_genre_object(name):
 
     return genre
 
-def return_dosgame_object(title, genre, description, year_released, publisher, user_rating=5):
+def return_dosgame_object(title, genre, long_description, year_released, publisher, user_rating=5):
     '''
     Searches for the requested DosGame object and returns it.
     If empty, will assign this to a genre object called 'unknown'.
@@ -58,7 +58,7 @@ def return_dosgame_object(title, genre, description, year_released, publisher, u
         dosgame = DosGame(
             title=title, 
             genre=genre, 
-            description=description, 
+            long_description=long_description, 
             year_released=year_released, 
             publisher=publisher,
             user_rating=user_rating
@@ -127,7 +127,7 @@ if __name__ == "__main__":
         dosgame = return_dosgame_object(
             title=game_data['title'],
             genre=genre,
-            description=game_data['description'],
+            long_description=game_data['description'],
             year_released=game_data['year_released'],
             publisher=publisher,
         )
@@ -141,3 +141,23 @@ if __name__ == "__main__":
     # test the results
     for dl in DownloadLocation.objects.all():
         print(f'Game: {dl.game}, Href: {dl.href}')
+
+
+'''
+# A quick script for clearing the entire database.
+
+from dosgamesfinder.models import DosGame, Publisher, Screenshot, DownloadLocation
+
+for dg in DosGame.objects.all():
+    dg.delete()
+
+for p in Publisher.objects.all():
+    p.delete()
+
+for s in Screenshot.objects.all():
+    s.delete()
+
+for dl in DownloadLocation.objects.all():
+    dl.delete()
+
+'''

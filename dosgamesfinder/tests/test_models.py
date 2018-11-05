@@ -50,7 +50,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         test_dosgame = DosGame(
             title="The game with no publisher",
             genre=self.test_genre,
-            description="This game has no publisher. Was it ever released? Did it even get made? ",
+            long_description="This game has no publisher. Was it ever released? Did it even get made? ",
             year_released=1991,
             user_rating=1,
         )
@@ -69,7 +69,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         # attempt to create a game without a genre. Can't use helper function, since that function does it correctly
         test_dosgame = DosGame(
             title="The game with no genre",
-            description="This game has no genre. Is it even a game?",
+            long_description="This game has no genre. Is it even a game?",
             year_released=1990,
             user_rating=2,
         )
@@ -129,6 +129,24 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         test_name = 'Make this a url'
         test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=test_name)
         self.assertEqual(test_dosgame.get_absolute_url(), '/api/dosgames/make-this-a-url/')
+
+    def test_create_model_creates_short_description(self):
+        # our long test string is 445 characters in length
+        test_description_short = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+        test_description_long = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        
+        # truncated string should return at a length no greater than 256 characters, the last 3 characters should be a ..., unless the string is so short that it doesn't need it
+        expected_short_description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo..."
+
+        # first test that a short description isn't truncated and the trailing ... isnt there
+        test_dosgame_one = create_test_dosgame(title="tester_one", publisher=self.test_publisher, genre=self.test_genre, long_description=test_description_short)
+        self.assertEqual(test_dosgame_one.short_description, test_description_short)
+        self.assertNotIn("...", test_dosgame_one.short_description)
+
+        # then test that the longer strings are being truncated properly
+        test_dosgame_two = create_test_dosgame(title="tester_two", publisher=self.test_publisher, genre=self.test_genre, long_description=test_description_long)
+        self.assertEqual(test_dosgame_two.short_description, expected_short_description)
+        self.assertIn("...", test_dosgame_two.short_description)
 
 class ScreenshotModelTests(test_objects_mixin, TestCase):
     def test_create_screenshot(self):
