@@ -132,6 +132,8 @@ $(function() {
             var PageTitle = new App.Views.PageTitle("Games List A-Z");
             this.$el.html(PageTitle.el); 
 
+            //console.log(this.collection);
+
             // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
             for (let i = 0; i < this.collection.length; i += 3) { 
                 // create a row of dos games

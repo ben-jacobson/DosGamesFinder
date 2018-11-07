@@ -6,6 +6,11 @@ $(function() {
     App.Collections.DosGames = Backbone.Collection.extend({
         url: '/api/dosgames',  
         model: App.Models.DosGame,
+
+        parse: function(response) {
+            console.log(response);
+            return response.results;
+        }
     });
 
     App.Collections.Genres = Backbone.Collection.extend({
