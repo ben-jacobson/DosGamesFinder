@@ -14,8 +14,21 @@
     margin-top: 40px; 
 }
 
+.game-listview {
+    height: 625px;
+}
+
 .ad-break {
     margin-top: 40px;
+}
+
+.listView-screenshot {
+    height: 200px;
+}
+
+listView-img-placeholder {
+    background-color: #eeeeee; 
+    height: 200px;
 }
 
 .detailView-screenshot {

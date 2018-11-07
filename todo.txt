@@ -1,10 +1,7 @@
 DosGamesFinder todo list
 
 A few tidying up features:
-- Truncating descriptions - finish creating our truncator function, then phase our the use of Description. 
-
-- Set up the cards so that they are uniform in vertical size, note that the image and description both seem to influence this. Cut off excess description with ... or [more]
-- Figure out why the app is so slow! Maybe we need some pagination?
+- Implement pagination
 - create a proper 'screenshot not found' placeholder image 
 - do some testing, any bugs to address before intial deployment? 
 
@@ -18,6 +15,7 @@ Deployment tasks
 - Run our dbase_build script on the remote server then remove it (should not be part of dev environment, perhaps our fabfile can remove it for us post deployment)
 
 After initial deployment
+- Set up the screenshots to be smaller in size, rather than loading full sized images
 - At the moment, base urls for S3 storage are hard coded into our template, what might be a better way to do this? eg maybe we make use of our serializer to return this data with STR() functions in django? 
 - Implement the user rating system
 - Implement the Publisher ListView and DetailView
