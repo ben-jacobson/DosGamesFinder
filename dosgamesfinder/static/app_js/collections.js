@@ -4,11 +4,18 @@ $(function() {
     // ===============
 
     App.Collections.DosGames = Backbone.Collection.extend({
-        url: '/api/dosgames',  
+        baseURL: '/api/dosgames', 
+        page_number: 1, 
+        // url: '/api/dosgames',  
         model: App.Models.DosGame,
 
+        url: function() {
+            return this.baseURL + '?page=' + this.page_number;
+        },
+
         parse: function(response) {
-            console.log(response);
+            //console.log(response);
+            this.count = response.count;    // for pagination, we also want to populate this. 
             return response.results;
         }
     });

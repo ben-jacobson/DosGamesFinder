@@ -4,13 +4,19 @@ $(function () {
     // ===============
     App.Router = Backbone.Router.extend({
         routes: {
-            '': 'index',
+            '': 'index', 
+            ':page_number': 'index',
             'game/:request_slug': 'game',
             'publisher/:request_slug': 'publisher',
         },
 
-        index: function () {
+        index: function (page_number) {
+            if (page_number != null && page_number != undefined) {
+                dosgames_collection.page_number = page_number
+            }
+
             let DosGamesListView = new App.Views.DosGamesListView({collection: dosgames_collection});
+            let DosGamesPaginationView = new App.Views.ListViewPagination({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
             dosgames_collection.fetch(); // fetch new data off the server according to parameters, eg sorting, pagination
         },
 
@@ -24,6 +30,10 @@ $(function () {
 
         }, 
     });
+
+    // set the max page sizes for pagination
+    var DOSGAMES_LISTVIEW_MAX_PAGE_SIZE = 18;
+    var PUBLISHER_LISTVIEW_MAX_PAGE_SIZE = 10;
 
     // collect our genre objects so as to create the genre drop down as part of the page navigation
     var genre_collection = new App.Collections.Genres();

@@ -2,7 +2,6 @@ $(function() {
     // ===============
     // = Views
     // ===============
-
     App.Views.PageNavigation = Backbone.View.extend({
         // View for rendering the page navigation bar 
         el: '#page-navigation-container', 
@@ -97,6 +96,28 @@ $(function() {
             this.$el.html(this.adbreak_template(this.model.toJSON()));
             return this; 
         }              
+    });
+
+    App.Views.ListViewPagination = Backbone.View.extend({
+        // generic pagination view class that can be used for DosGamesListView or PublisherListView
+        el: '#appWindow',
+        tagName: 'div',
+        pagination_template: _.template($('#pagination').html()),
+
+        initialize: function(args) {
+            this.page_size = args['page_size'];
+            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+        },
+        
+        render: function() {
+            let number_of_pages = Math.ceil(this.collection.count / this.page_size);
+            console.log(`page size: ${this.page_size}, count: ${this.collection.count} = ${number_of_pages} pages`);
+            
+            if (this.collection.count > this.page_size) { // we only render pagination when necessary
+                this.$el.append(this.pagination_template);         
+            }
+            return this;
+        }        
     });
 
     App.Views.DosGamesListView = Backbone.View.extend({

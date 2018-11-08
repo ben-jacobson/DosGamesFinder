@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from dosgamesfinder.models import DosGame, Publisher, Genre
 from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer, GenreSerializer
 from rest_framework import generics
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination
 #from rest_framework.throttling import UserRateThrottle
 
 # our pagination mixin classes - This is how you cusomize the page_sizes for pagination styles
