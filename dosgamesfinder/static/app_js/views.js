@@ -106,15 +106,23 @@ $(function() {
 
         initialize: function(args) {
             this.page_size = args['page_size'];
-            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+            //this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+            this.render();      // since this is used as a child class of listView, it will have missed the sync event. Init of this view will only happen after the collection is fully synced
         },
         
         render: function() {
             let number_of_pages = Math.ceil(this.collection.count / this.page_size);
-            console.log(`page size: ${this.page_size}, count: ${this.collection.count} = ${number_of_pages} pages`);
+            //console.log(`page size: ${this.page_size}, count: ${this.collection.count} = ${number_of_pages} pages`);
             
             if (this.collection.count > this.page_size) { // we only render pagination when necessary
-                this.$el.append(this.pagination_template);         
+                let current_page = Number(this.collection.current_page);        // getting some strange errors due to loose typing
+
+                this.$el.append(this.pagination_template({
+                    number_of_pages: number_of_pages, 
+                    current_page: String(current_page), 
+                    prev_page: String(current_page - 1),    // rather than doing the math within the template, just a bit cleaner to do it here.  
+                    next_page: String(current_page + 1)
+                }));         
             }
             return this;
         }        
@@ -128,9 +136,10 @@ $(function() {
         tagName: 'div',
         className: 'container listing',
 
-        initialize: function() {
+        initialize: function(args) {
             //this.render();
             this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+            this.page_size = args['page_size'];
         },
 
         return_collection_of_three_games: function(index) {   
@@ -150,9 +159,13 @@ $(function() {
         
         render: function() {
             // render the page title
-            var PageTitle = new App.Views.PageTitle("Games List A-Z");
+            let PageTitle = new App.Views.PageTitle("Games List A-Z");
             this.$el.html(PageTitle.el); 
 
+            // render the pagination at the top of the page
+            let DosGamesPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
+            this.$el.append(DosGamesPaginationViewTop.el);
+            
             //console.log(this.collection);
 
             // split this.collection into collections containing 3 games each and send to DosGamesCardListViewRow render function
@@ -171,6 +184,11 @@ $(function() {
                     //console.log('serve ad'); 
                 } 
             }
+
+            // render the bottom pagination
+            let DosGamesPaginationViewBottom = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
+            this.$el.append(DosGamesPaginationViewBottom.el);
+
             //console.log('ListView rendered');
             return this;
         }

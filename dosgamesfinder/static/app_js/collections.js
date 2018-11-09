@@ -5,12 +5,12 @@ $(function() {
 
     App.Collections.DosGames = Backbone.Collection.extend({
         baseURL: '/api/dosgames', 
-        page_number: 1, 
+        current_page: 1, 
         // url: '/api/dosgames',  
         model: App.Models.DosGame,
 
         url: function() {
-            return this.baseURL + '?page=' + this.page_number;
+            return this.baseURL + '?page=' + this.current_page;
         },
 
         parse: function(response) {

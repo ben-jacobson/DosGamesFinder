@@ -11,12 +11,12 @@ $(function () {
         },
 
         index: function (page_number) {
-            if (page_number != null && page_number != undefined) {
-                dosgames_collection.page_number = page_number
+            if (page_number != null && page_number != undefined) {      // our home page is the first page of the list view, see above we have two routes, one for index and one with a page number
+                dosgames_collection.current_page = page_number;
             }
-
-            let DosGamesListView = new App.Views.DosGamesListView({collection: dosgames_collection});
-            let DosGamesPaginationView = new App.Views.ListViewPagination({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
+            
+            let DosGamesListView = new App.Views.DosGamesListView({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
+            //let DosGamesPaginationView = new App.Views.ListViewPagination({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
             dosgames_collection.fetch(); // fetch new data off the server according to parameters, eg sorting, pagination
         },
 
