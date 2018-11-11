@@ -1,3 +1,4 @@
 *.py[cod]
 *.vscode
 initial_dbase.json
+deploy/**
