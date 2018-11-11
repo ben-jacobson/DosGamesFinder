@@ -1,8 +1,5 @@
 DosGamesFinder todo list
 
-A few tidying up features:
-- do some testing, any bugs to address before intial deployment? 
-
 Deployment tasks
 - Install Fabric
 - Spin up AWS EC2 instance (No need at the moment for elastic beanstalk, we can redeploy if there is a need for scaling in future)
@@ -14,6 +11,8 @@ Deployment tasks
 
 After initial deployment
 - Hook up adsense to this
+- When you load a new page, it doesn't move the window to the top. change this. 
+- Some games have hyperlinks in their descriptions. fix these (May be a manual job)
 - Set up the screenshots to be smaller in size, rather than loading full sized images
 - At the moment, base urls for S3 storage are hard coded into our template, what might be a better way to do this? eg maybe we make use of our serializer to return this data with STR() functions in django? 
 - Implement the user rating system
