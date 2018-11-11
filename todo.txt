@@ -1,8 +1,6 @@
 DosGamesFinder todo list
 
 A few tidying up features:
-- Set up a thumbnail size screenshot for listView
-- create a proper 'screenshot not found' placeholder image 
 - do some testing, any bugs to address before intial deployment? 
 
 Deployment tasks

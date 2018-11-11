@@ -72,12 +72,12 @@
     </script>
 
     <script id="pagination" type="text/template">
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page Numbers">
             <ul class="pagination justify-content-center">
-                <li class="page-item<% if (current_page == 1) { %> disabled<% } %>"><a class="page-link" href="/#<%= prev_page %>" tabindex="-1">Previous</a></li>
-                <% for (let i = 1; i < number_of_pages + 1; i++) {%>
-                    <li class="page-item<% if (i == current_page ) { %> active<% } %>"><a class="page-link" href="/#<%= i %>"><%= i %></a></li>
-                <% } %>
+                <li class="page-item<% if (current_page == 1) { %> disabled<% } %>"><a class="page-link" href="/#<%= prev_page %>" tabindex="-1">Prev</a></li>
+                    <% for (let i = 1; i < number_of_pages + 1; i++) {%>
+                        <li class="d-none d-sm-block page-item<% if (i == current_page ) { %> active<% } %>"><a class="page-link" href="/#<%= i %>"><%= i %></a></li>
+                    <% } %>
                 <li class="page-item<% if (current_page >= number_of_pages) { %> disabled<% } %>"><a class="page-link" href="/#<%= next_page %>">Next</a></li>
             </ul>
         </nav>         
@@ -97,7 +97,7 @@
                     <!-- p class="card-user-rating"><%= user_rating %></p -->
                 </div>
             </div>
-        </script>
+    </script>
 
     <script id="game-detailView" type="text/template">
             <div class='row detailView-margin'>
@@ -127,13 +127,13 @@
                     <% }); %>  
                 </div>
             </div>
-        </script>
+    </script>
 
     <script id="listview-adbreak" type="text/template">
             <div class='col-sm-12'>   
                 <img src="<%= ad_img_url %>" /> 
             </div>
-        </script>
+    </script>
 
     <!-- Header / Navigation -->
     <div id='page-navigation-container'></div>
