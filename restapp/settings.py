@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     # Pagination can be set globally here, or can be set locally per view
-    #'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 18,    # in our app, pagination of 18 allows for 6 rows of 3, which allows for 2 ads to be served
 
     'DEFAULT_THROTTLE_CLASSES': (

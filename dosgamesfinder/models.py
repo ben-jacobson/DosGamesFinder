@@ -48,6 +48,7 @@ class DosGame(models.Model):
     year_released = models.PositiveIntegerField()
     user_rating = models.PositiveIntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
+    thumbnail_src = models.URLField(max_length=255)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
