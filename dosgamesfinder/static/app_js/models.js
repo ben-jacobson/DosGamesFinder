@@ -9,7 +9,6 @@ $(function () {
 
         defaults: {
             //id: '',       // don't want to create a default ID
-            main_screenshot: 'https://via.placeholder.com/320x200',     
             slug: 'slug',
             title: 'title',
             genre: 'genre',
@@ -18,6 +17,7 @@ $(function () {
             year_released: 'year released',
             user_rating: 'user rating',
             publisher: 'publisher',
+            thumbnail_src: '/no_screenshot.jpg',     
         },
 
         initialize: function (attrs) {
@@ -26,7 +26,7 @@ $(function () {
             if (attrs != undefined) {
                 // assign the main screenshot as the first screenshot from the array, ListView relies on this as the thumbnail. Otherwise, it will default to what's specified in defaults above
                 if (attrs.screenshots != undefined && attrs.screenshots.length != 0) {
-                    this.set('main_screenshot', attrs.screenshots[0].img_src);
+                    this.set('thumbnail_src', attrs.screenshots[0].img_src);
                 }
             }
         }, 
