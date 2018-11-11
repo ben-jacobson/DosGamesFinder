@@ -23,6 +23,10 @@ $(function() {
     App.Collections.Genres = Backbone.Collection.extend({
         url: '/api/genres',  
         model: App.Models.Genre,
+
+        parse: function(response) {
+            return response.results;
+        }
     });
 
     App.Collections.Publishers = Backbone.Collection.extend({
