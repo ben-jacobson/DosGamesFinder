@@ -74,7 +74,7 @@
         <nav aria-label="Page Numbers">
             <ul class="pagination justify-content-center">
                 <li class="page-item<% if (current_page == 1) { %> disabled<% } %>"><a class="page-link" href="/#<%= prev_page %>" tabindex="-1">Prev</a></li>
-                    <% for (let i = 1; i < number_of_pages + 1; i++) {%>
+                    <% for (let i = 1; i < number_of_pages + 1; i++) { %>
                         <li class="d-none d-sm-block page-item<% if (i == current_page ) { %> active<% } %>"><a class="page-link" href="/#<%= i %>"><%= i %></a></li>
                     <% } %>
                 <li class="page-item<% if (current_page >= number_of_pages) { %> disabled<% } %>"><a class="page-link" href="/#<%= next_page %>">Next</a></li>
@@ -86,7 +86,7 @@
     <script id="game-card-listView" type="text/template">
             <div class="game-listview card">
                 <div class='listView-img-placeholder'>
-                    <a href='#game/<%= slug %>'><img class="card-img-top rounded listView-screenshot" src="https://s3.amazonaws.com/dosgamesfinder<%= thumbnail_src %>" alt="<%= title %> Screenshot"></a>
+                    <a href='#game/<%= slug %>'><img class="card-img-top rounded listView-screenshot" src="{{ MEDIA_URL }}<%= thumbnail_src %>" alt="<%= title %> Screenshot"></a>
                 </div>
                 <div class="card-body">
                     <h4 class="card-title"><a href='#game/<%= slug %>'><%= title %></a></h4>
@@ -113,16 +113,16 @@
                     <% } %>
                     <ul>
                         <% _.each(download_locations, function(download_location) { %>
-                            <li><p class='download-location'><a href='https://s3.amazonaws.com/dosgamesfinder<%= download_location.href %>'><%= download_location.name %></a></p></li>
+                            <li><p class='download-location'><a href='{{ MEDIA_URL }}<%= download_location.href %>'><%= download_location.name %></a></p></li>
                         <% }); %>
                     </ul>
                 </div>
                 <div class='col-sm-4'>
                     <% if (screenshots.length == 0) { %>
-                        <img class='detailView-screenshot' width=320 height=200 src="https://s3.amazonaws.com/dosgamesfinder<%= thumbnail_src %>" alt="<%= title %> screenshot">
+                        <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}<%= thumbnail_src %>" alt="<%= title %> screenshot">
                     <% } %>
                     <% _.each(screenshots, function(screenshot) { %>
-                        <img class='detailView-screenshot' width=320 height=200 src="https://s3.amazonaws.com/dosgamesfinder<%= screenshot.img_src %>" alt="<%= title %> screenshot">
+                        <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}<%= screenshot.img_src %>" alt="<%= title %> screenshot">
                     <% }); %>  
                 </div>
             </div>
