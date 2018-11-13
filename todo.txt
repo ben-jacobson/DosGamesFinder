@@ -1,9 +1,6 @@
 DosGamesFinder todo list
 
 Deployment tasks
-- Install Fabric
-- Spin up AWS EC2 instance (No need at the moment for elastic beanstalk, we can redeploy if there is a need for scaling in future)
-- Set up PostGres on remote server
 - Set up nginx or gunicorn on remote server
 - Figure out how to best approach serving static files using our WSGI
 - Create our FabFile
