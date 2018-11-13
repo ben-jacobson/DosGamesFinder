@@ -33,10 +33,11 @@ def _install_wsgi():
     run('pip install gunicorn')
     
 def _get_latest_source_from_git(site_folder):
-    if exists('.git'):  
+    if exists('.git'):  # check if it's a git repo already. 
         run('git fetch')  
     else:
-        run(f'git clone {REPO_URL} {site_folder}')  
+        run(f'git clone {REPO_URL} .')  
+
     current_commit = local("git log -n 1 --format=%H", capture=True)  
     run(f'git reset --hard {current_commit}')      
     
@@ -52,20 +53,18 @@ def _run_unit_tests():
 def initial_config():
     # pull in server_secrets JSON file to set environment variables 
     server_secrets = _read_json_data_fromfile('server_secrets.json')
-    print(server_secrets['remote_home_folder'])
-
     site_folder = server_secrets['remote_home_folder']  
-    run(f'mkdir -p {site_folder}')  
+    #run(f'mkdir -p {site_folder}')  
 
-    cd(site_folder)
-    #run('sudo apt install python3')
-    #run('sudo apt install python3-pip')
-    #run('sudo apt install git')
-    #_install_wsgi()
-    _get_latest_source_from_git(site_folder)
-    _install_project_dependancies()
-    #_run_database_migration()
-    #_run_unit_tests()
+    with cd(site_folder):
+        #run('sudo apt install python3')
+        #run('sudo apt install python3-pip')
+        #run('sudo apt install git')
+        #_install_wsgi()
+        _get_latest_source_from_git(site_folder)
+        _install_project_dependancies()
+        _run_database_migration()
+        _run_unit_tests()
 
 def deploy():
     pass
