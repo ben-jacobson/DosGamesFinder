@@ -31,6 +31,7 @@ class DosGameSerializerTests(TestCase):
         expected_fields = [
             'id',
             'screenshots', 
+            'thumbnail_src', 
             'download_locations',  
             'publisher', 
             'title', 
