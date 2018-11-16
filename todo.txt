@@ -1,10 +1,7 @@
 DosGamesFinder todo list
 
 Deployment tasks
-- Set up nginx or gunicorn on remote server
 - Figure out how to best approach serving static files using our WSGI
-- Create our FabFile
-- Run our dbase_build script on the remote server then remove it (should not be part of dev environment, perhaps our fabfile can remove it for us post deployment)
 
 After initial deployment
 - Hook up adsense to this

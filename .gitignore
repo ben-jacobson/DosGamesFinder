@@ -3,5 +3,4 @@
 deploy/initial_dbase.json
 deploy/local_db.sql
 DosGamesFinderWebServer.pem
-SSHWebServer.sh
 deploy/server_secrets.json

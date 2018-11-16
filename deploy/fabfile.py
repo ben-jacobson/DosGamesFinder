@@ -1,20 +1,3 @@
-''' 
-
-DEPLOY - Script for ongoing automated deployments
-
-INITIAL_CONFIG - Script for initial config of the server, not for regular deployments.
-
-Using Fabric, this script will remotely: 
-    - Install Python 3
-    - Install Pip3
-    - Install Git
-    - Install Nginx / Gunicorn
-    - Clone the latest release of code into /home/ubuntu/sites/*site_name*
-    - Using PIP, install the dependancies
-    - Run a database migration
-    - Run the unit tests built into the project and output the results for debugging
-'''
-
 from fabric.contrib.files import exists, append, sed 
 from fabric.api import cd, run, local#, env
 import json
@@ -22,14 +5,18 @@ import random
 
 REPO_URL = 'https://github.com/ben-jacobson/DosGamesFinder.git'  
 
-def _return_line_number_of_string(filename, string, starting_at=0):
+'''
+Helper Functions
+'''
+
+"""def _return_line_number_of_string(filename, string, starting_at=0):
     '''
     Read a file, search for a string, then return the line number
     '''
     with open(filename) as file_handle:
         for num, line in enumerate(file_handle, 1):
             if num >= starting_at and string in line:
-                return num
+                return num"""
 
 def _read_json_data_fromfile(filename):
     #read_data = []
@@ -37,11 +24,54 @@ def _read_json_data_fromfile(filename):
         read_data = json.load(json_data,) 
     return read_data
     
-def _install_wsgi():
+def _install_nginx_and_gunicorn():
     run('sudo apt install nginx')
     run('sudo systemctl start nginx')
     run('pip install gunicorn')
+
+def _config_nginx(domain, site_folder):
+    if exists('/etc/nginx/sites-enabled/default'):
+        run('sudo rm /etc/nginx/sites-enabled/default')
+
+    if not exists('/etc/nginx/sites-available/{domain}'):
+        run(f'sudo touch /etc/nginx/sites-available/{domain}')
+
+    nginx_listener = f"""
+server {{
+    listen 80;
+    server_name {domain};
+
+    location /static {{
+        alias {site_folder}/static;
+    }}
+
+    location / {{
+        proxy_pass http://localhost:8000;
+    }}
+}}
+    """
+    append(f'/etc/nginx/sites-available/{domain}', nginx_listener, use_sudo=True)
+
+    # nginx has a sites-available folder and a sites_enabled folder. We'll create a symbolic link so that sites-enabled references sites-avaiable
+    if not exists(f"/etc/nginx/sites-enabled/{domain}"):
+        run(f'sudo ln /etc/nginx/sites-available/{domain} /etc/nginx/sites-enabled/{domain}')
     
+def _reload_nginx():
+    run('sudo systemctl reload nginx')
+
+'''def _start_gunicorn(site_folder, app_name): # we can't actually use this one, because fabric expects a return value.
+    with cd(site_folder):
+        run(f'gunicorn {app_name}.wsgi:application')    # gunicorn restapp.wsgi:application
+'''
+
+def _install_postgres():
+    ### todo - install postgresql
+    pass
+
+def _config_postgres():
+    ### todo - various actions like creating roles + assigning permissions
+    pass
+
 def _get_latest_source_from_git(site_folder):
     '''
     Used for both initial deployment and ongoing deployment, this will pull down the source from the remote repo and run git reset --hard
@@ -55,17 +85,18 @@ def _get_latest_source_from_git(site_folder):
     run(f'git reset --hard {current_commit}')      
     
 def _install_project_dependancies():
-    run('pip install -r requirements.txt')
+    run('pip3 install -r requirements.txt')
     
 def _alter_django_settings_py(site_folder, server_secrets):
     # alter the allowed hosts in settings.py
     settings_file = site_folder + '/restapp/settings.py'
-    site_name = server_secrets['site_name']
+    site_name = server_secrets['domain']
 
+    # alter debug= and allowed_hosts=
     sed(settings_file, "DEBUG = True", "DEBUG = False")
     sed(settings_file, 
         'ALLOWED_HOSTS = .+$', 
-        f'ALLOWED_HOSTS = ["{site_name}"]'
+        f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
     )
 
     # alter the secret key, by creating a secret key file and pointing settings.py to it
@@ -100,25 +131,45 @@ def _run_database_migration():
     
 def _run_unit_tests():
     run('python manage.py test dosgamesfinder')
-    
+
+
+def _collect_static(site_folder):
+    run(f'mkdir -p {site_folder}/static')
+
+'''
+
+Fabric Methods
+
+'''
+
 def initial_config():
     # pull in server_secrets JSON file to set environment variables 
     server_secrets = _read_json_data_fromfile('server_secrets.json')
     site_folder = server_secrets['remote_home_folder']  
-    run(f'mkdir -p {site_folder}')  
+#    run(f'mkdir -p {site_folder}')  
 
     with cd(site_folder):
-        # todo - install postgresql + config it
+        _install_postgres()
+        _config_postgres()
         run('sudo apt install python3')        # todo - add in creating symbolic links so that commands can be run just by typing python, not needing to type python3
         run('sudo apt install python3-pip')    # todo - same as above but with pip
         run('sudo apt install git')
-        _install_wsgi()
-        # todo - add nginx / gunicorn config
+        _install_nginx_and_gunicorn()
+        _config_nginx(server_secrets['domain'], site_folder)        
         _get_latest_source_from_git(site_folder)
         _install_project_dependancies()
         _alter_django_settings_py(site_folder, server_secrets)
         _run_database_migration()
         _run_unit_tests()
+        _collect_static(site_folder)
+        _reload_nginx()
 
 def deploy():
-    pass
+    server_secrets = _read_json_data_fromfile('server_secrets.json')
+    site_folder = server_secrets['remote_home_folder'] 
+    
+    with cd(site_folder):
+        #_config_nginx(server_secrets['domain'], site_folder)
+        _collect_static(site_folder)
+        _reload_nginx()
+

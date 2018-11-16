@@ -24,7 +24,7 @@ SECRET_KEY = 'h$zyp=z$!o=2^_mh7c6r3+ep%sm=n7oipaeg^e47a%20zzzn!e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = [ '172.0.0.1', 'localhost', 'testserver', ]
+ALLOWED_HOSTS = [ '127.0.0.1', 'localhost', 'testserver', ]
 
 # Application definition
 
@@ -124,6 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
 STATIC_URL = '/static/'
 MEDIA_URL = 'https://s3.amazonaws.com/dosgamesfinder/'
 
