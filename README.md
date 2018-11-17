@@ -2,6 +2,8 @@ DosGamesFinder - 2018, Ben Jacobson
 
 This is a small project to test what I've learned with Django, Django REST API, Backbone, jQuery and Bootstrap. The goal is to create fun single page app using all the components you might use for a commercial grade application. 
 
+Site is currently live at http://www.dosgamesfinder.com
+
 Installation instructions - 
 - Requires Python 3.6 to be installed on your machine, it is recommended that you create 
   a virtual environment for this. Throughout development I've used VirtualEnv: 
@@ -21,4 +23,4 @@ Testing instructions -
 - (Coming Soon) QUnit for testing Backbone and Jquery
 
 Deployment instructions - 
-- (Coming soon)
+- See fabfile.py in deploy/ folder
