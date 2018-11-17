@@ -1,17 +1,20 @@
 DosGamesFinder todo list
 
-Deployment tasks
-- Figure out how to best approach serving static files using our WSGI
-
-After initial deployment
-- Hook up adsense to this
-- When you load a new page, it doesn't move the window to the top. change this. 
+Current Sprint - 
+- Register a domain for this
 - Some games have hyperlinks in their descriptions. fix these (May be a manual job)
-- Set up the screenshots to be smaller in size, rather than loading full sized images
-- At the moment, base urls for S3 storage are hard coded into our template, what might be a better way to do this? eg maybe we make use of our serializer to return this data with STR() functions in django? 
-- Implement the user rating system
+- Implement the genre filters
+
+Next Sprint:
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
+
+
+Future Sprints - 
+- Can we set up a page transition? eg a short fade when changing views
+- Hook up adsense to page
+- What meta tags do we have? Anything needed to improve SEO?
+- Implement the user rating system
 - Implement the year released filters and drop down menu
 - Implement the search bar
 - If we haven't already, write some functional tests 

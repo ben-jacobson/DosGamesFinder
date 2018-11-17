@@ -11,6 +11,8 @@ $(function () {
         },
 
         index: function (page_number) {
+            $(document).scrollTop(0); // Scroll to the top of the page
+
             if (page_number != null && page_number != undefined) {      // our home page is the first page of the list view, see above we have two routes, one for index and one with a page number
                 dosgames_collection.current_page = page_number;
             }
@@ -21,6 +23,8 @@ $(function () {
         },
 
         game: function (request_slug) {
+            $(document).scrollTop(0); // Scroll to the top of the page
+
             let dosgame_model = new App.Models.DosGame({slug: request_slug});
             dosgame_model.fetch();
             let DosGamesDetailView = new App.Views.DosGamesDetailView({model: dosgame_model});
