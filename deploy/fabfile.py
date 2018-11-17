@@ -29,12 +29,17 @@ def _install_nginx_and_gunicorn():
     run('sudo systemctl start nginx')
     run('pip install gunicorn')
 
-def _config_nginx(domain, site_folder):
+def _reload_nginx():
+    run('sudo systemctl reload nginx')
+
+def _config_nginx(domain, env_user):
     if exists('/etc/nginx/sites-enabled/default'):
         run('sudo rm /etc/nginx/sites-enabled/default')
+   
+    if exists(f'/etc/nginx/sites-available/{domain}'):      # delete the site config file if needed
+        run(f'sudo rm /etc/nginx/sites-available/{domain}')
 
-    if not exists('/etc/nginx/sites-available/{domain}'):
-        run(f'sudo touch /etc/nginx/sites-available/{domain}')
+    run(f'sudo touch /etc/nginx/sites-available/{domain}')
 
     nginx_listener = f"""
 server {{
@@ -42,7 +47,7 @@ server {{
     server_name {domain};
 
     location /static {{
-        alias {site_folder}/static;
+        alias /home/{env_user}/sites/static;
     }}
 
     location / {{
@@ -53,12 +58,10 @@ server {{
     append(f'/etc/nginx/sites-available/{domain}', nginx_listener, use_sudo=True)
 
     # nginx has a sites-available folder and a sites_enabled folder. We'll create a symbolic link so that sites-enabled references sites-avaiable
-    if not exists(f"/etc/nginx/sites-enabled/{domain}"):
-        run(f'sudo ln /etc/nginx/sites-available/{domain} /etc/nginx/sites-enabled/{domain}')
+    if exists(f'/etc/nginx/sites-enabled/{domain}'):        # delete any old symbolic link if needed
+        run(f'sudo rm /etc/nginx/sites-enabled/{domain}')
+    run(f'sudo ln /etc/nginx/sites-available/{domain} /etc/nginx/sites-enabled/{domain}')
     
-def _reload_nginx():
-    run('sudo systemctl reload nginx')
-
 '''def _start_gunicorn(site_folder, app_name): # we can't actually use this one, because fabric expects a return value.
     with cd(site_folder):
         run(f'gunicorn {app_name}.wsgi:application')    # gunicorn restapp.wsgi:application
@@ -132,9 +135,14 @@ def _run_database_migration():
 def _run_unit_tests():
     run('python manage.py test dosgamesfinder')
 
-
 def _collect_static(site_folder):
     run(f'mkdir -p {site_folder}/static')
+    run('python manage.py collectstatic --noinput')
+
+def _delete_unneeded_files():
+    # eg delete the deploy folder.
+    run(f'rm -rf deploy/')
+
 
 '''
 
@@ -155,21 +163,22 @@ def initial_config():
         run('sudo apt install python3-pip')    # todo - same as above but with pip
         run('sudo apt install git')
         _install_nginx_and_gunicorn()
-        _config_nginx(server_secrets['domain'], site_folder)        
-        _get_latest_source_from_git(site_folder)
-        _install_project_dependancies()
-        _alter_django_settings_py(site_folder, server_secrets)
-        _run_database_migration()
-        _run_unit_tests()
-        _collect_static(site_folder)
+        _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
         _reload_nginx()
+
 
 def deploy():
     server_secrets = _read_json_data_fromfile('server_secrets.json')
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        #_config_nginx(server_secrets['domain'], site_folder)
-        _collect_static(site_folder)
+        _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
+        #_get_latest_source_from_git(site_folder)
+        #_alter_django_settings_py(site_folder, server_secrets)
+        #_install_project_dependancies()     
+        #_run_database_migration()
+        #_collect_static(site_folder)
+        #_delete_unneeded_files()
         _reload_nginx()
+        # To start the webapp, in your app folder on the server, run  $ gunicorn restapp.wsgi:application
 
