@@ -144,15 +144,16 @@ def _delete_unneeded_files():
     run(f'rm -rf deploy/')
 
 def _config_server_to_maintain_gunicorn(server_secrets):   # ensures the server will load gunicorn on boot and ensure it reloads on crash
-    domain = server_secrets['domain']
     site_name = server_secrets['site_name']
     env_user = server_secrets['env_user']
     remote_home_folder = server_secrets['remote_home_folder']
 
-    if exists(f'/etc/systemd/system/{domain}.service'):
-        run(f'sudo rm /etc/systemd/system/{domain}.service')
+    service_name = f'gunicorn-{site_name}'
 
-    run(f'sudo touch /etc/systemd/system/{domain}.service')
+    if exists(f'/etc/systemd/system/{service_name}.service'):
+        run(f'sudo rm /etc/systemd/system/{service_name}.service')
+
+    run(f'sudo touch /etc/systemd/system/{service_name}.service')
     systemd_config = f"""
 [Unit]
 Description=Gunicorn server for {site_name}
@@ -161,15 +162,16 @@ Description=Gunicorn server for {site_name}
 Restart=on-failure  
 User={env_user}  
 WorkingDirectory={remote_home_folder}  
-EnvironmentFile={remote_home_folder}.env  
-
-ExecStart=cd {remote_home_folder}; gunicorn restapp.wsgi:application
+ExecStart=/home/ubuntu/.local/bin/gunicorn restapp.wsgi:application
 
 [Install]
 WantedBy=multi-user.target 
     """
 
-    append(f"/etc/systemd/system/{domain}.service", systemd_config, use_sudo=True)
+    append(f"/etc/systemd/system/{service_name}.service", systemd_config, use_sudo=True)
+    run('sudo systemctl daemon-reload')
+    run(f'sudo systemctl enable {service_name}')  
+    run(f'sudo systemctl start {service_name}')
 
 '''
 
@@ -192,6 +194,7 @@ def initial_config():
         _install_nginx_and_gunicorn()
         _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
         _reload_nginx()
+        _config_server_to_maintain_gunicorn(server_secrets)
 
 
 def deploy():
@@ -207,7 +210,6 @@ def deploy():
         _collect_static(site_folder)
         _delete_unneeded_files()
         _reload_nginx()
-        _config_server_to_maintain_gunicorn(server_secrets)
 
         # To manually run gunicorn $ gunicorn restapp.wsgi:application
 
