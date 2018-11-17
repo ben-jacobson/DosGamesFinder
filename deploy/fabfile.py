@@ -143,6 +143,33 @@ def _delete_unneeded_files():
     # eg delete the deploy folder.
     run(f'rm -rf deploy/')
 
+def _config_server_to_maintain_gunicorn(server_secrets):   # ensures the server will load gunicorn on boot and ensure it reloads on crash
+    domain = server_secrets['domain']
+    site_name = server_secrets['site_name']
+    env_user = server_secrets['env_user']
+    remote_home_folder = server_secrets['remote_home_folder']
+
+    if exists(f'/etc/systemd/system/{domain}.service'):
+        run(f'sudo rm /etc/systemd/system/{domain}.service')
+
+    run(f'sudo touch /etc/systemd/system/{domain}.service')
+    systemd_config = f"""
+[Unit]
+Description=Gunicorn server for {site_name}
+
+[Service]
+Restart=on-failure  
+User={env_user}  
+WorkingDirectory={remote_home_folder}  
+EnvironmentFile={remote_home_folder}.env  
+
+ExecStart=cd {remote_home_folder}; gunicorn restapp.wsgi:application
+
+[Install]
+WantedBy=multi-user.target 
+    """
+
+    append(f"/etc/systemd/system/{domain}.service", systemd_config, use_sudo=True)
 
 '''
 
@@ -173,12 +200,14 @@ def deploy():
     
     with cd(site_folder):
         _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
-        #_get_latest_source_from_git(site_folder)
-        #_alter_django_settings_py(site_folder, server_secrets)
-        #_install_project_dependancies()     
-        #_run_database_migration()
-        #_collect_static(site_folder)
-        #_delete_unneeded_files()
+        _get_latest_source_from_git(site_folder)
+        _alter_django_settings_py(site_folder, server_secrets)
+        _install_project_dependancies()     
+        _run_database_migration()
+        _collect_static(site_folder)
+        _delete_unneeded_files()
         _reload_nginx()
-        # To start the webapp, in your app folder on the server, run  $ gunicorn restapp.wsgi:application
+        _config_server_to_maintain_gunicorn(server_secrets)
+
+        # To manually run gunicorn $ gunicorn restapp.wsgi:application
 
