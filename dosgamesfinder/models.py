@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.template.defaultfilters import slugify
 
 class Publisher(models.Model):
-    slug = models.SlugField(unique=True, max_length=255)    
-    name = models.CharField(unique=True, max_length=255, blank=False)     
+    slug = models.SlugField(unique=True, max_length=256)    
+    name = models.CharField(unique=True, max_length=256, blank=False)     
     description = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
@@ -21,8 +21,8 @@ class Publisher(models.Model):
         ordering = ('name',)
 
 class Genre(models.Model):
-    slug = models.SlugField(unique=True, max_length=255)    
-    name = models.CharField(unique=True, max_length=255, blank=False)        
+    slug = models.SlugField(unique=True, max_length=256)    
+    name = models.CharField(unique=True, max_length=256, blank=False)        
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -48,7 +48,7 @@ class DosGame(models.Model):
     year_released = models.PositiveIntegerField()
     user_rating = models.PositiveIntegerField()
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)      # ManyToOne - Publisher can have multiple DosGames, but the DosGame can only have one Publisher
-    thumbnail_src = models.CharField(max_length=255, default='/no_screenshot.jpg')
+    thumbnail_src = models.CharField(max_length=256, default='/no_screenshot.jpg')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -77,7 +77,7 @@ class DosGame(models.Model):
         
 class Screenshot(models.Model):
     game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='screenshots')     # ManyToOne - DosGame can have multiple Screenshots, but the Screenshot can only have one DosGame
-    img_src = models.CharField(max_length=255)
+    img_src = models.CharField(max_length=256)
     img_width = models.PositiveIntegerField()
     img_height = models.PositiveIntegerField()
 
@@ -86,7 +86,7 @@ class Screenshot(models.Model):
 
 class DownloadLocation(models.Model):
     game = models.ForeignKey(DosGame, on_delete=models.CASCADE, related_name='download_locations')     # ManyToOne - DosGame can have multiple DownLoad locations, but the Download Location can only have one DosGame
-    href = models.CharField(max_length=255)
+    href = models.CharField(max_length=256)
     name = models.CharField(max_length=128)
 
     def __str__(self):
