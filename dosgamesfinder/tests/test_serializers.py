@@ -106,6 +106,9 @@ class DosGameSerializerTests(TestCase):
         ] 
         self.assertEqual(set(known_keys), set(expected_fields))        
 
+    def test_genre_filter(self):
+        pass
+
     def test_throttling_information_is_shown(self):
         # this test assumes that if the throttle information is given, that it will be adhered to
         # Writing a test to actually that that throttling will be very time and resource intensive, we just need to trust that DRF functions as expected

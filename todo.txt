@@ -1,7 +1,6 @@
 DosGamesFinder todo list
 
 Current Sprint - 
-- Some games have hyperlinks in their descriptions. fix these (May be a manual job)
 - Implement the genre filters
 
 Next Sprint:

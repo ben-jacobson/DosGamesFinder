@@ -88,7 +88,7 @@ def _get_latest_source_from_git(site_folder):
     run(f'git reset --hard {current_commit}')      
     
 def _install_project_dependancies():
-    run('pip3 install -r requirements.txt')
+    run('sudo pip3 install -r requirements.txt')
     
 def _alter_django_settings_py(site_folder, server_secrets):
     # alter the allowed hosts in settings.py
@@ -196,13 +196,11 @@ def initial_config():
         _reload_nginx()
         _config_server_to_maintain_gunicorn(server_secrets)
 
-
 def deploy():
     server_secrets = _read_json_data_fromfile('server_secrets.json')
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
         _get_latest_source_from_git(site_folder)
         _alter_django_settings_py(site_folder, server_secrets)
         _install_project_dependancies()     

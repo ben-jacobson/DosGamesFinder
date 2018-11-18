@@ -23,8 +23,17 @@ class HomeView(TemplateView):
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    
-    queryset = DosGame.objects.all()
     serializer_class = DosGameSerializer
+    
+    def get_queryset(self):
+        genre_query_string = self.request.query_params.get('genre', None)
+
+        if genre_query_string is not None:
+            genre_obj = Genre.objects.get(name__iexact=genre_query_string)
+            return DosGame.objects.filter(genre=genre_obj)
+        else:
+            return DosGame.objects.all()
+
 
 class PublisherList(generics.ListAPIView):
     pagination_class = PublisherPageNumberPagination

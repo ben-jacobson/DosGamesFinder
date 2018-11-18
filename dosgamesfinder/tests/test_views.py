@@ -4,7 +4,6 @@ from django.urls.exceptions import NoReverseMatch
 
 from .base import create_test_publisher, create_test_genre, create_test_dosgame, test_objects_mixin
 
-
 HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
 HTTP_NOT_FOUND = 404
@@ -43,6 +42,19 @@ class SerializerListViewTests(test_objects_mixin, TestCase):
         response = self.client.get(reverse('DosGamesListView'))
         self.assertContains(response, a.title)
         self.assertContains(response, b.title)
+        self.assertContains(response, c.title)
+
+    def test_dosgame_listview_with_genre_filter_returns_list(self):
+        action_genre = create_test_genre(name='Action')
+        shooter_genre = create_test_genre(name='Shooter')
+
+        a = create_test_dosgame(title='abracadabra', publisher=self.test_publisher, genre=action_genre)
+        b = create_test_dosgame(title='beetlejuice', publisher=self.test_publisher, genre=shooter_genre)
+        c = create_test_dosgame(title='commodore', publisher=self.test_publisher, genre=action_genre)
+
+        response = self.client.get(reverse('DosGamesListView') + '?genre=action') # also tests that our filtering is case insensitive
+        self.assertContains(response, a.title)
+        self.assertNotContains(response, b.title)
         self.assertContains(response, c.title)
 
     def test_publisher_listview_returns_list(self):

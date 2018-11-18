@@ -12,16 +12,18 @@ class DosGameModelTests(test_objects_mixin, TestCase):
         '''             
         self.assertEquals(self.test_dosgame, DosGame.objects.get(title=self.test_dosgame.title))
 
-    def test_max_length_of_dosgame_title_fields(self):
+    def test_max_length_of_dosgame_title_field(self):
         '''
-        Unit Test - This test knows the minimum and maximum length of the dosgame field and tests that assertions are being raised correctly
+        Unit Test - This test knows the maximum length of the dosgame title field and tests that assertions are being raised correctly
         '''
-        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
-        breaker_string = create_breaker_string(513)
-
         # Test the dosgame.title length
         with self.assertRaises(DataError): 
-            create_test_dosgame(publisher=self.test_publisher, title=breaker_string, genre=self.test_genre)
+            create_test_dosgame(publisher=self.test_publisher, title=create_breaker_string(513), genre=self.test_genre)
+
+    def test_max_length_of_dosgame_thumbnail_field(self):
+        # Test the dosgame.title length
+        with self.assertRaises(DataError): 
+            create_test_dosgame(publisher=self.test_publisher, title='long thumbnail adventures', thumbnail_src=create_breaker_string(257), genre=self.test_genre)
 
     def test_default_ordering_of_games(self):
         '''
@@ -160,12 +162,9 @@ class ScreenshotModelTests(test_objects_mixin, TestCase):
         '''
         Unit Test - This test knows the minimum and maximum length of the screenshot fields and tests that assertions are being raised correctly
         '''
-        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
-        test_breaker_string = create_breaker_string(256)
-
         # Test the dosgame.title length
         with self.assertRaises(DataError): 
-            create_test_screenshot(game=self.test_dosgame, img_src=test_breaker_string)
+            create_test_screenshot(game=self.test_dosgame, img_src=create_breaker_string(257))
 
     def test_name_method_returns_screenshot_src(self):
         '''
@@ -205,10 +204,9 @@ class PublisherModelTests(test_objects_mixin, TestCase):
         '''
         Unit Test - This test knows the minimum and maximum length of the publisher field and tests that assertions are being raised correctly
         '''
-
         # check that the right assertions are being raised
         with self.assertRaises(DataError): 
-            create_test_publisher(name=create_breaker_string(129))
+            create_test_publisher(name=create_breaker_string(257))
 
     def test_default_ordering_of_publishers(self):
         '''
@@ -245,7 +243,6 @@ class PublisherModelTests(test_objects_mixin, TestCase):
         test_publisher = create_test_publisher(name=test_name)
         self.assertEqual(test_publisher.get_absolute_url(), '/api/publishers/make-this-a-url/')
 
-
 class GenreModelTests(test_objects_mixin, TestCase):
     def test_create_genre(self):
         '''
@@ -260,7 +257,7 @@ class GenreModelTests(test_objects_mixin, TestCase):
         '''
         # check that the right assertions are being raised
         with self.assertRaises(DataError): 
-            create_test_genre(name=create_breaker_string(256))
+            create_test_genre(name=create_breaker_string(257))
 
     def test_default_ordering_of_genres(self):
         '''
@@ -309,12 +306,9 @@ class DownloadLocationModelTests(test_objects_mixin, TestCase):
         '''
         Unit Test - This test knows the minimum and maximum length of the screenshot fields and tests that assertions are being raised correctly
         '''
-        # start by creating a big string likely to break the limits of the model. In this case 256 characters long will be sufficient
-        test_breaker_string = create_breaker_string(128)
-
         # Test the dosgame.title length
         with self.assertRaises(DataError): 
-            create_test_download_location(game=self.test_dosgame, href=test_breaker_string)
+            create_test_download_location(game=self.test_dosgame, href=create_breaker_string(257))
     
     def test_default_ordering_of_download_locations(self):
         '''

@@ -42,7 +42,8 @@ def create_test_dosgame(publisher,
                         title='FooBar Adventures', 
                         long_description='FooBar Adventures is a 1991 classic Dos game', 
                         year_released='1991', 
-                        user_rating=4):
+                        user_rating=4,
+                        thumbnail_src='www.google.com'):
     '''
     Test Helper Function - Creates a test dosgame object and saves to test db. Returns the dosgame object
     '''
@@ -53,6 +54,7 @@ def create_test_dosgame(publisher,
         year_released=year_released,
         user_rating=user_rating,
         publisher=publisher,
+        thumbnail_src=thumbnail_src
     )
     test_dosgame.save()
     return test_dosgame
@@ -74,7 +76,7 @@ def create_test_download_location(  game,
 def create_breaker_string(length):
     test_breaker_string = ''
 
-    for _ in range(256):       # using the _ as an iterator lets you remain anonymous.
+    for _ in range(length):       # using the _ as an iterator lets you remain anonymous.
         test_breaker_string += '.'
 
     return test_breaker_string    
