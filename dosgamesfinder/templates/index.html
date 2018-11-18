@@ -36,7 +36,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <% genres.each(function(genre) { %>
-                                        <a class="dropdown-item" href="/api/genres/<%= genre.attributes.slug %>"><%= genre.attributes.name %></a>
+                                        <a class="dropdown-item" href="/#genre/<%= genre.attributes.slug %>"><%= genre.attributes.name %></a>
                                     <% }, this); %> 
                                 </div>
                             </li>

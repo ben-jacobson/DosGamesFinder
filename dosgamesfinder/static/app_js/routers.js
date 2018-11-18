@@ -6,21 +6,36 @@ $(function () {
         routes: {
             '': 'index', 
             ':page_number': 'index',
+            'genre/:genre(/:page_number)': 'filter_by_genre',
             'game/:request_slug': 'game',
             'publisher/:request_slug': 'publisher',
         },
 
         index: function (page_number) {
-            $(document).scrollTop(0); // Scroll to the top of the page
-
             if (page_number != null && page_number != undefined) {      // our home page is the first page of the list view, see above we have two routes, one for index and one with a page number
                 dosgames_collection.current_page = page_number;
             }
             
+            $(document).scrollTop(0); // Scroll to the top of the page
+
             let DosGamesListView = new App.Views.DosGamesListView({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
             //let DosGamesPaginationView = new App.Views.ListViewPagination({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
             dosgames_collection.fetch(); // fetch new data off the server according to parameters, eg sorting, pagination
         },
+
+        filter_by_genre: function (genre, page_number) {
+            if (page_number == null || page_number == undefined) {
+                page_number = 1; 
+            }
+
+            dosgames_collection.genre_filter = genre; 
+            dosgames_collection.current_page = page_number;
+            //console.log(`genre: ${genre}, page_number: ${page_number}`);
+
+            $(document).scrollTop(0); // Scroll to the top of the page
+            let DosGamesListView = new App.Views.DosGamesListView({page_size: DOSGAMES_LISTVIEW_MAX_PAGE_SIZE, collection: dosgames_collection});
+            dosgames_collection.fetch();
+        }, 
 
         game: function (request_slug) {
             $(document).scrollTop(0); // Scroll to the top of the page

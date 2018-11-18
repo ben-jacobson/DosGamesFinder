@@ -1,14 +1,18 @@
 DosGamesFinder todo list
 
 Current Sprint - 
-- Implement the genre filters
+- Fix up genre filtering pagination
 
 Next Sprint:
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
+- There are some missing fabfile methods that need to be completed - mainly the backup database function
 
-
-Future Sprints - 
+Future Sprints -
+- In backbone index function, can we refactor these two items:
+    - Create one route with an optional arugment, instead of two routes
+    - instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
+- what kind of string sanitation is DRF using? 
 - Can we set up a page transition? eg a short fade when changing views
 - Hook up adsense to page
 - What meta tags do we have? Anything needed to improve SEO?

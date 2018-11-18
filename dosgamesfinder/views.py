@@ -29,7 +29,7 @@ class DosGameList(generics.ListAPIView):
         genre_query_string = self.request.query_params.get('genre', None)
 
         if genre_query_string is not None:
-            genre_obj = Genre.objects.get(name__iexact=genre_query_string)
+            genre_obj = Genre.objects.get(slug__iexact=genre_query_string)
             return DosGame.objects.filter(genre=genre_obj)
         else:
             return DosGame.objects.all()

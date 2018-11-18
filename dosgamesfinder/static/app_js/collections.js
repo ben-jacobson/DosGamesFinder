@@ -6,11 +6,19 @@ $(function() {
     App.Collections.DosGames = Backbone.Collection.extend({
         baseURL: '/api/dosgames', 
         current_page: 1, 
+        genre_filter: null,
         // url: '/api/dosgames',  
         model: App.Models.DosGame,
 
         url: function() {
-            return this.baseURL + '?page=' + this.current_page;
+            var query_string = this.baseURL + '?page=' + this.current_page; 
+
+            if (this.genre_filter != null) {
+                query_string += '&genre=' + this.genre_filter;
+            }
+
+            console.log(`collection returns url as ${query_string}`);
+            return query_string;
         },
 
         parse: function(response) {

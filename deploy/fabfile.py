@@ -23,7 +23,10 @@ def _read_json_data_fromfile(filename):
     with open(file=filename, mode='r') as json_data:
         read_data = json.load(json_data,) 
     return read_data
-    
+
+def _backup_dbase():
+    pass
+
 def _install_nginx_and_gunicorn():
     run('sudo apt install nginx')
     run('sudo systemctl start nginx')
@@ -201,6 +204,7 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
+        _backup_dbase()
         _get_latest_source_from_git(site_folder)
         _alter_django_settings_py(site_folder, server_secrets)
         _install_project_dependancies()     
