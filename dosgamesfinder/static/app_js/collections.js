@@ -17,7 +17,7 @@ $(function() {
                 query_string += '&genre=' + this.genre_filter;
             }
 
-            console.log(`collection returns url as ${query_string}`);
+            //console.log(`collection returns url as ${query_string}`);
             return query_string;
         },
 

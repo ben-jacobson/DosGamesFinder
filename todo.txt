@@ -1,9 +1,6 @@
 DosGamesFinder todo list
 
-Current Sprint - 
-- Fix up genre filtering pagination
-
-Next Sprint:
+Current Sprint:
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
 - There are some missing fabfile methods that need to be completed - mainly the backup database function

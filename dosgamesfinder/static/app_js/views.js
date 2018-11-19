@@ -106,23 +106,46 @@ $(function() {
 
         initialize: function(args) {
             this.page_size = args['page_size'];
-            //this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
             this.render();      // since this is used as a child class of listView, it will have missed the sync event. Init of this view will only happen after the collection is fully synced
         },
-        
+
+        get_url_suffix: function() {        // when applying pagination, it needs to include this suffix
+            // /#genre/action/1
+            // /#genre/action/
+            // /#/1
+            current_url = String(Backbone.history.fragment);
+
+            if (current_url == '') { // if it's a blank string, no need to create any suffix 
+                return '';
+            }
+
+            current_url = current_url.replace(/\d+/, ''); // replace any number of digits with blanks.
+            
+            if (current_url[current_url.length - 1] != '/') {   // is the last character in this string a /?
+                current_url = current_url + '/';        // if we don't already, append the stirng with a forward slash, but only one. 
+            }
+
+            return current_url;
+        }, 
+    
         render: function() {
             let number_of_pages = Math.ceil(this.collection.count / this.page_size);
             //console.log(`page size: ${this.page_size}, count: ${this.collection.count} = ${number_of_pages} pages`);
-            
+
+            this.url_suffix = this.get_url_suffix();    // get our url suffix so that filtering doesn't break pagination
+            //console.log(`URL prefix: '${this.url_suffix}'`);
+
             if (this.collection.count > this.page_size) { // we only render pagination when necessary
                 let current_page = Number(this.collection.current_page);        // getting some strange errors due to loose typing
 
                 this.$el.append(this.pagination_template({
                     number_of_pages: number_of_pages, 
+                    url_suffix: this.url_suffix, 
                     current_page: String(current_page), 
                     prev_page: String(current_page - 1),    // rather than doing the math within the template, just a bit cleaner to do it here.  
                     next_page: String(current_page + 1)
-                }));         
+                }));  
+                
             }
             return this;
         }        
