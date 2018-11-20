@@ -1,6 +1,7 @@
 DosGamesFinder todo list
 
 Current Sprint:
+- Server is currently caching html, during deployment, figure out how to clear this cache
 - Implement the Publisher ListView and DetailView
 - Implement a system for filtering all games by publisher
 - There are some missing fabfile methods that need to be completed - mainly the backup database function
@@ -18,6 +19,7 @@ Future Sprints -
 - Implement the search bar
 - If we haven't already, write some functional tests 
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
+- Is there a more elegant way to handle pagination? Also some spaghetti code here
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
 - Customize the admin so that slugs are automatically generated
 - Customize the admin so as to paginate with long lists of results

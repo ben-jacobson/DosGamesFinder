@@ -36,6 +36,13 @@ def _reload_nginx():
     run('sudo systemctl reload nginx')
 
 def _config_nginx(domain, env_user):
+    # nginx has some problems running on virtual machines, like ec2 instances or virtualbox
+    # the issue manifests itself in faulty caching. The best way to resolve this
+    # is to enter the nginx.conf file and change 'sendfile on;' to 'sendfile off;'
+    run('sudo sed -i.bak -r -e "s/sendfile .+$/sendfile off;/g" "$(echo /etc/nginx/nginx.conf)"') # for some reason, Sed command wouldn't work
+
+    # sed -i.bak -r -e 's/sendfile .+$;/sendfile off;/g' "$(echo /etc/nginx/nginx.conf)"
+
     if exists('/etc/nginx/sites-enabled/default'):
         run('sudo rm /etc/nginx/sites-enabled/default')
    
@@ -48,6 +55,9 @@ def _config_nginx(domain, env_user):
 server {{
     listen 80;
     server_name {domain};
+
+    proxy_cache_bypass $http_secret_header;
+    add_header X-Cache-Status $upstream_cache_status;
 
     location /static {{
         alias /home/{env_user}/sites/static;
@@ -65,6 +75,7 @@ server {{
         run(f'sudo rm /etc/nginx/sites-enabled/{domain}')
     run(f'sudo ln /etc/nginx/sites-available/{domain} /etc/nginx/sites-enabled/{domain}')
     
+
 '''def _start_gunicorn(site_folder, app_name): # we can't actually use this one, because fabric expects a return value.
     with cd(site_folder):
         run(f'gunicorn {app_name}.wsgi:application')    # gunicorn restapp.wsgi:application
@@ -176,6 +187,14 @@ WantedBy=multi-user.target
     run(f'sudo systemctl enable {service_name}')  
     run(f'sudo systemctl start {service_name}')
 
+def _clear_caches(domain):
+    # you may need "expires modified 10y;" in your nginx.conf. Haven't been able to verify if this helps or not.  
+    # look at the .conf file created by config_nginx, notice these two lines:
+    #   proxy_cache_bypass $http_secret_header;
+    #   add_header X-Cache-Status $upstream_cache_status;
+    # this gives us the ability to clear the cache by passing a 'secret-header' to it. 
+
+    local(f'curl http://{domain} -s -I -H "secret-header:true"')
 '''
 
 Fabric Methods
@@ -186,7 +205,7 @@ def initial_config():
     # pull in server_secrets JSON file to set environment variables 
     server_secrets = _read_json_data_fromfile('server_secrets.json')
     site_folder = server_secrets['remote_home_folder']  
-#    run(f'mkdir -p {site_folder}')  
+    run(f'mkdir -p {site_folder}')  
 
     with cd(site_folder):
         _install_postgres()
@@ -204,6 +223,8 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
+        #_config_nginx(server_secrets['domain'], server_secrets['env_user']) 
+
         _backup_dbase()
         _get_latest_source_from_git(site_folder)
         _alter_django_settings_py(site_folder, server_secrets)
@@ -211,6 +232,7 @@ def deploy():
         _run_database_migration()
         _collect_static(site_folder)
         _delete_unneeded_files()
+        _clear_caches(server_secrets['domain'])
         _reload_nginx()
 
         # To manually run gunicorn $ gunicorn restapp.wsgi:application
