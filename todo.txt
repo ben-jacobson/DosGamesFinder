@@ -1,8 +1,7 @@
 DosGamesFinder todo list
 
 Current Sprint:
-- Implement the Publisher ListView
-- Implement a system for filtering all games by publisher
+- Implement a filter games by publisher
 - There are some missing fabfile methods that need to be completed - mainly the backup database function
 
 Future Sprints:

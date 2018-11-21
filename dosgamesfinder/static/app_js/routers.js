@@ -64,7 +64,7 @@ $(function () {
     });
 
     // set the max page sizes for pagination
-    var DOSGAMES_LISTVIEW_MAX_PAGE_SIZE = 18;
+    var DOSGAMES_LISTVIEW_MAX_PAGE_SIZE = 18;       // these numbers must match DRFs pagination
     var PUBLISHER_LISTVIEW_MAX_PAGE_SIZE = 20;
 
     // collect our genre objects so as to create the genre drop down as part of the page navigation

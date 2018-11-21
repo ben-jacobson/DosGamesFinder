@@ -4,7 +4,7 @@ $(function() {
     // ===============
 
     App.Collections.DosGames = Backbone.Collection.extend({
-        baseURL: '/api/dosgames', 
+        baseURL: '/api/dosgames/', 
         current_page: 1, 
         genre_filter: null,
         // url: '/api/dosgames',  
@@ -29,7 +29,7 @@ $(function() {
     });
 
     App.Collections.Genres = Backbone.Collection.extend({
-        url: '/api/genres',  
+        url: '/api/genres/',  
         model: App.Models.Genre,
 
         parse: function(response) {
@@ -39,8 +39,7 @@ $(function() {
 
     App.Collections.Publishers = Backbone.Collection.extend({
         current_page: 1,      
-        baseURL: '/api/publishers',  
-        //url: '/api/publishers',  
+        baseURL: '/api/publishers/',  
         model: App.Models.Publisher,
 
         url: function() {
