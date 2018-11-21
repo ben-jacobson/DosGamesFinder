@@ -38,7 +38,19 @@ $(function() {
     });
 
     App.Collections.Publishers = Backbone.Collection.extend({
-        url: '/api/publishers',  
-        model: App.Models.Publusher,
+        current_page: 1,      
+        baseURL: '/api/publishers',  
+        //url: '/api/publishers',  
+        model: App.Models.Publisher,
+
+        url: function() {
+            var query_string = this.baseURL + '?page=' + this.current_page; 
+            return query_string;
+        },
+
+        parse: function(response) {
+            this.count = response.count;  
+            return response.results;
+        }
     });
 });

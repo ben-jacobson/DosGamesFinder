@@ -1,12 +1,11 @@
 DosGamesFinder todo list
 
 Current Sprint:
-- Server is currently caching html, during deployment, figure out how to clear this cache
-- Implement the Publisher ListView and DetailView
+- Implement the Publisher ListView
 - Implement a system for filtering all games by publisher
 - There are some missing fabfile methods that need to be completed - mainly the backup database function
 
-Future Sprints -
+Future Sprints:
 - In backbone index function, can we refactor these two items:
     - Create one route with an optional arugment, instead of two routes
     - instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.

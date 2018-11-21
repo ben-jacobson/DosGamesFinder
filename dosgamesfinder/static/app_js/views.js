@@ -233,5 +233,31 @@ $(function() {
         }
     });    
 
+    App.Views.PublisherListView = Backbone.View.extend({
+        el: '#appWindow',
+        listView_template: _.template($('#publisher-listView').html()),
+
+        initialize: function(args) {
+            this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
+            this.page_size = args['page_size'];
+        },
+        render: function() {
+            let PageTitle = new App.Views.PageTitle("Publishers");
+            this.$el.html(PageTitle.el); 
+
+            // render the pagination at the top of the page
+            let PublisherPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
+            this.$el.append(PublisherPaginationViewTop.el);
+            
+            context_data = this.collection.toJSON(); 
+            this.$el.append(this.listView_template({publishers: context_data}));         
+
+            // render the bottom pagination
+            let PublisherPaginationViewBottom = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
+            this.$el.append(PublisherPaginationViewBottom.el);
+
+            return this; 
+        },
+    });
 
 });    

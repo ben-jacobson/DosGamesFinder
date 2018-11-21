@@ -81,7 +81,6 @@
         </nav>         
     </script>
 
-
     <script id="game-card-listView" type="text/template">
             <div class="game-listview card">
                 <div class='listView-img-placeholder'>
@@ -125,6 +124,14 @@
                     <% }); %>  
                 </div>
             </div>
+    </script>
+
+    <script id="publisher-listView" type="text/template">
+        <ul class='publisher-listview-container'>
+            <% _.each(publishers, function(pub) { %>
+                <li><p class='publisher'><a href='#'><%= pub.name %></a></p></li>
+            <% }); %>
+        </ul>
     </script>
 
     <script id="listview-adbreak" type="text/template">
