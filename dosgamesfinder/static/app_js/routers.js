@@ -70,5 +70,5 @@ $(function () {
     var router = new App.Router();
     Backbone.history.start();
 
-    console.log('EOF');
+    //console.log('EOF');
 });

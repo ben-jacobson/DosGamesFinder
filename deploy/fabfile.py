@@ -36,7 +36,8 @@ def _reload_nginx():
     run('sudo systemctl reload nginx')
 
 def _reload_gunicorn(server_secrets):
-    run(f'sudo systemctl reload gunicorn-{server_secrets["site_name"]}')
+    run("sudo systemctl daemon-reload")
+    run(f'sudo systemctl restart gunicorn-{server_secrets["site_name"]}')
 
 def _config_nginx(server_secrets):
     domain = server_secrets["domain"]
