@@ -35,7 +35,14 @@ def _install_nginx_and_gunicorn():
 def _reload_nginx():
     run('sudo systemctl reload nginx')
 
-def _config_nginx(domain, env_user):
+def _reload_gunicorn(server_secrets):
+    run(f'sudo systemctl reload gunicorn-{server_secrets["site_name"]}')
+
+def _config_nginx(server_secrets):
+    domain = server_secrets["domain"]
+    env_user = server_secrets["env_user"]
+    #cache_folder = server_secrets["cache_folder"]
+
     # nginx has some problems running on virtual machines, like ec2 instances or virtualbox
     # the issue manifests itself in faulty caching. The best way to resolve this
     # is to enter the nginx.conf file and change 'sendfile on;' to 'sendfile off;'
@@ -54,17 +61,14 @@ def _config_nginx(domain, env_user):
     nginx_listener = f"""
 server {{
     listen 80;
-    server_name {domain};
-
-    proxy_cache_bypass $http_secret_header;
-    add_header X-Cache-Status $upstream_cache_status;
+    server_name {domain};  
 
     location /static {{
-        alias /home/{env_user}/sites/static;
+        alias /home/{env_user}/sites/static;        
     }}
 
     location / {{
-        proxy_pass http://localhost:8000;
+        proxy_pass http://localhost:8000;   
     }}
 }}
     """
@@ -104,9 +108,11 @@ def _get_latest_source_from_git(site_folder):
 def _install_project_dependancies():
     run('sudo pip3 install -r requirements.txt')
     
-def _alter_django_settings_py(site_folder, server_secrets):
+def _alter_django_settings_py(server_secrets):
+    remote_home_folder = server_secrets['remote_home_folder']
+    
     # alter the allowed hosts in settings.py
-    settings_file = site_folder + '/restapp/settings.py'
+    settings_file = remote_home_folder + '/restapp/settings.py'
     site_name = server_secrets['domain']
 
     # alter debug= and allowed_hosts=
@@ -117,7 +123,7 @@ def _alter_django_settings_py(site_folder, server_secrets):
     )
 
     # alter the secret key, by creating a secret key file and pointing settings.py to it
-    secret_key_file = site_folder + '/restapp/secret_key.py'
+    secret_key_file = remote_home_folder + '/restapp/secret_key.py'
     if not exists(secret_key_file):
         chars  = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
@@ -187,14 +193,6 @@ WantedBy=multi-user.target
     run(f'sudo systemctl enable {service_name}')  
     run(f'sudo systemctl start {service_name}')
 
-def _clear_caches(domain):
-    # you may need "expires modified 10y;" in your nginx.conf. Haven't been able to verify if this helps or not.  
-    # look at the .conf file created by config_nginx, notice these two lines:
-    #   proxy_cache_bypass $http_secret_header;
-    #   add_header X-Cache-Status $upstream_cache_status;
-    # this gives us the ability to clear the cache by passing a 'secret-header' to it. 
-
-    local(f'curl http://{domain} -s -I -H "secret-header:true"')
 '''
 
 Fabric Methods
@@ -214,7 +212,7 @@ def initial_config():
         run('sudo apt install python3-pip')    # todo - same as above but with pip
         run('sudo apt install git')
         _install_nginx_and_gunicorn()
-        _config_nginx(server_secrets['domain'], server_secrets['env_user']) 
+        _config_nginx(server_secrets) 
         _reload_nginx()
         _config_server_to_maintain_gunicorn(server_secrets)
 
@@ -223,17 +221,16 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        #_config_nginx(server_secrets['domain'], server_secrets['env_user']) 
-
+        _config_nginx(server_secrets) 
         _backup_dbase()
         _get_latest_source_from_git(site_folder)
-        _alter_django_settings_py(site_folder, server_secrets)
+        _alter_django_settings_py(server_secrets)
         _install_project_dependancies()     
         _run_database_migration()
         _collect_static(site_folder)
         _delete_unneeded_files()
-        _clear_caches(server_secrets['domain'])
         _reload_nginx()
+        _reload_gunicorn(server_secrets)
 
         # To manually run gunicorn $ gunicorn restapp.wsgi:application
 
