@@ -111,6 +111,20 @@ def _alter_django_settings_py(server_secrets):
     remote_home_folder = server_secrets['remote_home_folder']
     settings_file = remote_home_folder + '/restapp/settings.py'
 
+    # alter the secret key
+    chars  = 'abcdefghijklmnopqrstuvwxyz0123456789@#$%&*(-_=+)'           # used as array of usable characters
+    key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
+    print(f'key:  {key}')
+    #sed(settings_file, "SECRET_KEY = .+$", f'SECRET_KEY = \'{key}\' ')
+    run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'$/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')
+
+    # alter debug= and allowed_hosts=
+    sed(settings_file, "DEBUG = True", "DEBUG = False")
+    sed(settings_file, 
+        'ALLOWED_HOSTS = .+$', 
+        f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
+    )
+
     # alter the database object - it's too fiddly to replace the existing object, instead we'll append to end of file which should overload
     database_object = f"""
 DATABASES = {{
@@ -130,17 +144,6 @@ DATABASES = {{
     #append(settings_file, f'\n\n{database_object}') # found that if string exists in file, append is not run. 
     run(f'echo "\n\n{database_object}" >> {settings_file}')    
 
-    # alter debug= and allowed_hosts=
-    sed(settings_file, "DEBUG = True", "DEBUG = False")
-    sed(settings_file, 
-        'ALLOWED_HOSTS = .+$', 
-        f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
-    )
-
-    # alter the secret key
-    chars  = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'           # used as array of usable characters
-    key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
-    sed(settings_file, "SECRET_KEY = .+$", f'SECRET_KEY = "{key}"')                     # replace the existing string with the new one
 
 def _run_database_migration():
     run('python manage.py migrate')
@@ -214,15 +217,15 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        #backup_dbase()
-        #_get_latest_source_from_git(site_folder)
+        backup_dbase()
+        _get_latest_source_from_git(site_folder)
         _alter_django_settings_py(server_secrets)
-        '''_install_project_dependancies()     
+        _install_project_dependancies()     
         _run_database_migration()
         _collect_static(site_folder)
         _delete_unneeded_files()
         _reload_nginx()
-        _reload_gunicorn(server_secrets)'''
+        _reload_gunicorn(server_secrets)
 
 def backup_dbase():
     '''
