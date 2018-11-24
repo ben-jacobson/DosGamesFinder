@@ -1,5 +1,5 @@
 from fabric.contrib.files import exists, append, sed 
-from fabric.api import cd, run, local#, env
+from fabric.api import cd, run, local#, sudo
 import json
 import random
 
@@ -23,9 +23,6 @@ def _read_json_data_fromfile(filename):
     with open(file=filename, mode='r') as json_data:
         read_data = json.load(json_data,) 
     return read_data
-
-def _backup_dbase():
-    pass
 
 def _install_nginx_and_gunicorn():
     run('sudo apt install nginx')
@@ -107,7 +104,7 @@ def _get_latest_source_from_git(site_folder):
     run(f'git reset --hard {current_commit}')      
     
 def _install_project_dependancies():
-    run('sudo pip3 install -r requirements.txt')
+    run('sudo -H pip3 install -r requirements.txt')
     
 def _alter_django_settings_py(server_secrets):
     remote_home_folder = server_secrets['remote_home_folder']
@@ -192,7 +189,7 @@ WantedBy=multi-user.target
     append(f"/etc/systemd/system/{service_name}.service", systemd_config, use_sudo=True)
     run('sudo systemctl daemon-reload')
     run(f'sudo systemctl enable {service_name}')  
-    run(f'sudo systemctl start {service_name}')
+    run(f'sudo systemctl start {service_name}')      # To manually run gunicorn $ gunicorn restapp.wsgi:application
 
 '''
 
@@ -222,8 +219,7 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        _config_nginx(server_secrets) 
-        _backup_dbase()
+        backup_dbase()
         _get_latest_source_from_git(site_folder)
         _alter_django_settings_py(server_secrets)
         _install_project_dependancies()     
@@ -233,5 +229,11 @@ def deploy():
         _reload_nginx()
         _reload_gunicorn(server_secrets)
 
-        # To manually run gunicorn $ gunicorn restapp.wsgi:application
-
+def backup_dbase():
+    '''
+    A copy of the database will be saved as an SQL file, stored on the remote server in the home directory
+    '''
+    backup_location = '/home/ubuntu/db_backup'
+    run(f'mkdir -p {backup_location}')    
+    run(f"sudo su postgres -c 'pg_dump -Fc dosgamesfinder > /tmp/db_backup.sql'") # postgres account only has write access to tmp folder 
+    run(f'cp /tmp/db_backup.sql {backup_location}/db_backup.sql')

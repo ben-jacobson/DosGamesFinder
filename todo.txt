@@ -2,28 +2,30 @@ DosGamesFinder todo list
 
 Current Sprint:
 - Implement a filter games by publisher
-- There are some missing fabfile methods that need to be completed - mainly the backup database function
 
-Future Sprints:
-- In backbone index function, can we refactor these two items:
-    - Create one route with an optional arugment, instead of two routes
-    - instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
-- what kind of string sanitation is DRF using? 
-- Can we set up a page transition? eg a short fade when changing views
+Next Sprint:
 - Hook up adsense to page
 - What meta tags do we have? Anything needed to improve SEO?
+- In backbone index function, instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
+- what kind of string sanitization is DRF using? 
+- Can we set up an animated page transition? eg a short fade when changing views
+- Implement the search bar
+- Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
+
+Next Sprint:
+- Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
 - Implement the user rating system
 - Implement the year released filters and drop down menu
-- Implement the search bar
-- If we haven't already, write some functional tests 
-- Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
-- Is there a more elegant way to handle pagination? Also some spaghetti code here
+- Re-factor the API so that it requries a user login even for read access. just to prevent scraping from bots, of course someone with some know-how will figure this out. 
+- Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
+
+Next Sprint:
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
 - Customize the admin so that slugs are automatically generated
 - Customize the admin so as to paginate with long lists of results
-- Implement caching
-- Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
-- Re-factor the API so that it requries a user login even for read access. just to prevent scraping from bots, of course someone with some know-how will figure this out. 
-- Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
-- Look at using QUnit to develop our unit tests for our Backbone code
+- Is there a more elegant way to handle pagination? Also some spaghetti code here
+
+Next Sprint:
 - Go back and write some functional tests, then set up Jenkins for CI
+- Write some QUnit tests for Backbone 
+- Implement caching
