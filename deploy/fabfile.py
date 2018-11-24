@@ -107,27 +107,10 @@ def _install_project_dependancies():
     run('sudo -H pip3 install -r requirements.txt')
     
 def _alter_django_settings_py(server_secrets):
+    site_name = server_secrets['domain']    
     remote_home_folder = server_secrets['remote_home_folder']
-    
-    # alter the allowed hosts in settings.py
     settings_file = remote_home_folder + '/restapp/settings.py'
-    site_name = server_secrets['domain']
 
-    # alter debug= and allowed_hosts=
-    sed(settings_file, "DEBUG = True", "DEBUG = False")
-    sed(settings_file, 
-        'ALLOWED_HOSTS = .+$', 
-        f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
-    )
-
-    # alter the secret key, by creating a secret key file and pointing settings.py to it
-    secret_key_file = remote_home_folder + '/restapp/secret_key.py'
-    if not exists(secret_key_file):
-        chars  = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-        key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
-        append(secret_key_file, f'SECRET_KEY = "{key}"')
-    append(settings_file, '\nfrom .secret_key import SECRET_KEY')
-        
     # alter the database object - it's too fiddly to replace the existing object, instead we'll append to end of file which should overload
     database_object = f"""
 DATABASES = {{
@@ -145,7 +128,19 @@ DATABASES = {{
 }}
     """         # the {{ or }} are for  terminating the curly brackets
     #append(settings_file, f'\n\n{database_object}') # found that if string exists in file, append is not run. 
-    run(f'echo "\n\n{database_object}" >> {settings_file}')
+    run(f'echo "\n\n{database_object}" >> {settings_file}')    
+
+    # alter debug= and allowed_hosts=
+    sed(settings_file, "DEBUG = True", "DEBUG = False")
+    sed(settings_file, 
+        'ALLOWED_HOSTS = .+$', 
+        f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
+    )
+
+    # alter the secret key
+    chars  = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'           # used as array of usable characters
+    key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
+    sed(settings_file, "SECRET_KEY = .+$", f'SECRET_KEY = "{key}"')                     # replace the existing string with the new one
 
 def _run_database_migration():
     run('python manage.py migrate')
@@ -219,15 +214,15 @@ def deploy():
     site_folder = server_secrets['remote_home_folder'] 
     
     with cd(site_folder):
-        backup_dbase()
-        _get_latest_source_from_git(site_folder)
+        #backup_dbase()
+        #_get_latest_source_from_git(site_folder)
         _alter_django_settings_py(server_secrets)
-        _install_project_dependancies()     
+        '''_install_project_dependancies()     
         _run_database_migration()
         _collect_static(site_folder)
         _delete_unneeded_files()
         _reload_nginx()
-        _reload_gunicorn(server_secrets)
+        _reload_gunicorn(server_secrets)'''
 
 def backup_dbase():
     '''
