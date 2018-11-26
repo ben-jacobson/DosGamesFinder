@@ -1,9 +1,5 @@
 DosGamesFinder todo list
 
-Current Sprint:
-- Look at refactoring our routes, lot's of DRY violations
-- In backbone index function, instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
-
 Next Sprint:
 - Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
 - Customize the admin so that slugs are automatically generated
