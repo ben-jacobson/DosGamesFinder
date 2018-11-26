@@ -11,14 +11,16 @@ $(function () {
             '(:page_number)': 'index',  
         },
 
-        index: function (page_number, genre, publisher) {
+        index: function (page_number, genre, publisher) {   
+            // if genre or publisher isn't populated, it will come in as null, which the collection methods expect
             if (page_number == null || page_number == undefined) {
                 page_number = 1; 
             }
 
             $(document).scrollTop(0); // Scroll to the top of the page
 
-            dosgames_collection.genre_filter = genre;       // okay if these are null. default value is null so will not affect it
+            // set our filters - okay if these are null as this is the default. 
+            dosgames_collection.genre_filter = genre;       
             dosgames_collection.publisher_filter = publisher; 
             dosgames_collection.current_page = page_number;
 
@@ -27,8 +29,8 @@ $(function () {
         },
 
         filter_by_genre: function(genre, page_number) {
-            this.index(page_number, genre, null);    // the code for filter by genre and publisher are identical, but the backbone routes get confused, so have create a simple wrapper
-        },
+            this.index(page_number, genre, null);    // the code for filter by genre and publisher are identical, but the backbone routes get confused between them, so have create a simple wrapper
+        },                                           // if we can figure out how to remove the need for this, we can technical set this up to have both filters enabled at the same time 
 
         filter_by_publisher: function(publisher, page_number) {
             this.index(page_number, null, publisher); 

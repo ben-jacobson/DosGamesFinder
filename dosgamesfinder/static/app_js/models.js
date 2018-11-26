@@ -8,7 +8,7 @@ $(function () {
         idAttribute: 'slug',
 
         defaults: {
-            //id: '',       // don't want to create a default ID
+            //id: '',       // don't want to create a default ID, use DRFs
             slug: 'slug',
             title: 'title',
             genre: 'genre',
