@@ -1,12 +1,19 @@
 DosGamesFinder todo list
 
 Current Sprint:
-- Implement a filter games by publisher
+- Look at refactoring our routes, lot's of DRY violations
+- In backbone index function, instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
+
+Next Sprint:
+- Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
+- Customize the admin so that slugs are automatically generated
+- Customize the admin so as to paginate with long lists of results
+- Is there a more elegant way to handle pagination? Also some spaghetti code here
+- Set up page titles (and browser titles) to change, eg 'arcade games', 'games by 3d realms'
 
 Next Sprint:
 - Hook up adsense to page
 - What meta tags do we have? Anything needed to improve SEO?
-- In backbone index function, instead of if page_number != null... , perhaps follow what we've got in filter_by_genre by setting to 1 if not defined.
 - what kind of string sanitization is DRF using? 
 - Can we set up an animated page transition? eg a short fade when changing views
 - Implement the search bar
@@ -18,12 +25,6 @@ Next Sprint:
 - Implement the year released filters and drop down menu
 - Re-factor the API so that it requries a user login even for read access. just to prevent scraping from bots, of course someone with some know-how will figure this out. 
 - Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
-
-Next Sprint:
-- Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
-- Customize the admin so that slugs are automatically generated
-- Customize the admin so as to paginate with long lists of results
-- Is there a more elegant way to handle pagination? Also some spaghetti code here
 
 Next Sprint:
 - Go back and write some functional tests, then set up Jenkins for CI

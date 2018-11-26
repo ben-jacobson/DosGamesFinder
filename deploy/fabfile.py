@@ -114,9 +114,8 @@ def _alter_django_settings_py(server_secrets):
     # alter the secret key
     chars  = 'abcdefghijklmnopqrstuvwxyz0123456789@#$%&*(-_=+)'           # used as array of usable characters
     key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
-    print(f'key:  {key}')
-    #sed(settings_file, "SECRET_KEY = .+$", f'SECRET_KEY = \'{key}\' ')
-    run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'$/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')
+    #print(f'key:  {key}')
+    run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'$/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
 
     # alter debug= and allowed_hosts=
     sed(settings_file, "DEBUG = True", "DEBUG = False")
@@ -143,7 +142,6 @@ DATABASES = {{
     """         # the {{ or }} are for  terminating the curly brackets
     #append(settings_file, f'\n\n{database_object}') # found that if string exists in file, append is not run. 
     run(f'echo "\n\n{database_object}" >> {settings_file}')    
-
 
 def _run_database_migration():
     run('python manage.py migrate')

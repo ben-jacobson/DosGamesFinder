@@ -44,7 +44,7 @@ class SerializerListViewTests(test_objects_mixin, TestCase):
         self.assertContains(response, b.title)
         self.assertContains(response, c.title)
 
-    def test_dosgame_listview_with_genre_filter_returns_list(self):
+    def test_dosgame_listview_with_genre_filter_returns_list(self):     # test using the optional genre argument
         action_genre = create_test_genre(name='Action')
         shooter_genre = create_test_genre(name='Shooter')
 
@@ -53,6 +53,59 @@ class SerializerListViewTests(test_objects_mixin, TestCase):
         c = create_test_dosgame(title='commodore', publisher=self.test_publisher, genre=action_genre)
 
         response = self.client.get(reverse('DosGamesListView') + '?genre=action') # also tests that our filtering is case insensitive
+        self.assertContains(response, a.title)
+        self.assertNotContains(response, b.title)
+        self.assertContains(response, c.title)
+
+    def test_dosgame_listview_with_publisher_filter_returns_list(self): # test using the optional publisher argument
+        test_publisher_one = create_test_publisher(name='Publisher One')
+        test_publisher_two = create_test_publisher(name='Publisher Two')
+        test_publisher_one_slug = test_publisher_one.slug
+        test_publisher_two_slug = test_publisher_two.slug
+
+        action_genre = create_test_genre(name='Action')
+        shooter_genre = create_test_genre(name='Shooter')
+        action_slug = action_genre.slug
+        shooter_slug = shooter_genre.slug
+
+        a = create_test_dosgame(title='abracadabra', publisher=test_publisher_one, genre=action_genre)
+        b = create_test_dosgame(title='beetlejuice', publisher=test_publisher_two, genre=action_genre)
+        c = create_test_dosgame(title='commodore', publisher=test_publisher_one, genre=shooter_genre)
+
+        # action games from publisher_one should equal A only
+        response = self.client.get(reverse('DosGamesListView') + f'?publisher={test_publisher_one_slug}&genre={action_slug}') # also tests that our filtering is case insensitive
+        self.assertContains(response, a.title)
+        self.assertNotContains(response, b.title)
+        self.assertNotContains(response, c.title)
+
+        # action games from publisher_two should equal B only
+        response = self.client.get(reverse('DosGamesListView') + f'?publisher={test_publisher_two_slug}&genre={action_slug}') # also tests that our filtering is case insensitive
+        self.assertNotContains(response, a.title)
+        self.assertContains(response, b.title)
+        self.assertNotContains(response, c.title)
+
+        # shooter games from publisher_one should return C only - for the sake of these next two tests, we'll reverse the query string
+        response = self.client.get(reverse('DosGamesListView') + f'?genre={shooter_slug}&publisher={test_publisher_one_slug}') # also tests that our filtering is case insensitive
+        self.assertNotContains(response, a.title)
+        self.assertNotContains(response, b.title)
+        self.assertContains(response, c.title)
+
+        # shooter games from publisher_two should return no results
+        response = self.client.get(reverse('DosGamesListView') + f'?genre={shooter_slug}&publisher={test_publisher_two_slug}') # also tests that our filtering is case insensitive
+        self.assertNotContains(response, a.title)
+        self.assertNotContains(response, b.title)
+        self.assertNotContains(response, c.title)
+
+    def test_dosgame_listview_with_publisher_and_genre_filter_returns_list(self):   # test using both of the optional publisher and genre filters + test the opposite direction
+        test_publisher_one = create_test_publisher(name='Publisher One')
+        test_publisher_two = create_test_publisher(name='Publisher Two')
+        test_pub_slug = test_publisher_one.slug
+
+        a = create_test_dosgame(title='abracadabra', publisher=test_publisher_one, genre=self.test_genre)
+        b = create_test_dosgame(title='beetlejuice', publisher=test_publisher_two, genre=self.test_genre)
+        c = create_test_dosgame(title='commodore', publisher=test_publisher_one, genre=self.test_genre)
+
+        response = self.client.get(reverse('DosGamesListView') + f'?publisher={test_pub_slug}') 
         self.assertContains(response, a.title)
         self.assertNotContains(response, b.title)
         self.assertContains(response, c.title)

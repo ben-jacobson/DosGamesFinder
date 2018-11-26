@@ -27,13 +27,17 @@ class DosGameList(generics.ListAPIView):
     
     def get_queryset(self):
         genre_query_string = self.request.query_params.get('genre', None)
+        publisher_query_string = self.request.query_params.get('publisher', None)
+        query_obj = {}
 
+        if publisher_query_string is not None:
+            query_obj['publisher'] = Publisher.objects.get(slug__iexact=publisher_query_string)
+ 
         if genre_query_string is not None:
-            genre_obj = Genre.objects.get(slug__iexact=genre_query_string)
-            return DosGame.objects.filter(genre=genre_obj)
-        else:
-            return DosGame.objects.all()
+            query_obj['genre'] = Genre.objects.get(slug__iexact=genre_query_string)
 
+        return DosGame.objects.filter(**query_obj)      # this is how we can use a dictionary to define our filter
+        #return DosGame.objects.all()                   # DosGame.objects.filter(**{}) is the same as DosGame.objects.all()
 
 class PublisherList(generics.ListAPIView):
     pagination_class = PublisherPageNumberPagination

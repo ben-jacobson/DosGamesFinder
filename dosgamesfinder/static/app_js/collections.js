@@ -7,7 +7,7 @@ $(function() {
         baseURL: '/api/dosgames/', 
         current_page: 1, 
         genre_filter: null,
-        // url: '/api/dosgames',  
+        publisher_filter: null,
         model: App.Models.DosGame,
 
         url: function() {
@@ -17,6 +17,9 @@ $(function() {
                 query_string += '&genre=' + this.genre_filter;
             }
 
+            if (this.publisher_filter != null) {
+                query_string += '&publisher=' + this.publisher_filter;
+            }
             //console.log(`collection returns url as ${query_string}`);
             return query_string;
         },

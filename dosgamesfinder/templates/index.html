@@ -129,7 +129,7 @@
     <script id="publisher-listView" type="text/template">
         <ul class='publisher-listview-container'>
             <% _.each(publishers, function(pub) { %>
-                <li><p class='publisher'><a href='#'><%= pub.name %></a></p></li>
+                <li><p class='publisher'><a href='/#publisher/<%= pub.slug %>'><%= pub.name %></a></p></li>
             <% }); %>
         </ul>
     </script>
