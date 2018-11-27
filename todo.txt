@@ -1,19 +1,16 @@
 DosGamesFinder todo list
 
 Next Sprint:
-- Customize the admin so that creation of Dosgames allows for Screenshots and Download location additions
-- Customize the admin so that slugs are automatically generated
-- Customize the admin so as to paginate with long lists of results
 - Is there a more elegant way to handle pagination? Also some spaghetti code here
 - Set up page titles (and browser titles) to change, eg 'arcade games', 'games by 3d realms'
 
 Next Sprint:
-- Hook up adsense to page
 - What meta tags do we have? Anything needed to improve SEO?
 - what kind of string sanitization is DRF using? 
 - Can we set up an animated page transition? eg a short fade when changing views
 - Implement the search bar
 - Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
+- Hook up adsense to page
 
 Next Sprint:
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 

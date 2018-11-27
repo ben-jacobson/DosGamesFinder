@@ -17,6 +17,12 @@ class Publisher(models.Model):
     def __str__(self):
         return self.name
 
+    def games_by_this_publisher(self):
+        '''
+        Used for the admin section of site, tells you how many games are by this publisher
+        '''
+        return len(self.dosgame_set.all())        
+
     class Meta:
         ordering = ('name',)
 
@@ -33,6 +39,13 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
+
+    def games_in_this_genre(self):
+        '''
+        Used for the admin section of site, tells you how many games are in this genre
+        '''
+        return len(self.dosgame_set.all())
+
 
     class Meta:
         ordering = ('name',)        
@@ -51,7 +64,9 @@ class DosGame(models.Model):
     thumbnail_src = models.CharField(max_length=256, default='/no_screenshot.jpg')
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
+        
         self.create_short_description()
         super(DosGame, self).save(*args, **kwargs)
 

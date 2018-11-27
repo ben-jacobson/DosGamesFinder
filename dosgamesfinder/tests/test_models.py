@@ -243,6 +243,13 @@ class PublisherModelTests(test_objects_mixin, TestCase):
         test_publisher = create_test_publisher(name=test_name)
         self.assertEqual(test_publisher.get_absolute_url(), '/api/publishers/make-this-a-url/')
 
+    def test_games_by_this_publisher(self):
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='a')
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='b')
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='c')
+        pub = Publisher.objects.get(name=self.test_publisher.name)
+        self.assertEqual(4, pub.games_by_this_publisher()) # 3 + 1 test game that was created in the init method  
+        
 class GenreModelTests(test_objects_mixin, TestCase):
     def test_create_genre(self):
         '''
@@ -293,6 +300,13 @@ class GenreModelTests(test_objects_mixin, TestCase):
         test_name = 'Make this a url'
         test_genre = create_test_genre(name=test_name)
         self.assertEqual(test_genre.get_absolute_url(), '/api/genres/make-this-a-url/')    
+
+    def test_games_in_this_genre(self):
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='a')
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='b')
+        create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='c')
+        g = Genre.objects.get(name=self.test_genre.name)
+        self.assertEqual(4, g.games_in_this_genre()) # 3 + 1 test game that was created in the init method         
 
 class DownloadLocationModelTests(test_objects_mixin, TestCase):
     def test_create_download_location(self):
@@ -345,18 +359,3 @@ class DownloadLocationModelTests(test_objects_mixin, TestCase):
 
         with self.assertRaises(IntegrityError): 
             test_download_location.save()
-
-
-
-
-                    
-
-
-
-
-
-
-
-
-
-
