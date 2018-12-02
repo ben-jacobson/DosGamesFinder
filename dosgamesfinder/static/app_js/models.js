@@ -32,8 +32,13 @@ $(function () {
         }, 
     });
 
-    App.Models.Genre = Backbone.Model.extend();
+    App.Models.PageTitle = Backbone.Model.extend({
+        defaults: {
+            title: 'Games List A-Z',
+        }
+    }); 
 
+    App.Models.Genre = Backbone.Model.extend();
     App.Models.Publisher = Backbone.Model.extend();
 
     App.Models.Ad = Backbone.Model.extend({  // placeholder for now

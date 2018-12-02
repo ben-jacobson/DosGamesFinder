@@ -19,22 +19,24 @@ $(function() {
 
     App.Views.PageTitle = Backbone.View.extend({
         // View for rendering page titles, be that listView or detailView
+        el: '#appWindow',
         tagName: 'div',
         className: 'row page-header',
         page_header_template: _.template($('#page-title').html()),
 
-        initialize: function(page_title) {
-            //this.on(this, 'all', this.render);
-            this.page_title = page_title;
-            this.render();
+        initialize: function() {
+            this.model.on(this, 'change', this.render());
         },
+
         render: function() {
+            var page_title = this.model.get('title');
+
             // by design, this view also alters the browser title to be the same as the views title. 
-            var brand_page_title = $(document).attr("title");
-            $(document).attr("title", this.page_title + " - " + brand_page_title);
+            var brand_page_title = $(document).attr("title");   // typically returns 'DosGamesFinder', hence 'brand'
+            $(document).attr("title", page_title + " - " + brand_page_title);
 
             // then creates a header to render from template 
-            this.$el.html(this.page_header_template({page_title: this.page_title})); 
+            this.$el.html(this.page_header_template({page_title: page_title})); 
             return this; 
         }
     });
@@ -152,18 +154,14 @@ $(function() {
     App.Views.DosGamesListView = Backbone.View.extend({
         // One of the main app views
         // enter the full collection into this view, the view will split the collection into as many
-        // 3 column rows it can. Render a page title, then a pattern of 3 rows then adbreak, repeat.
+        // 3 column rows it can with ad breaks in between
         el: '#appWindow',
         tagName: 'div',
         className: 'container listing',
 
         initialize: function(args) {
-            this.listenTo(this, 'RenamePage', this.change_page_title);
             this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
             this.page_size = args['page_size'];
-            this.page_title = args['page_title'];
-
-            this.page_header_el = [];
         },
 
         return_collection_of_three_games: function(index) {   
@@ -180,19 +178,8 @@ $(function() {
             }
             return three_games;                                               
         }, 
-
-        change_page_title: function (new_page_title) {
-            //console.log(new_page_title);
-            this.page_title = new_page_title;
-            this.page_header_el.page_title = new_page_title;
-            this.page_header_el.render();
-        },
         
         render: function() {
-            // render the page title
-            this.page_header_el = new App.Views.PageTitle(this.page_title);
-            this.$el.html(this.page_header_el.el); 
-
             // render the pagination at the top of the page
             let DosGamesPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
             this.$el.append(DosGamesPaginationViewTop.el);
@@ -250,9 +237,6 @@ $(function() {
             this.page_size = args['page_size'];
         },
         render: function() {
-            let PageTitle = new App.Views.PageTitle("Publishers");
-            this.$el.html(PageTitle.el); 
-
             // render the pagination at the top of the page
             let PublisherPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
             this.$el.append(PublisherPaginationViewTop.el);
