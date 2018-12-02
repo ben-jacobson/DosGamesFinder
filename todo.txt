@@ -1,7 +1,7 @@
 DosGamesFinder todo list
 
 Next Sprint:
-- Set up detail view to link properly to filters
+- discovered a bug - in filter by genre and publisher methods, the current collection is only 18 entries long, so needs to find the name elsewhere. Perhaps fetch a single model instead. 
 - Still having issues with the code that alters the secret key in settiings.py on remote 
 
 Next Sprint:

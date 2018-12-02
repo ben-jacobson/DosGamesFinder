@@ -44,23 +44,23 @@ $(function () {
         filter_by_genre: function(genre, page_number) {  
             new_page_title = 'Filter By Genre';
 
-            if (genre_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
+            /*if (genre_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
                 genre_obj = genre_collection.find({slug: genre});
                 genre_name = genre_obj.get('name');
                 new_page_title = `${genre_name} Games`;
-            } 
+            } */
 
             this.index(page_number, genre, null, new_page_title);    // the code for filter by genre and publisher are identical, but the backbone routes get confused between them, so have create a simple wrapper
         },                                          
 
         filter_by_publisher: function(publisher, page_number) {
-            new_page_title = 'Filter by publisher';
+            new_page_title = 'Filter By Publisher';
 
-            if (publisher_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
+            /*if (publisher_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
                 pub_obj = publisher_collection.find({slug: publisher});
                 publisher_name = pub_obj.get('name');
                 new_page_title = `Games By ${publisher_name}`;
-            }
+            }*/
 
             this.index(page_number, null, publisher, new_page_title); 
         },        
@@ -101,7 +101,10 @@ $(function () {
     var dosgames_collection = new App.Collections.DosGames();
     var publisher_collection = new App.Collections.Publishers();
     var genre_collection = new App.Collections.Genres();
+
+    // do an initial fetch
     genre_collection.fetch();
+    publisher_collection.fetch();
 
     // set up two events to set flags when publisher and genre collections have been fetched
     genre_collection.on('sync', function() {        
