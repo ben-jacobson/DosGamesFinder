@@ -1,8 +1,9 @@
 DosGamesFinder todo list
 
 Next Sprint:
-- Is there a more elegant way to handle pagination? Also some spaghetti code here
 - Set up page titles (and browser titles) to change, eg 'arcade games', 'games by 3d realms'
+- Set up detail view to link properly to filters
+- Still having issues with the code that alters the secret key in settiings.py on remote 
 
 Next Sprint:
 - What meta tags do we have? Anything needed to improve SEO?

@@ -24,6 +24,7 @@ $(function() {
         page_header_template: _.template($('#page-title').html()),
 
         initialize: function(page_title) {
+            //this.on(this, 'all', this.render);
             this.page_title = page_title;
             this.render();
         },
@@ -110,9 +111,6 @@ $(function() {
         },
 
         get_url_suffix: function() {        // when applying pagination, it needs to include this suffix
-            // /#genre/action/1
-            // /#genre/action/
-            // /#/1
             current_url = String(Backbone.history.fragment);
 
             if (current_url == '') { // if it's a blank string, no need to create any suffix 
@@ -160,9 +158,12 @@ $(function() {
         className: 'container listing',
 
         initialize: function(args) {
-            //this.render();
+            this.listenTo(this, 'RenamePage', this.change_page_title);
             this.collection.on('sync', this.render, this); // whenever we finish re-syncing to database, we want to render
             this.page_size = args['page_size'];
+            this.page_title = args['page_title'];
+
+            this.page_header_el = [];
         },
 
         return_collection_of_three_games: function(index) {   
@@ -179,11 +180,18 @@ $(function() {
             }
             return three_games;                                               
         }, 
+
+        change_page_title: function (new_page_title) {
+            //console.log(new_page_title);
+            this.page_title = new_page_title;
+            this.page_header_el.page_title = new_page_title;
+            this.page_header_el.render();
+        },
         
         render: function() {
             // render the page title
-            let PageTitle = new App.Views.PageTitle("Games List A-Z");
-            this.$el.html(PageTitle.el); 
+            this.page_header_el = new App.Views.PageTitle(this.page_title);
+            this.$el.html(this.page_header_el.el); 
 
             // render the pagination at the top of the page
             let DosGamesPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});

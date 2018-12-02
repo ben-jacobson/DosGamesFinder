@@ -9,6 +9,7 @@ $(function() {
         genre_filter: null,
         publisher_filter: null,
         model: App.Models.DosGame,
+        fetched: false, 
 
         url: function() {
             var query_string = this.baseURL + '?page=' + this.current_page; 
