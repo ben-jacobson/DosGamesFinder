@@ -19,13 +19,14 @@ $(function() {
 
     App.Views.PageTitle = Backbone.View.extend({
         // View for rendering page titles, be that listView or detailView
-        el: '#appWindow',
+        el: '#appTitle',
         tagName: 'div',
         className: 'row page-header',
         page_header_template: _.template($('#page-title').html()),
 
         initialize: function() {
-            this.model.on(this, 'change', this.render());
+            this.model.on('change', this.render, this);
+            this.render();
         },
 
         render: function() {
@@ -179,7 +180,9 @@ $(function() {
             return three_games;                                               
         }, 
         
-        render: function() {
+        render: function() {            
+            this.$el.empty(); // clear the view
+
             // render the pagination at the top of the page
             let DosGamesPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
             this.$el.append(DosGamesPaginationViewTop.el);

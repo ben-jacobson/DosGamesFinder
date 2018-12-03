@@ -38,8 +38,31 @@ $(function () {
         }
     }); 
 
-    App.Models.Genre = Backbone.Model.extend();
-    App.Models.Publisher = Backbone.Model.extend();
+    App.Models.Genre = Backbone.Model.extend({
+        baseURL: '/api/genres/',
+        genre_selected: null,
+
+        initialize: function(args) {
+            this.genre_selected = args['genre_selected'];
+        },        
+
+        url: function(genre) {
+            return this.baseURL + this.genre_selected + '/';
+        },
+    });
+
+    App.Models.Publisher = Backbone.Model.extend({
+        baseURL: '/api/publishers/',
+        publisher_selected: null,
+
+        initialize: function(args) {
+            this.publisher_selected = args['publisher_selected'];
+        },        
+
+        url: function(genre) {
+            return this.baseURL + this.publisher_selected + '/';
+        },
+    });
 
     App.Models.Ad = Backbone.Model.extend({  // placeholder for now
         defaults: {

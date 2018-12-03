@@ -17,12 +17,8 @@ $(function () {
                 page_number = 1; 
             }
 
-            // set page_title if one is supplied
-            if (new_page_title == null || new_page_title == undefined) {        
+            if (new_page_title == null || new_page_title == undefined) {
                 page_title_model.set('title', 'Games List A-Z');
-            }
-            else {
-                page_title_model.set('title', new_page_title);
             }
 
             // Scroll to the top of the page
@@ -42,27 +38,25 @@ $(function () {
         },
 
         filter_by_genre: function(genre, page_number) {  
-            new_page_title = 'Filter By Genre';
+            genre_obj = new App.Models.Genre({genre_selected: genre});
+            genre_obj.fetch();
 
-            /*if (genre_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
-                genre_obj = genre_collection.find({slug: genre});
-                genre_name = genre_obj.get('name');
-                new_page_title = `${genre_name} Games`;
-            } */
+            genre_obj.on('sync', function() { 
+                page_title_model.set('title', `${genre_obj.get('name')} Games`);
+            });
 
-            this.index(page_number, genre, null, new_page_title);    // the code for filter by genre and publisher are identical, but the backbone routes get confused between them, so have create a simple wrapper
+            this.index(page_number, genre, null, 'Filter By Genre');    // the code for filter by genre and publisher are identical, but the backbone routes get confused between them, so have create a simple wrapper
         },                                          
 
         filter_by_publisher: function(publisher, page_number) {
-            new_page_title = 'Filter By Publisher';
+            pub_obj = new App.Models.Publisher({publisher_selected: publisher});
+            pub_obj.fetch();
 
-            /*if (publisher_collection.fetched === true) {  // if we can use the genre's name in the title, we will. if not then use something generic
-                pub_obj = publisher_collection.find({slug: publisher});
-                publisher_name = pub_obj.get('name');
-                new_page_title = `Games By ${publisher_name}`;
-            }*/
+            pub_obj.on('sync', function() { 
+                page_title_model.set('title', `Games by ${pub_obj.get('name')}`);
+            });
 
-            this.index(page_number, null, publisher, new_page_title); 
+            this.index(page_number, null, publisher, 'Filter By Publisher'); 
         },        
 
         game: function (request_slug) {
@@ -80,13 +74,12 @@ $(function () {
                 publisher_collection.current_page = page_number;
             }
 
-            
+            // Scroll to the top of the page
+            $(document).scrollTop(0); 
+
             // render page title
             page_title_model.set('title', 'Publishers A-Z');
             PageTitle = new App.Views.PageTitle({model: page_title_model});
-
-            // Scroll to the top of the page
-            $(document).scrollTop(0); 
 
             PublisherListView = new App.Views.PublisherListView({page_size: PUBLISHER_LISTVIEW_MAX_PAGE_SIZE, collection: publisher_collection});
             publisher_collection.fetch(); 
@@ -106,20 +99,11 @@ $(function () {
     genre_collection.fetch();
     publisher_collection.fetch();
 
-    // set up two events to set flags when publisher and genre collections have been fetched
-    genre_collection.on('sync', function() {        
-        genre_collection.fetched = true; 
-    });
-
-    publisher_collection.on('sync', function() {        
-        publisher_collection.fetched = true; 
-    });
-
     // create empty objects for our views
-    var DosGamesListView = [];
-    var DosGamesDetailView = [];
-    var PublisherListView = [];
-    var PageTitle = [];  
+    var DosGamesListView = {};
+    var DosGamesDetailView = {};
+    var PublisherListView = {};
+    var PageTitle = {};  
     var page_title_model = new App.Models.PageTitle();  // PageTitle view uses this model to store page titles
 
     $(document).ready(function() {      // only start the router once the document is ready to load 
