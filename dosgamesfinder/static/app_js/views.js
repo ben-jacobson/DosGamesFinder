@@ -240,6 +240,8 @@ $(function() {
             this.page_size = args['page_size'];
         },
         render: function() {
+            this.$el.empty(); // clear the view
+
             // render the pagination at the top of the page
             let PublisherPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
             this.$el.append(PublisherPaginationViewTop.el);
