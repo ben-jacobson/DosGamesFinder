@@ -1,11 +1,8 @@
 DosGamesFinder todo list
 
 Next Sprint:
-- what kind of string sanitization is DRF using? 
-- Can we set up an animated page transition? eg a short fade when changing views
-- Implement the search bar
-- Figure out how to disable the API browser when visting the page in a web browser, perhaps even just have it re-direct. 
 - Hook up adsense to page
+- Implement the search bar
 - Can we refactor some of our router code by instead using events. eg the collection can fetch itself on a 'next_page' event
 
 Next Sprint:
