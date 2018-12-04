@@ -115,7 +115,7 @@ def _alter_django_settings_py(server_secrets):
     chars  = 'abcdefghijklmnopqrstuvwxyz0123456789@#$%&*(-_=+)'           # used as array of usable characters
     key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
     #print(f'key:  {key}')
-    run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'$/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
+    run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
 
     # alter debug= and allowed_hosts=
     sed(settings_file, "DEBUG = True", "DEBUG = False")
