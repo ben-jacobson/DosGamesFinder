@@ -124,8 +124,9 @@ def _alter_django_settings_py(server_secrets):
         f'ALLOWED_HOSTS = ["127.0.0.1", "localhost", "{site_name}"]'
     )
 
-    # remove the line that allows users to browser the API. Just comment it out
-    sed(settings_file, "'rest_framework.renderers.BrowsableAPIRenderer',", "#'rest_framework.renderers.BrowsableAPIRenderer',")
+    # remove the line that allows users to browser the API. Just comment it out. Again, SED has issues with single quotes unless run from CLI
+    #sed(settings_file, "'rest_framework.renderers.BrowsableAPIRenderer',", "#'rest_framework.renderers.BrowsableAPIRenderer',")
+    run(f'sed -i.bak -r -e "s/\'rest_framework.renderers.BrowsableAPIRenderer\',/#\'rest_framework.renderers.BrowsableAPIRenderer\',/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
 
     # alter the database object - it's too fiddly to replace the existing object, instead we'll append to end of file which should overload
     database_object = f"""
