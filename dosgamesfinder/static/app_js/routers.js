@@ -61,7 +61,7 @@ $(function () {
 
         game: function (request_slug) {
 
-            let dosgame_model = new App.Models.DosGame({slug: request_slug});
+            var dosgame_model = new App.Models.DosGame({slug: request_slug});
             dosgame_model.fetch();
 
             // Scroll to the top of the page
