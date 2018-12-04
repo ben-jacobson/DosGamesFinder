@@ -1,10 +1,6 @@
 DosGamesFinder todo list
 
 Next Sprint:
-- Still having issues with the code that alters the secret key in settiings.py on remote 
-
-Next Sprint:
-- What meta tags do we have? Anything needed to improve SEO?
 - what kind of string sanitization is DRF using? 
 - Can we set up an animated page transition? eg a short fade when changing views
 - Implement the search bar
@@ -13,6 +9,8 @@ Next Sprint:
 - Can we refactor some of our router code by instead using events. eg the collection can fetch itself on a 'next_page' event
 
 Next Sprint:
+- Create a robots.txt file for site
+- Create a sitemap.xml file for site
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
 - Implement the user rating system
 - Implement the year released filters and drop down menu
@@ -23,3 +21,4 @@ Next Sprint:
 - Go back and write some functional tests, then set up Jenkins for CI
 - Write some QUnit tests for Backbone 
 - Implement caching
+- Deploy code occasionally fails when updating settings.py SECRET_KEY. depending on what characters are used, will sometimes embed the new one within the old one. Must have to do with the regex pattern.  
