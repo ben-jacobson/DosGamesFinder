@@ -12,17 +12,9 @@ $(function () {
         },
 
         index: function (page_number, genre, publisher, new_page_title) {   
-
-            if (page_number == null || page_number == undefined) {
-                page_number = 1; 
-            }
-
             if (new_page_title == null || new_page_title == undefined) {
                 page_title_model.set('title', 'Games List A-Z');
             }
-
-            // Scroll to the top of the page
-            $(document).scrollTop(0); 
         
             // set our filters - okay if these are null as this is the default. 
             dosgames_collection.genre_filter = genre;       
@@ -60,12 +52,9 @@ $(function () {
         },        
 
         game: function (request_slug) {
-
             var dosgame_model = new App.Models.DosGame({slug: request_slug});
             dosgame_model.fetch();
 
-            // Scroll to the top of the page
-            $(document).scrollTop(0); 
             DosGamesDetailView = new App.Views.DosGamesDetailView({model: dosgame_model});
         },
 
@@ -74,13 +63,11 @@ $(function () {
                 publisher_collection.current_page = page_number;
             }
 
-            // Scroll to the top of the page
-            $(document).scrollTop(0); 
-
             // render page title
             page_title_model.set('title', 'Publishers A-Z');
             PageTitle = new App.Views.PageTitle({model: page_title_model});
 
+            // render the list view
             PublisherListView = new App.Views.PublisherListView({page_size: PUBLISHER_LISTVIEW_MAX_PAGE_SIZE, collection: publisher_collection});
             publisher_collection.fetch(); 
         }, 

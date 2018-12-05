@@ -12,6 +12,12 @@ $(function() {
         fetched: false, 
 
         url: function() {
+            // prevent a null page number
+            if (this.current_page == null || this.current_page == undefined) {
+                this.current_page = 1; 
+            }
+
+            // Build the query string and return it.  
             var query_string = this.baseURL + '?page=' + this.current_page; 
 
             if (this.genre_filter != null) {

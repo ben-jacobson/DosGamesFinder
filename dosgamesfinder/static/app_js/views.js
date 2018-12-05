@@ -180,8 +180,12 @@ $(function() {
             return three_games;                                               
         }, 
         
-        render: function() {            
-            this.$el.empty(); // clear the view
+        render: function() {       
+            // Scroll to the top of the page
+            $(document).scrollTop(0); 
+
+            // clear the view
+            this.$el.empty(); 
 
             // render the pagination at the top of the page
             let DosGamesPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});
@@ -226,6 +230,12 @@ $(function() {
         },
 
         render: function() {
+            // Scroll to the top of the page
+            $(document).scrollTop(0); 
+
+            // clear the view
+            this.$el.empty(); 
+
             this.$el.html(this.detailView_template(this.model.toJSON()));         
             return this;
         }
@@ -240,7 +250,11 @@ $(function() {
             this.page_size = args['page_size'];
         },
         render: function() {
-            this.$el.empty(); // clear the view
+            // Scroll to the top of the page
+            $(document).scrollTop(0); 
+
+            // clear the view
+            this.$el.empty(); 
 
             // render the pagination at the top of the page
             let PublisherPaginationViewTop = new App.Views.ListViewPagination({page_size: this.page_size, collection: this.collection});

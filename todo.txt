@@ -1,21 +1,18 @@
 DosGamesFinder todo list
 
-asdf
-
 Next Sprint ():
 - Hook up adsense to page
 
 Next Sprint (Cleaning up Backbone code):
-- The reason for the below changes, is that we aren't the language to it's strengths, we are more or less writing procedural code in an event driven environment. We should rely more on events
-- See if we can refactor away this block of code in router.js - i.e the collection can handle some sort of default page number on init, or even creating a 'change page method' if needs be. 
-    if (page_number == null || page_number == undefined) {
-        page_number = 1; 
-    }
-- See if we can create an event trigger that runs the code that scrolls to top of page
-- Instead of settingt these filters below, can we set these up to be events listened to by the collection and triggered by button clicks? 
+- Instead of setting these filters below, can we set these up to be events listened to by the collection and triggered by button clicks? 
     dosgames_collection.genre_filter = genre;       
     dosgames_collection.publisher_filter = publisher; 
     dosgames_collection.current_page = page_number;
+
+- Instead of the below code, figure out a way for the page title object to manage this internally
+    if (new_page_title == null || new_page_title == undefined) {
+        page_title_model.set('title', 'Games List A-Z');
+    }
 
 -Instead of running this below code in the route, can this be initialized as a global, then altered with events? 
     PageTitle = new App.Views.PageTitle({model: page_title_model});
@@ -23,7 +20,8 @@ Next Sprint (Cleaning up Backbone code):
 -Any manual fetches, see if they can be replaced by events
 -Filter by Genre, and filter by publisher, if the filtering is happening via events, perhaps we don't need these functions and can be built into routes? or perhaps refactored to trigger the necessary events
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
- 
+- 3 of our render functions call the clear view and scroll to top, can we apply DRY somehow? eg. inherit a function,  
+
 Next Sprint:
 - Implement the search bar
 - Create a robots.txt file for site
