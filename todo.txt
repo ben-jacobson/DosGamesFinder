@@ -1,5 +1,7 @@
 DosGamesFinder todo list
 
+asdf
+
 Next Sprint ():
 - Hook up adsense to page
 
@@ -23,7 +25,6 @@ Next Sprint (Cleaning up Backbone code):
 - Look at the Backbone DosGameListViewRow view, it has some ugly code needed to split the games into multiple collections, can this be re-factored to be cleaner? 
  
 Next Sprint:
-- Deploy code occasionally fails when updating settings.py SECRET_KEY. depending on what characters are used, will sometimes embed the new one within the old one. Must have to do with the regex pattern.  
 - Implement the search bar
 - Create a robots.txt file for site
 - Create a sitemap.xml file for site
