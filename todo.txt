@@ -1,5 +1,7 @@
 DosGamesFinder todo list
 
+Current release - v0.1
+
 Next Sprint (Altering the project to serve pages statically)
 - Create a release tag to mark where this code was when it was a backbone project
 - Create new URL pathways for static served pages
