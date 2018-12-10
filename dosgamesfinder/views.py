@@ -18,8 +18,11 @@ class PublisherPageNumberPagination(PageNumberPagination):
 
 # our views
 
+'''class HomeView(TemplateView):
+    template_name = "index.html"'''
+
 class HomeView(TemplateView):
-    template_name = "index.html"
+    template_name = 'dosgame_listview.html'
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    

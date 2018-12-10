@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block page-title %}
+<%= page_title %> - Games Finder{% endblock %}
+
+{% block main-content %}
+<div id='appTitle' class="row page-header">
+    <div class='page-title col-sm-12'>
+        <h1>
+            <%= page_title %>
+        </h1>
+    </div>
+</div>
+<div id='appWindow' class='container listing'>
+    <nav aria-label="Page Numbers">
+        <ul class="pagination justify-content-center">
+            <li class="page-item<% if (current_page == 1) { %> disabled<% } %>"><a class="page-link" href="/#<%= url_suffix %><%= prev_page %>"
+                    tabindex="-1">Prev</a></li>
+            <% for (let i = 1; i < number_of_pages + 1; i++) { %>
+            <li class="d-none d-sm-block page-item<% if (i == current_page ) { %> active<% } %>"><a class="page-link"
+                    href="/#<%= url_suffix %><%= i %>">
+                    <%= i %></a></li>
+            <% } %>
+            <li class="page-item<% if (current_page >= number_of_pages) { %> disabled<% } %>"><a class="page-link" href="/#<%= url_suffix %><%= next_page %>">Next</a></li>
+        </ul>
+    </nav>
+
+    <div class="row games-list-row">
+        <div class="col-sm-4">
+            <div class="game-listview card">
+                <div class='listView-img-placeholder'>
+                    <a href='#game/<%= slug %>'><img class="card-img-top rounded listView-screenshot" src="{{ MEDIA_URL }}<%= thumbnail_src %>"
+                            alt="<%= title %> Screenshot"></a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title"><a href='#game/<%= slug %>'>
+                            <%= title %></a></h4>
+                    <p class='card-genre'><a href='/#genre/<%= genre.slug %>'>
+                            <%= genre.name %></a></p>
+                    <p class="card-text">
+                        <%= short_description %>
+                    </p>
+                    <p class="card-publisher-and-date font-weight-light"></p><a href='/#publisher/<%= publisher.slug %>'>
+                        <%= publisher.name %></a>
+                    <%= year_released %>
+                    </p>
+                    <!-- p class="card-user-rating"><%= user_rating %></p -->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            Col 2
+        </div>
+        <div class="col-sm-4">
+            Col 3
+        </div>
+    </div>
+
+    <nav aria-label="Page Numbers">
+        <ul class="pagination justify-content-center">
+            <li class="page-item<% if (current_page == 1) { %> disabled<% } %>"><a class="page-link" href="/#<%= url_suffix %><%= prev_page %>"
+                    tabindex="-1">Prev</a></li>
+            <% for (let i = 1; i < number_of_pages + 1; i++) { %>
+            <li class="d-none d-sm-block page-item<% if (i == current_page ) { %> active<% } %>"><a class="page-link"
+                    href="/#<%= url_suffix %><%= i %>">
+                    <%= i %></a></li>
+            <% } %>
+            <li class="page-item<% if (current_page >= number_of_pages) { %> disabled<% } %>"><a class="page-link" href="/#<%= url_suffix %><%= next_page %>">Next</a></li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}
