@@ -4,6 +4,8 @@ from django.urls.exceptions import NoReverseMatch
 
 from .base import create_test_publisher, create_test_genre, create_test_dosgame, test_objects_mixin
 
+from dosgamesfinder.views import MAX_DOSGAME_RESULTS_LISTVIEW
+
 HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
 HTTP_NOT_FOUND = 404
@@ -377,5 +379,4 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
 
         response = self.client.get(reverse('home'))
         results_on_page = len(response.context['dosgames_list'])
-        max_results_on_page = 18    # we may make this a constant later
-        self.assertEqual(results_on_page, max_results_on_page)
+        self.assertEqual(results_on_page, MAX_DOSGAME_RESULTS_LISTVIEW)

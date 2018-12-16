@@ -66,4 +66,13 @@
         </ul>
     </nav>
 </div>
+
+<div id='temporary_will_delete_later'>
+    {% if dosgames_list %}
+        {% for dosgame in dosgames_list %}
+            {{ dosgame.title }}<br />
+        {% endfor %}
+    {% endif %}
+</div>
+
 {% endblock %}

@@ -7,6 +7,8 @@ from rest_framework.pagination import PageNumberPagination
 
 # our pagination mixin classes - This is how you cusomize the page_sizes for pagination styles
 
+MAX_DOSGAME_RESULTS_LISTVIEW = 18 # max number of results in DosgamesListView
+
 class DosGamesPageNumberPagination(PageNumberPagination):
     page_size = 18
     max_page_size = page_size
@@ -24,14 +26,14 @@ class PublisherPageNumberPagination(PageNumberPagination):
 class HomeView(ListView):   # ListView
     template_name = 'dosgame_listview.html'
     context_object_name = 'dosgames_list'
+    model = DosGame
+    paginate_by = MAX_DOSGAME_RESULTS_LISTVIEW      # pleasantly surprised that pagination is already built in to ListView
+    queryset = DosGame.objects.all()   
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)  
         context['page_title'] = 'Games List A-Z'
         return context
-
-    def get_queryset(self):
-        return DosGame.objects.all()  
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    
