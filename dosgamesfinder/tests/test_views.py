@@ -17,15 +17,8 @@ class LayoutAndStylingTest(TestCase):
             '<link rel="stylesheet" href="/static/css/bootstrap.min.css" />',
             '<link rel="stylesheet" href="/static/css/main.css" />',        
             '<script src="/static/vendor_js/jquery-3.3.1.min.js" type="text/javascript"></script>',
-            '<script src="/static/vendor_js/underscore-min.js" type="text/javascript"></script>',
-            '<script src="/static/vendor_js/backbone-min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/popper.min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/bootstrap.min.js" type="text/javascript"></script>',
-            '<script src="/static/app_js/config.js" type="text/javascript"></script>',
-            '<script src="/static/app_js/models.js" type="text/javascript"></script>',
-            '<script src="/static/app_js/collections.js" type="text/javascript"></script>',
-            '<script src="/static/app_js/views.js" type="text/javascript"></script>',
-            '<script src="/static/app_js/routers.js" type="text/javascript"></script>',
         ]
         response = self.client.get(reverse('home'))
 
@@ -365,3 +358,24 @@ class GenreDetailViewPermissionTests(test_objects_mixin, TestCase):
         response = self.client.patch(reverse('GenreDetailView', kwargs=self.test_genre_slug))
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
                
+class DosGamesListViewTests(test_objects_mixin, TestCase):
+    def test_view_uses_template(self):
+        response = self.client.get(reverse('home'))
+        self.assertTemplateUsed(response, 'dosgame_listview.html')        
+
+    def test_context_object_list_is_passed_to_template(self):
+        response = self.client.get(reverse('home'))
+        # test that page title appears in context         
+        self.assertEqual(response.context['page_title'], 'Games List A-Z') 
+        # test that the dosgames_list context objects appears and contains our test game
+        self.assertIn(self.test_dosgame, response.context['dosgames_list'])   
+
+    def test_query_set_returns_paginated_results(self):
+        # we already have one test object, for this test, we'll create another 30, so as to test that pagination only returns the first 18 results. 
+        for i in range(30):
+            create_test_dosgame(title=str(i), publisher=self.test_publisher, genre=self.test_genre)
+
+        response = self.client.get(reverse('home'))
+        results_on_page = len(response.context['dosgames_list'])
+        max_results_on_page = 18    # we may make this a constant later
+        self.assertEqual(results_on_page, max_results_on_page)

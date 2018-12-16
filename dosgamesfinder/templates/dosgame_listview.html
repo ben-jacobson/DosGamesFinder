@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 
-{% block page-title %}
-<%= page_title %> - Games Finder{% endblock %}
+{% block page-title %}{{ page_title }}{% endblock %}
 
 {% block main-content %}
 <div id='appTitle' class="row page-header">
     <div class='page-title col-sm-12'>
-        <h1>
-            <%= page_title %>
-        </h1>
+        <h1>{{ page_title }}</h1>
     </div>
 </div>
 <div id='appWindow' class='container listing'>

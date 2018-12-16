@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 from dosgamesfinder.models import DosGame, Publisher, Genre
 from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer, GenreSerializer
 from rest_framework import generics
@@ -21,8 +21,17 @@ class PublisherPageNumberPagination(PageNumberPagination):
 '''class HomeView(TemplateView):
     template_name = "index.html"'''
 
-class HomeView(TemplateView):
+class HomeView(ListView):   # ListView
     template_name = 'dosgame_listview.html'
+    context_object_name = 'dosgames_list'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  
+        context['page_title'] = 'Games List A-Z'
+        return context
+
+    def get_queryset(self):
+        return DosGame.objects.all()  
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    
