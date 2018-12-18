@@ -396,6 +396,21 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
         self.assertContains(response, '1')        
         self.assertContains(response, 'FooBar Adventures')        
 
+    def test_listview_pagination_renders(self):
+        pagination_string = '<nav aria-label="Page Numbers">'
+
+        # first test how the page renders with only a few items, not enough to exceed MAX_DOSGAME_RESULTS_LISTVIEW
+        response = self.client.get(reverse('dosgame_listview'))
+        self.assertNotContains(response, pagination_string)        
+
+        # pagination only needs to appear when the amount of results exceed MAX_DOSGAME_RESULTS_LISTVIEW
+        for i in range(40):
+            create_test_dosgame(title=str(i), publisher=self.test_publisher, genre=self.test_genre)
+
+        response = self.client.get(reverse('dosgame_listview'))
+        self.assertContains(response, pagination_string)        
+
+
 class DosGamesDetailViewTests(test_objects_mixin, TestCase):
     def test_response_code(self):
         test_slug = self.test_dosgame.slug

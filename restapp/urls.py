@@ -14,7 +14,7 @@ from dosgamesfinder import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.HomeView.as_view(), name='dosgame_listview'),
+    path('', views.DosGameListView.as_view(), name='dosgame_listview'),
     path('game/<slug:slug>', views.DosGameDetailView.as_view(), name='dosgame_detailview'),
     path('publishers/', views.PublisherListView.as_view(), name='publisher_listview'),
 

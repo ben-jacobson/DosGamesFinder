@@ -7,10 +7,9 @@ from rest_framework.pagination import PageNumberPagination
 MAX_DOSGAME_RESULTS_LISTVIEW = 18 # max number of results in DosgamesListView
 MAX_PUBLISHER_RESULTS_LISTVIEW = 20 # max number of publishers in PublisherListView 
 
-class HomeView(ListView): 
+class DosGameListView(ListView): 
     template_name = 'dosgame_listview.html'
     context_object_name = 'dosgames_list'
-    model = DosGame
     paginate_by = MAX_DOSGAME_RESULTS_LISTVIEW      # pleasantly surprised that pagination is already built in to ListView
     queryset = DosGame.objects.all()   
 
@@ -27,7 +26,7 @@ class DosGameDetailView(DetailView):
 class PublisherListView(ListView): 
     template_name = 'publisher_listview.html'
     context_object_name = 'publishers'
-    paginate_by = MAX_PUBLISHER_RESULTS_LISTVIEW      # pleasantly surprised that pagination is already built in to ListView
+    paginate_by = MAX_PUBLISHER_RESULTS_LISTVIEW
     queryset = Publisher.objects.all()   
 
 
