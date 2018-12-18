@@ -4,7 +4,7 @@ from django.urls.exceptions import NoReverseMatch
 
 from .base import create_test_publisher, create_test_genre, create_test_dosgame, test_objects_mixin
 
-from dosgamesfinder.views import MAX_DOSGAME_RESULTS_LISTVIEW
+from dosgamesfinder.views import MAX_DOSGAME_RESULTS_LISTVIEW, MAX_PUBLISHER_RESULTS_LISTVIEW
 
 HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
@@ -22,7 +22,7 @@ class LayoutAndStylingTest(TestCase):
             '<script src="/static/vendor_js/popper.min.js" type="text/javascript"></script>',
             '<script src="/static/vendor_js/bootstrap.min.js" type="text/javascript"></script>',
         ]
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse('dosgame_listview'))
 
         # each and every one of these lines should appear in the response HTML
         for line in expected_lines:
@@ -362,11 +362,11 @@ class GenreDetailViewPermissionTests(test_objects_mixin, TestCase):
                
 class DosGamesListViewTests(test_objects_mixin, TestCase):
     def test_view_uses_template(self):
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse('dosgame_listview'))
         self.assertTemplateUsed(response, 'dosgame_listview.html')        
 
     def test_context_object_list_is_passed_to_template(self):
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse('dosgame_listview'))
         # test that page title appears in context         
         self.assertEqual(response.context['page_title'], 'Games List A-Z') 
         # test that the dosgames_list context objects appears and contains our test game
@@ -377,18 +377,37 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
         for i in range(30):
             create_test_dosgame(title=str(i), publisher=self.test_publisher, genre=self.test_genre)
 
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse('dosgame_listview'))
         results_on_page = len(response.context['dosgames_list'])
         self.assertEqual(results_on_page, MAX_DOSGAME_RESULTS_LISTVIEW)
 
 class DosGamesDetailViewTests(test_objects_mixin, TestCase):
     def test_view_uses_template(self):
         test_slug = self.test_dosgame.slug
-        response = self.client.get(reverse('game', kwargs={'slug': test_slug}))
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
         self.assertTemplateUsed(response, 'dosgame_detailview.html') 
 
     def test_context_object_list_is_passed_to_template(self):
         test_slug = self.test_dosgame.slug
-        response = self.client.get(reverse('game', kwargs={'slug': test_slug}))
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
         # test that the context objects appears and contains our test game
         self.assertEqual(self.test_dosgame, response.context['dosgame'])   
+
+class PublisherListViewTests(test_objects_mixin, TestCase):
+    def test_view_uses_template(self):
+        response = self.client.get(reverse('publisher_listview'))
+        self.assertTemplateUsed(response, 'publisher_listview.html') 
+
+    def test_context_object_list_is_passed_to_template(self):
+        response = self.client.get(reverse('publisher_listview'))
+        # test that the publisher context objects appears and contains our test publisher
+        self.assertIn(self.test_publisher, response.context['publishers'])   
+
+    def test_query_set_returns_paginated_results(self):
+        # we already have one test object, for this test, we'll create another 30, so as to test that pagination only returns the first 10 results or so. 
+        for i in range(30):
+            create_test_publisher(name=str(i))
+
+        response = self.client.get(reverse('publisher_listview'))
+        results_on_page = len(response.context['publishers'])
+        self.assertEqual(results_on_page, MAX_PUBLISHER_RESULTS_LISTVIEW)        

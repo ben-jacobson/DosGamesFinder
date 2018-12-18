@@ -14,8 +14,10 @@ from dosgamesfinder import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.HomeView.as_view(), name='home'),
-    path('game/<slug:slug>', views.DosGameDetailView.as_view(), name='game'),
+    path('', views.HomeView.as_view(), name='dosgame_listview'),
+    path('game/<slug:slug>', views.DosGameDetailView.as_view(), name='dosgame_detailview'),
+
+    path('publishers/', views.PublisherListView.as_view(), name='publisher_listview'),
 
     # all api paths below to be removed 
     path('api/dosgames/', views.DosGameList.as_view(), name='DosGamesListView'),

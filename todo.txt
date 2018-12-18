@@ -7,7 +7,6 @@ v0.2 (Altering the project to serve pages statically)
 - Port template for DosGameListView
     - navigation port - write context+template for genre drop down menu
     - pagination port - write context+template for pagination if necessary
-- Port template for DosGameDetailView
 - Port template for PublisherListView
 - Create new URL pathways for static served pages and create class based views for new static served pages
 - Write new unit tests for new class based views

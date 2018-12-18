@@ -3,22 +3,9 @@ from dosgamesfinder.models import DosGame, Publisher, Genre
 from dosgamesfinder.serializers import DosGameSerializer, PublisherSerializer, GenreSerializer
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
-#from rest_framework.throttling import UserRateThrottle
-
-# our pagination mixin classes - This is how you cusomize the page_sizes for pagination styles
 
 MAX_DOSGAME_RESULTS_LISTVIEW = 18 # max number of results in DosgamesListView
-
-class DosGamesPageNumberPagination(PageNumberPagination):
-    page_size = 18
-    max_page_size = page_size
-    #page_size_query_param = 'page_size'    
-
-class PublisherPageNumberPagination(PageNumberPagination):
-    page_size = 20
-    max_page_size = page_size
-
-# our views
+MAX_PUBLISHER_RESULTS_LISTVIEW = 20 # max number of publishers in PublisherListView 
 
 class HomeView(ListView): 
     template_name = 'dosgame_listview.html'
@@ -36,6 +23,26 @@ class DosGameDetailView(DetailView):
     template_name = 'dosgame_detailview.html'
     model = DosGame
     context_object_name = 'dosgame'
+
+class PublisherListView(ListView): 
+    template_name = 'publisher_listview.html'
+    context_object_name = 'publishers'
+    paginate_by = MAX_PUBLISHER_RESULTS_LISTVIEW      # pleasantly surprised that pagination is already built in to ListView
+    queryset = Publisher.objects.all()   
+
+
+# old API views to be removed
+
+# our pagination mixin classes - This is how you cusomize the page_sizes for pagination styles
+
+class DosGamesPageNumberPagination(PageNumberPagination):
+    page_size = 18
+    max_page_size = page_size
+    #page_size_query_param = 'page_size'    
+
+class PublisherPageNumberPagination(PageNumberPagination):
+    page_size = 20
+    max_page_size = page_size
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    
