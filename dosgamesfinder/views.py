@@ -34,8 +34,8 @@ class HomeView(ListView):
 
 class DosGameDetailView(DetailView):
     template_name = 'dosgame_detailview.html'
-#    model = DosGame
-#    context_object_name = 'dosgame'
+    model = DosGame
+    context_object_name = 'dosgame'
 
 class DosGameList(generics.ListAPIView):
     pagination_class = DosGamesPageNumberPagination     # see how you can set pagination styles,    

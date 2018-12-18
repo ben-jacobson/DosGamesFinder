@@ -1,33 +1,39 @@
 {% extends 'base.html' %}
 
-{% block page-title %}{{ page_title }}{% endblock %}
+{% block page-title %}{{ dosgame.title }}{% endblock %}
 
 {% block main-content %}
     <div class='row detailView-margin'>
         <div class='col-sm-8'>
-            <h1><%= title %></h1 >
-            <p class="detail-year-released">Released - <%= year_released %><p>
-            <p class="detail-publisher-and-date font-weight-light">Publisher - <a href='/#publisher/<%= publisher.slug %>'><%= publisher.name %></a></p>
-            <p class='detail-genre'>Genre - <a href='/#genre/<%= genre.slug %>'><%= genre.name %></a></p>
-            <!-- p class="detail-user-rating">User Rating - <%= user_rating %></p -->
-            <p><%= long_description %></p>
+            <h1>{{ dosgame.title }}</h1 >
+            <p class="detail-year-released">Released - {{ dosgame.year_released }}<p>
+            <p class="detail-publisher-and-date font-weight-light">Publisher - <a href='#'>{{ dosgame.publisher }} </a></p>
+            <p class='detail-genre'>Genre - <a href='#'>{{ dosgame.genre }}</a></p>
+            <!-- p class="detail-user-rating">User Rating - {{ dosgame.user_rating }}</p -->
+            <p>
+                {% autoescape off %}
+                    {{ dosgame.long_description }}
+                {% endautoescape %}</p>
+
             <h5>Download From</h5>
-            <% if (download_locations.length == 0) { %>
+            {% if not dosgame.download_locations.all %}
                 <p>Sorry, we don't have links for this game yet. Please check back later.</p>
-            <% } %>
+            {% else %}
             <ul>
-                <% _.each(download_locations, function(download_location) { %>
-                    <li><p class='download-location'><a href='{{ MEDIA_URL }}<%= download_location.href %>'><%= download_location.name %></a></p></li>
-                <% }); %>
+                {% for download_location in dosgame.download_locations.all %}
+                    <li><p class='download-location'><a href='{{ MEDIA_URL }}{{ download_location.href }}'>{{ download_location.name }}</a></p></li>
+                {% endfor %}
             </ul>
+            {% endif %}
         </div>
         <div class='col-sm-4'>
-            <% if (screenshots.length == 0) { %>
-                <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}<%= thumbnail_src %>" alt="<%= title %> screenshot">
-            <% } %>
-            <% _.each(screenshots, function(screenshot) { %>
-                <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}<%= screenshot.img_src %>" alt="<%= title %> screenshot">
-            <% }); %>  
+            {% if not dosgame.screenshots.all %}
+                <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}{{ dosgame.thumbnail_src }}" alt="{{ dosgame.title }} screenshot">
+            {% else %}
+                {% for screenshot in dosgame.screenshots.all%}
+                    <img class='detailView-screenshot' width=320 height=200 src="{{ MEDIA_URL }}{{ screenshot.img_src }}" alt="{{ dosgame.title }} screenshot">
+                {% endfor %}
+            {% endif %}  
         </div>
     </div>
 {% endblock %}        
