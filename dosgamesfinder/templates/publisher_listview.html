@@ -4,8 +4,8 @@
 
 {% block main-content %}
     <ul class='publisher-listview-container'>
-        <% _.each(publishers, function(pub) { %>
-            <li><p class='publisher'><a href='/#publisher/<%= pub.slug %>'><%= pub.name %></a></p></li>
-        <% }); %>
+        {% for publisher in publishers %}
+            <li><p class='publisher'><a href='#'>{{ publisher.name }}</a></p></li>
+        {% endfor %}
     </ul>
 {% endblock %}

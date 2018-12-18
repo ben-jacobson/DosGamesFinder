@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
+from django.conf import settings
 
-from .base import create_test_publisher, create_test_genre, create_test_dosgame, test_objects_mixin
+from .base import create_test_publisher, create_test_genre, create_test_dosgame, create_test_screenshot, create_test_download_location, test_objects_mixin
 
 from dosgamesfinder.views import MAX_DOSGAME_RESULTS_LISTVIEW, MAX_PUBLISHER_RESULTS_LISTVIEW
 
@@ -361,6 +362,10 @@ class GenreDetailViewPermissionTests(test_objects_mixin, TestCase):
         self.assertEqual(response.status_code, HTTP_NOT_ALLOWED)
                
 class DosGamesListViewTests(test_objects_mixin, TestCase):
+    def test_response_code(self):
+        response = self.client.get(reverse('dosgame_listview'))
+        self.assertEqual(response.status_code, HTTP_OK)
+
     def test_view_uses_template(self):
         response = self.client.get(reverse('dosgame_listview'))
         self.assertTemplateUsed(response, 'dosgame_listview.html')        
@@ -381,7 +386,22 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
         results_on_page = len(response.context['dosgames_list'])
         self.assertEqual(results_on_page, MAX_DOSGAME_RESULTS_LISTVIEW)
 
+    def test_dosgame_list_rendered(self):
+        # we already have one test object, for this test, we'll create another 2, so as to test that pagination only returns the first 18 results. 
+        for i in range(2):
+            create_test_dosgame(title=str(i), publisher=self.test_publisher, genre=self.test_genre)
+
+        response = self.client.get(reverse('dosgame_listview'))
+        self.assertContains(response, '0')    
+        self.assertContains(response, '1')        
+        self.assertContains(response, 'FooBar Adventures')        
+
 class DosGamesDetailViewTests(test_objects_mixin, TestCase):
+    def test_response_code(self):
+        test_slug = self.test_dosgame.slug
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
+        self.assertEqual(response.status_code, HTTP_OK)
+
     def test_view_uses_template(self):
         test_slug = self.test_dosgame.slug
         response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
@@ -393,7 +413,36 @@ class DosGamesDetailViewTests(test_objects_mixin, TestCase):
         # test that the context objects appears and contains our test game
         self.assertEqual(self.test_dosgame, response.context['dosgame'])   
 
+    def test_message_rendered_when_no_download_locations(self):
+        test_slug = self.test_dosgame.slug
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
+        self.assertContains(response, "Sorry, we don't have links for this game yet. Please check back later.")        
+
+    def test_download_locations_rendered(self):
+        test_slug = self.test_dosgame.slug
+        test_download_location = create_test_download_location(game=self.test_dosgame)
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
+        self.assertContains(response, f'<a href=\'{settings.MEDIA_URL}{test_download_location.href}')     
+
+    def test_thumbnail_rendered_when_no_screenshots(self):
+        test_slug = self.test_dosgame.slug
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
+        self.assertContains(response, f'{self.test_dosgame.title} screenshot')
+        self.assertContains(response, f'src="{settings.MEDIA_URL}{self.test_dosgame.thumbnail_src}')     
+
+    def test_screenshot_rendering(self):
+        test_slug = self.test_dosgame.slug
+        create_test_screenshot(game=self.test_dosgame)
+        response = self.client.get(reverse('dosgame_detailview', kwargs={'slug': test_slug}))
+        self.assertContains(response, f'{self.test_dosgame.title} screenshot')
+        screenshot_src = self.test_dosgame.screenshots.all().first()
+        self.assertContains(response, f'src="{settings.MEDIA_URL}{screenshot_src}')     
+
 class PublisherListViewTests(test_objects_mixin, TestCase):
+    def test_response_code(self):
+        response = self.client.get(reverse('publisher_listview'))
+        self.assertEqual(response.status_code, HTTP_OK)
+
     def test_view_uses_template(self):
         response = self.client.get(reverse('publisher_listview'))
         self.assertTemplateUsed(response, 'publisher_listview.html') 
@@ -411,3 +460,14 @@ class PublisherListViewTests(test_objects_mixin, TestCase):
         response = self.client.get(reverse('publisher_listview'))
         results_on_page = len(response.context['publishers'])
         self.assertEqual(results_on_page, MAX_PUBLISHER_RESULTS_LISTVIEW)        
+
+    def test_publisher_list_rendered(self):
+        # we already have one test object, for this test, we'll create another 30, so as to test that pagination only returns the first 10 results or so. 
+        for i in range(5):
+            create_test_publisher(name=str(i))
+
+        response = self.client.get(reverse('publisher_listview'))
+        self.assertContains(response, 'Test Software')
+
+        for i in range(5):
+            self.assertContains(response, str(i))
