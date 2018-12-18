@@ -380,3 +380,17 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
         response = self.client.get(reverse('home'))
         results_on_page = len(response.context['dosgames_list'])
         self.assertEqual(results_on_page, MAX_DOSGAME_RESULTS_LISTVIEW)
+
+class DosGamesDetailViewTests(test_objects_mixin, TestCase):
+    def test_view_uses_template(self):
+        #response = self.client.get(reverse('home'))
+        #self.assertTemplateUsed(response, 'dosgame_listview.html') 
+        self.fail('finish the test')       
+
+    def test_context_object_list_is_passed_to_template(self):
+        #response = self.client.get(reverse('home'))
+        # test that page title appears in context         
+        #self.assertEqual(response.context['page_title'], 'Games List A-Z') 
+        # test that the dosgames_list context objects appears and contains our test game
+        #self.assertIn(self.test_dosgame, response.context['dosgames_list'])   
+        self.fail('finish the test')       

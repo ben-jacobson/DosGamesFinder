@@ -3,10 +3,8 @@ DosGamesFinder todo list
 Current release - v0.1
 
 v0.2 (Altering the project to serve pages statically)
-- When using template view, what default template tags are available? and how much of the class will we need to 
-  re write so that we can get our 3 column mode, 2 rows and an ad break structure to stay the same? 
+- Can we write a mixin for providing context to the base template? 
 - Port template for DosGameListView
-    - page/browser title ports + browser title - page title needs to be driven by context into template
     - navigation port - write context+template for genre drop down menu
     - pagination port - write context+template for pagination if necessary
 - Port template for DosGameDetailView

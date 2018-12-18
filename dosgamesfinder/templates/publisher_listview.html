@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block page-title %}{{ page_title }}{% endblock %}
+
+{% block main-content %}
+    <ul class='publisher-listview-container'>
+        <% _.each(publishers, function(pub) { %>
+            <li><p class='publisher'><a href='/#publisher/<%= pub.slug %>'><%= pub.name %></a></p></li>
+        <% }); %>
+    </ul>
+{% endblock %}
