@@ -8,25 +8,9 @@
         <h1>{{ page_title }}</h1>
     </div>
 </div>
-<div id='appWindow' class='container listing'>
-    {% if is_paginated %}
-        <nav aria-label="Page Numbers">
-            <ul class="pagination justify-content-center">
-                <li class="page-item{% if not page_obj.has_previous %} disabled{% endif %}">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Prev</a>
-                </li>
-                {% for i in paginator.page_range %}
-                    <li class="d-none d-sm-block page-item{% if page_obj.number == i %} active{% endif %}">
-                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
-                <li class="page-item{% if not page_obj.has_next %} disabled{% endif %}">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    {% endif %}
 
+<div id='appWindow' class='container listing'>
+    {% if is_paginated %}{% include "pagination.html" %}{% endif %}
     {% if dosgames_list %}
         <div class="row games-list-row">
         {% for dosgame in dosgames_list %}
@@ -69,12 +53,8 @@
             {% endif %}
             
         {% endfor %}
-    {% endif %}        
-
-
-    {% if is_paginated %}
-        <h1>PAGINATION</h1>
-    {% endif %}
+    {% endif %}       
 </div>
+{% if is_paginated %}{% include "pagination.html" %}{% endif %} 
 
 {% endblock %}
