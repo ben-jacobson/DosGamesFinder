@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
-{% block page-title %}{{ page_title }}{% endblock %}
+{% block page-title %}Publishers{% endblock %}
 
 {% block main-content %}
+    {% if is_paginated %}{% include "pagination.html" %}{% endif %}
     <ul class='publisher-listview-container'>
         {% for publisher in publishers %}
             <li><p class='publisher'><a href='#'>{{ publisher.name }}</a></p></li>
         {% endfor %}
     </ul>
+    {% if is_paginated %}{% include "pagination.html" %}{% endif %}
 {% endblock %}
