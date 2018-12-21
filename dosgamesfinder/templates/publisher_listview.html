@@ -6,7 +6,7 @@
     {% if is_paginated %}{% include "pagination.html" %}{% endif %}
     <ul class='publisher-listview-container'>
         {% for publisher in publishers %}
-            <li><p class='publisher'><a href='#'>{{ publisher.name }}</a></p></li>
+            <li><p class='publisher'><a href='/publisher/{{ publisher.slug }}'>{{ publisher.name }}</a></p></li>
         {% endfor %}
     </ul>
     {% if is_paginated %}{% include "pagination.html" %}{% endif %}

@@ -11,7 +11,7 @@ HTTP_OK = 200
 HTTP_NOT_ALLOWED = 405
 HTTP_NOT_FOUND = 404
 
-class LayoutAndStylingTest(TestCase):
+class LayoutAndStylingTest(test_objects_mixin, TestCase):
     def test_static_files_have_been_passed_to_browser(self):
         ''' 
         Unit Test - Test that the JS script tags and CSS href tags have been rendered in the browser 
@@ -28,6 +28,10 @@ class LayoutAndStylingTest(TestCase):
         # each and every one of these lines should appear in the response HTML
         for line in expected_lines:
             self.assertContains(response, line)
+
+    def test_context_processor_returns_genre_for_dropdown_menu(self):
+        response = self.client.get(reverse('dosgame_listview'))
+        self.assertContains(response, self.test_genre.name)
 
 class SerializerListViewTests(test_objects_mixin, TestCase):
     def test_dosgame_listview_returns_list(self):
@@ -410,6 +414,45 @@ class DosGamesListViewTests(test_objects_mixin, TestCase):
         response = self.client.get(reverse('dosgame_listview'))
         self.assertContains(response, pagination_string)        
 
+    def test_listview_genre_filtering(self):
+        test_genre_one = create_test_genre(name='Shooter')
+        test_genre_two = create_test_genre(name='Beat Em Up')
+        test_shooter_game_one = create_test_dosgame(publisher=self.test_publisher, genre=test_genre_one, title='Shooter game A')
+        test_shooter_game_two = create_test_dosgame(publisher=self.test_publisher, genre=test_genre_one, title='Shooter game B')
+        test_beatemup_game_one = create_test_dosgame(publisher=self.test_publisher, genre=test_genre_two, title='Beat em up game A')
+        test_beatemup_game_two = create_test_dosgame(publisher=self.test_publisher, genre=test_genre_two, title='Beat em up game B')
+
+        response = self.client.get(reverse('genre_filter', kwargs={'slug': test_genre_one.slug}))
+        self.assertContains(response, test_shooter_game_one.title)
+        self.assertContains(response, test_shooter_game_two.title)
+        self.assertNotContains(response, test_beatemup_game_one.title)
+        self.assertNotContains(response, test_beatemup_game_two.title)
+
+        response = self.client.get(reverse('genre_filter', kwargs={'slug': test_genre_two.slug}))
+        self.assertNotContains(response, test_shooter_game_one.title)
+        self.assertNotContains(response, test_shooter_game_two.title)
+        self.assertContains(response, test_beatemup_game_one.title)
+        self.assertContains(response, test_beatemup_game_two.title)
+
+    def test_listview_publisher_filtering(self):
+        test_publisher_one = create_test_publisher(name='Pub One')
+        test_publisher_two = create_test_publisher(name='Pub Two')
+        test_pubone_game_one = create_test_dosgame(publisher=test_publisher_one, genre=self.test_genre, title='Game A')
+        test_pubone_game_two = create_test_dosgame(publisher=test_publisher_one, genre=self.test_genre, title='Game B')
+        test_pubtwo_game_one = create_test_dosgame(publisher=test_publisher_two, genre=self.test_genre, title='Game C')
+        test_pubtwo_game_two = create_test_dosgame(publisher=test_publisher_two, genre=self.test_genre, title='Game D')
+
+        response = self.client.get(reverse('publisher_filter', kwargs={'slug': test_publisher_one.slug}))
+        self.assertContains(response, test_pubone_game_one.title)
+        self.assertContains(response, test_pubone_game_two.title)
+        self.assertNotContains(response, test_pubtwo_game_one.title)
+        self.assertNotContains(response, test_pubtwo_game_two.title)
+
+        response = self.client.get(reverse('publisher_filter', kwargs={'slug': test_publisher_two.slug}))
+        self.assertNotContains(response, test_pubone_game_one.title)
+        self.assertNotContains(response, test_pubone_game_two.title)
+        self.assertContains(response, test_pubtwo_game_one.title)
+        self.assertContains(response, test_pubtwo_game_two.title)
 
 class DosGamesDetailViewTests(test_objects_mixin, TestCase):
     def test_response_code(self):
