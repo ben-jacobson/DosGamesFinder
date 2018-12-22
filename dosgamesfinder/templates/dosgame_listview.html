@@ -23,14 +23,14 @@
                     </div>
                     <div class="card-body">
                         <h4 class="card-title"><a href='/game/{{ dosgame.slug }}'>{{ dosgame.title }}</a></h4>
-                        <p class='card-genre'><a href='/#'>{{ dosgame.genre }}</a></p>
+                        <p class='card-genre'><a href='/genre/{{ dosgame.genre.slug }}'>{{ dosgame.genre }}</a></p>
                         <p class="card-text">
                             {% autoescape off %}
                                 {{ dosgame.short_description }}
                             {% endautoescape %}
                         </p>
                         <p class="card-publisher-and-date font-weight-light"></p>
-                            <a href='#'>{{ dosgame.publisher }}</a>
+                            <a href='/publisher/{{ dosgame.publisher.slug }}'>{{ dosgame.publisher }}</a>
                         {{ dosgame.year_released }}
                         </p>
                         <!-- p class="card-user-rating">{{ dosgame.user_rating }}</p -->

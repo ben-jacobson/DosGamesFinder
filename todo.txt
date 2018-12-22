@@ -3,18 +3,7 @@ DosGamesFinder todo list
 Current release - v0.1
 
 v0.2 (Altering the project to serve pages statically)
-- Can we write a mixin for providing context to the base template? 
-- Port template for DosGameListView
-    - navigation port - write context+template for genre drop down menu
-    - pagination port - write context+template for pagination if necessary
-- Port template for PublisherListView
-- Create new URL pathways for static served pages and create class based views for new static served pages
-- Write new unit tests for new class based views
-    - check that styling exists
-    - check that 3 columns appear on dosgames listview
-    - check that ad is served after 2 rows of 3 columns on dosgames listview
 - Write functional tests for all new views
-- Set up queries for filtering genre, publisher
 - Disable Django Rest API
 
 v0.3
