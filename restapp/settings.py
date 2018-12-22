@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',    
     'dosgamesfinder',
 ]
 
@@ -128,26 +127,3 @@ USE_TZ = True
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
 STATIC_URL = '/static/'
 MEDIA_URL = 'https://s3.amazonaws.com/dosgamesfinder/'
-
-# Django REST Framework settings
-
-REST_FRAMEWORK = {
-    # Pagination can be set globally here, or can be set locally per view
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 18,    # in our app, pagination of 18 allows for 6 rows of 3, which allows for 2 ads to be served
-
-    'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ),
-
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '200/day',
-        'user': '2000/day'
-    }, 
-
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',        
-    )    
-}  

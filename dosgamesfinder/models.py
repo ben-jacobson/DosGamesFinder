@@ -12,7 +12,7 @@ class Publisher(models.Model):
         super(Publisher, self).save(*args, **kwargs)
     
     def get_absolute_url(self):
-        return reverse('PublisherDetailView', kwargs={'slug': self.slug})
+        return reverse('publisher_filter', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
@@ -35,7 +35,7 @@ class Genre(models.Model):
         super(Genre, self).save(*args, **kwargs)
     
     def get_absolute_url(self):
-        return reverse('GenreDetailView', kwargs={'slug': self.slug})
+        return reverse('genre_filter', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
@@ -82,7 +82,7 @@ class DosGame(models.Model):
             self.short_description = truncated_string
 
     def get_absolute_url(self):
-        return reverse('DosGamesDetailView', kwargs={'slug': self.slug})
+        return reverse('dosgame_detailview', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title

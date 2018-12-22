@@ -130,7 +130,7 @@ class DosGameModelTests(test_objects_mixin, TestCase):
     def test_get_absolute_url(self):
         test_name = 'Make this a url'
         test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title=test_name)
-        self.assertEqual(test_dosgame.get_absolute_url(), '/api/dosgames/make-this-a-url/')
+        self.assertEqual(test_dosgame.get_absolute_url(), '/game/make-this-a-url')
 
     def test_create_model_creates_short_description(self):
         # our long test string is 445 characters in length
@@ -241,7 +241,7 @@ class PublisherModelTests(test_objects_mixin, TestCase):
     def test_get_absolute_url(self):
         test_name = 'Make this a url'
         test_publisher = create_test_publisher(name=test_name)
-        self.assertEqual(test_publisher.get_absolute_url(), '/api/publishers/make-this-a-url/')
+        self.assertEqual(test_publisher.get_absolute_url(), '/publisher/make-this-a-url')
 
     def test_games_by_this_publisher(self):
         create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='a')
@@ -299,7 +299,7 @@ class GenreModelTests(test_objects_mixin, TestCase):
     def test_get_absolute_url(self):
         test_name = 'Make this a url'
         test_genre = create_test_genre(name=test_name)
-        self.assertEqual(test_genre.get_absolute_url(), '/api/genres/make-this-a-url/')    
+        self.assertEqual(test_genre.get_absolute_url(), '/genre/make-this-a-url')    
 
     def test_games_in_this_genre(self):
         create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre, title='a')
