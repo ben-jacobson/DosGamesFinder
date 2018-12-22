@@ -3,6 +3,12 @@
 {% block page-title %}Publishers{% endblock %}
 
 {% block main-content %}
+    <div id='appTitle' class="row page-header">
+        <div class='page-title col-sm-12'>
+            <h1>All Publishers</h1>
+        </div>
+    </div>
+
     {% if is_paginated %}{% include "pagination.html" %}{% endif %}
     <ul class='publisher-listview-container'>
         {% for publisher in publishers %}
