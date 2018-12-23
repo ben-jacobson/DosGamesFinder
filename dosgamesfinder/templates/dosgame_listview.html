@@ -12,49 +12,55 @@
 <div id='appWindow' class='container listing'>
     {% if is_paginated %}{% include "pagination.html" %}{% endif %}
     {% if dosgames_list %}
-        <div class="row games-list-row">
+    <div class="row games-list-row">
         {% for dosgame in dosgames_list %}
-            {% comment %} Game Card {% endcomment %}
-            <div class="col-sm-4">
-                <div class="game-listview card">
-                    <div class='listView-img-placeholder'>
-                        <a href='/game/{{ dosgame.slug }}'><img class="card-img-top rounded listView-screenshot" src="{{ MEDIA_URL }}{{ dosgame.thumbnail_src }}"
-                                alt="{{ dosgame.title }} Screenshot"></a>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title"><a href='/game/{{ dosgame.slug }}'>{{ dosgame.title }}</a></h4>
-                        <p class='card-genre'><a href='/genre/{{ dosgame.genre.slug }}'>{{ dosgame.genre }}</a></p>
-                        <p class="card-text">
-                            {% autoescape off %}
-                                {{ dosgame.short_description }}
-                            {% endautoescape %}
-                        </p>
-                        <p class="card-publisher-and-date font-weight-light"></p>
-                            <a href='/publisher/{{ dosgame.publisher.slug }}'>{{ dosgame.publisher }}</a>
+        {% comment %} Game Card {% endcomment %}
+        <div class="col-sm-4">
+            <div class="game-listview card">
+                <div class='listView-img-placeholder'>
+                    <a href='/game/{{ dosgame.slug }}'><img class="card-img-top rounded listView-screenshot" src="{{ MEDIA_URL }}{{ dosgame.thumbnail_src }}"
+                            alt="{{ dosgame.title }} Screenshot"></a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title"><a href='/game/{{ dosgame.slug }}'>{{ dosgame.title }}</a></h4>
+                    <p class='card-genre'><a href='/genre/{{ dosgame.genre.slug }}'>{{ dosgame.genre }}</a></p>
+                    <p class="card-text">
+                        {% autoescape off %}
+                        {{ dosgame.short_description }}
+                        {% endautoescape %}
+                    </p>
+                    <p class="card-publisher-and-date font-weight-light">
+                        <a href='/publisher/{{ dosgame.publisher.slug }}'>{{ dosgame.publisher }}</a>
                         {{ dosgame.year_released }}
-                        </p>
-                        <!-- p class="card-user-rating">{{ dosgame.user_rating }}</p -->
-                    </div>
+                    </p>
+                    <!-- p class="card-user-rating">{{ dosgame.user_rating }}</p -->
                 </div>
             </div>
+        </div>
 
-            {% comment %} Every 3 columns, put end the row and start a new row {% endcomment %}
-            {% if forloop.counter|divisibleby:"3" %}
-                </div><div class="row games-list-row">                        
-            {% endif %}
+        {% comment %} Every 3 columns, put end the row and start a new row {% endcomment %}
+        {% if forloop.counter|divisibleby:"3" %}
+    </div>
+    <div class="row games-list-row">
+        {% endif %}
 
-            {% comment %} Every 2 rows, serve the ad {% endcomment %}
-            {% if forloop.counter|divisibleby:"6" %}
-                </div><div class="row text-center ad-break">
-                    <div class="col-sm-12">   
-                        <img src="https://via.placeholder.com/728x90"> 
-                    </div>
-                </div><div class="row games-list-row">                        
-            {% endif %}
-            
+        {% comment %} Every 2 rows, serve the ad {% endcomment %}
+        {% if forloop.counter|divisibleby:"6" %}
+    </div>
+    <div class="row text-center ad-break">
+        <div class="d-none d-sm-block col-sm-12">
+            <img class='img-fluid' src="https://via.placeholder.com/728x90" />
+        </div>
+        <div class="d-block d-sm-none col-sm-12">
+            <img class='img-fluid' src="https://via.placeholder.com/250x250" />
+        </div>
+    </div>
+    <div class="row games-list-row">
+        {% endif %}
+
         {% endfor %}
-    {% endif %}       
+        {% endif %}
+    </div>
+    {% if is_paginated %}{% include "pagination.html" %}{% endif %}
 </div>
-{% if is_paginated %}{% include "pagination.html" %}{% endif %} 
-
 {% endblock %}
