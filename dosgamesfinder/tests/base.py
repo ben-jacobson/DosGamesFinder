@@ -89,9 +89,5 @@ class test_objects_mixin():
         self.test_publisher = create_test_publisher()
         self.test_genre = create_test_genre()
         self.test_dosgame = create_test_dosgame(publisher=self.test_publisher, genre=self.test_genre)
-        
-        self.test_dosgame_slug = {'slug': self.test_dosgame.slug}
-        self.test_publisher_slug = {'slug': self.test_publisher.slug}    
-        self.test_genre_slug = {'slug': self.test_genre.slug}
     
 
