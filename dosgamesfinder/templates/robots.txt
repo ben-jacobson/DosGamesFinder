@@ -1,0 +1,5 @@
+Sitemap: http://www.dosgamesfinder.com/sitemap.xml
+
+User-Agent: *
+Disallow: 
+Disallow: /admin/

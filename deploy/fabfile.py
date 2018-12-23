@@ -76,12 +76,6 @@ server {{
     if exists(f'/etc/nginx/sites-enabled/{domain}'):        # delete any old symbolic link if needed
         run(f'sudo rm /etc/nginx/sites-enabled/{domain}')
     run(f'sudo ln /etc/nginx/sites-available/{domain} /etc/nginx/sites-enabled/{domain}')
-    
-
-'''def _start_gunicorn(site_folder, app_name): # we can't actually use this one, because fabric expects a return value.
-    with cd(site_folder):
-        run(f'gunicorn {app_name}.wsgi:application')    # gunicorn restapp.wsgi:application
-'''
 
 def _install_postgres():
     ### todo - install postgresql
@@ -112,7 +106,7 @@ def _alter_django_settings_py(server_secrets):
     settings_file = remote_home_folder + '/restapp/settings.py'
 
     # alter the secret key
-    chars  = 'abcdefghijklmnopqrstuvwxyz0123456789@#$%&*(-_=+)'           # used as array of usable characters
+    chars  = 'abcdefghijklmnopqrstuvwxyz0123456789'           # used as array of usable characters
     key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))   # generate a 50 char string of random letters from the list of usable characters
     #print(f'key:  {key}')
     run(f'sed -i.bak -r -e "s/SECRET_KEY = \'.+\'/SECRET_KEY = \'{key}\'/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
@@ -126,7 +120,7 @@ def _alter_django_settings_py(server_secrets):
 
     # remove the line that allows users to browser the API. Just comment it out. Again, SED has issues with single quotes unless run from CLI
     #sed(settings_file, "'rest_framework.renderers.BrowsableAPIRenderer',", "#'rest_framework.renderers.BrowsableAPIRenderer',")
-    run(f'sed -i.bak -r -e "s/\'rest_framework.renderers.BrowsableAPIRenderer\',/#\'rest_framework.renderers.BrowsableAPIRenderer\',/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
+    #run(f'sed -i.bak -r -e "s/\'rest_framework.renderers.BrowsableAPIRenderer\',/#\'rest_framework.renderers.BrowsableAPIRenderer\',/g" "$(echo /home/ubuntu/sites/dosgamesfinder/restapp/settings.py)"')  # normally, we'd use the sed command, however this gets really confused with single quotes. To get around this, we've just run sed ourselves and run everything in double quotes
 
     # alter the database object - it's too fiddly to replace the existing object, instead we'll append to end of file which should overload
     database_object = f"""

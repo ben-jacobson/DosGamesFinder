@@ -1,23 +1,18 @@
 DosGamesFinder todo list
 
-Current release - v0.1
+Current release - v0.2
 
-v0.2 (Altering the project to serve pages statically)
-
-v0.3
-- Write functional tests for all new views
+v0.8
+- Fix bug where ad appears too wide in mobile view
 - Hook up adsense to page
-- Implement the search bar
-- Create a robots.txt file for site
-- Create a sitemap.xml file for site
-- Implement throttling and look at locust.io to do load testing (not just for load balancing, but to test API throttling too)
-
-v0.4
+- Implement throttling and look at locust.io to do load testing
 - Go back and write some functional tests, then set up Jenkins for CI
 - Set up affiliate links to GOG
 - Would it be possible to set up affiliate links to places that sell physical box copies? 
 
-v0.5
+v1.0 (full release)
+- Implement the search bar
 - Do we need to implement any caching
 - Implement the user rating system
 - Implement the year released filters and drop down menu
+- Scrape wikipedia for a more complete set of dos games
