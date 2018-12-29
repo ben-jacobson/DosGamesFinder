@@ -4,7 +4,6 @@ from selenium import webdriver
 #from datetime import datetime
 #from django.utils import timezone
 from dosgamesfinder.tests.base import create_test_publisher, create_test_genre, create_test_dosgame, create_test_screenshot, create_test_download_location
-
 #from time import sleep
 
 MAX_WAIT = 10 # 10 second max wait
@@ -54,3 +53,58 @@ class FunctionalTest(StaticLiveServerTestCase):
 class LayoutAndStylingTest(FunctionalTest):
     def test_layout_and_styling(self):
         self.fail('finish the test')
+
+class HomePageTests(FunctionalTest):
+    def test_visit_home_page_and_test_genre_dropdown(self):
+        # ensure that the genre dropdown menu works
+        pass
+
+    def test_visit_home_page_and_visit_game_page(self):
+        # ensure that you can click on a game from the home page
+
+        # check that you can click the link
+        # check that you can click on the image
+        pass
+
+    def test_game_card_links_to_genre(self):
+        # ensure that the game cards have working link to a genre filter from the home page
+        pass
+
+    def test_game_card_links_to_publisher_filter(self):
+        # ensure that the game cards have working link to a publisher filter from the home page
+        pass
+
+    def test_visit_home_page_pagination(self):
+        # check that you can click on next page
+        # check that you can click on a page number
+        # check that you can click on prev page 
+        pass
+
+    def test_visit_home_page_and_visit_publisher_page(self):
+        # does the right title appear? 
+        # do the right publishers appear?
+        pass
+    
+    def test_visit_home_page_and_filter_by_genre(self):
+        # does the right title appear
+        # do the right games appear? 
+        pass
+
+class GamePageTests(FunctionalTest):
+    def test_visit_game_page_and_test_screenshots(self): 
+        # when you visit a game page directly, do the screenshots appear? 
+        pass
+
+    def test_visit_game_page_and_download_game(self): 
+        # when you visit a game page directly, do download_links_appear? 
+        pass
+
+    def test_visit_game_page_logo_and_all_games_returns_to_homepage(self):
+        # when on a game page, can you click on game logo and go back to home page?
+        # when on a game page, can you click on 'all games'
+        pass
+
+class PublisherPageTests(FunctionalTest):
+    def test_visit_publisher_page_and_select_a_publisher_filter(self):
+        # visit publisher page, click a publisher, do the right games appear? 
+        pass
