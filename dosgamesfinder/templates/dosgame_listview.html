@@ -22,7 +22,7 @@
                             alt="{{ dosgame.title }} Screenshot"></a>
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title"><a href='/game/{{ dosgame.slug }}'>{{ dosgame.title }}</a></h4>
+                    <h4 class="game-title card-title"><a class='game-title-link' href='/game/{{ dosgame.slug }}'>{{ dosgame.title }}</a></h4>
                     <p class='card-genre'><a href='/genre/{{ dosgame.genre.slug }}'>{{ dosgame.genre }}</a></p>
                     <p class="card-text">
                         {% autoescape off %}

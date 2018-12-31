@@ -1,8 +1,5 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from datetime import datetime
-#from django.utils import timezone
 from dosgamesfinder.tests.base import create_test_publisher, create_test_genre, create_test_dosgame, create_test_screenshot, create_test_download_location
 #from time import sleep
 
@@ -15,8 +12,8 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.set_page_load_timeout(MAX_WAIT)
 
         # create 2 test genres
-        self.test_action_genre = create_test_genre(name='action')
-        self.test_adventure_genre = create_test_genre(name='adventure')
+        self.test_action_genre = create_test_genre(name='Action')
+        self.test_adventure_genre = create_test_genre(name='Adventure')
 
         # create 2 test publishers
         self.test_publisher_test_soft = create_test_publisher(name='Test Soft Inc')
@@ -61,15 +58,43 @@ class LayoutAndStylingTest(FunctionalTest):
 
 class HomePageTests(FunctionalTest):
     def test_visit_home_page_and_test_genre_dropdown(self):
-        # ensure that the genre dropdown menu works
-        self.fail('finish the test')
+        # user visits the home page and clicks on the genre drop down menu
+        self.browser.get(self.live_server_url)
+
+        genre_dropdown = self.browser.find_element_by_id('GenreNavbarDropdown')
+        genre_dropdown.click()
+
+        # user notices that there are only 2 genres, as we have only created two in our class constructor
+        genre_filter_buttons = self.browser.find_elements_by_class_name('dropdown-item')
+        self.assertEqual(2, len(genre_filter_buttons))
+
+        # user clicks on the action filter
+        action_filter = str(self.test_action_genre.slug) + '-filter'
+        action_filter_button = self.browser.find_element_by_id(action_filter)
+        action_filter_button.click()
+
+        # user is redirected to the action filter, user notices that the title has changed to say "Action Games"
+        page_title = self.browser.find_element_by_tag_name('h1')
+        self.assertEqual('Action Games', page_title.text)
 
     def test_visit_home_page_and_visit_game_page(self):
-        # ensure that you can click on a game from the home page
+        # user visits the home page and sees a few games on the home page
+        self.browser.get(self.live_server_url)
+        listview_game_title = self.browser.find_element_by_class_name('game-title-link')
+        listview_game_title_text = listview_game_title.text
+        listview_game_title.click()
 
-        # check that you can click the link
-        # check that you can click on the image
-        self.fail('finish the test')
+        # user notices that they are taken to a detailview for the game, 
+        detailview_game_title = self.browser.find_element_by_tag_name('h1')
+        self.assertEqual(listview_game_title_text, detailview_game_title.text)        
+
+        # user goes back to the home page, instead of clicking on the page title, he clicks on the image 
+        self.browser.get(self.live_server_url)
+        listview_game_title = self.browser.find_element_by_class_name('listView-screenshot')
+        listview_game_title.click()
+
+        # user notices that they are taken to the same detailview for whatever game they have selected
+        self.assertIn('/game/', self.browser.current_url)
 
     def test_game_card_links_to_genre(self):
         # ensure that the game cards have working link to a genre filter from the home page
