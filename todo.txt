@@ -4,7 +4,6 @@ Current release - v0.2
 
 v0.8
 - Monetization - Hook up adsense
-- Admin - Go back and write some functional tests, then set up Jenkins for CI
 - Monetization - Set up affiliate links to GOG
 - Monetization - Would it be possible to set up affiliate links to places that sell physical box copies of the game? 
 

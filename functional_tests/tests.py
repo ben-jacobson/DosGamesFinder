@@ -28,11 +28,11 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.test_dosgame_f = create_test_dosgame(title='Fortune Finder', publisher=self.test_publisher_foobar_games, genre=self.test_action_genre)
 
         # to test pagination, we'll create a bunch of dummy anonoymous test games too. So as to keep our filtering tests clean, we'll create separate genre and publisher too.
-        test_publisher = create_test_publisher('Throwaway Games')
-        test_genre = create_test_genre('Shovelware')
+        self.test_publisher_throwaway_soft = create_test_publisher('Throwaway Games')
+        self.test_shovelware_genre = create_test_genre('Shovelware')
 
         for c in 'abcdefghijklmnopqrstuvwxyz1234567890': # Note that there are separate unit tests for testing the code that enables/disables pagination
-            create_test_dosgame(title=c, genre=test_genre, publisher=test_publisher)
+            create_test_dosgame(title=c, genre=self.test_shovelware_genre, publisher=self.test_publisher_throwaway_soft)
 
         # create a test screenshot for each game
         self.test_screenshot_a = create_test_screenshot(game=self.test_dosgame_a)
@@ -71,9 +71,9 @@ class HomePageTests(FunctionalTest):
         genre_dropdown = self.browser.find_element_by_id('GenreNavbarDropdown')
         genre_dropdown.click()
 
-        # user notices that there are only 2 genres, as we have only created two in our class constructor
+        # user notices that there are only 3 genres, as we have only created 3 in our class constructor
         genre_filter_buttons = self.browser.find_elements_by_class_name('dropdown-item')
-        self.assertEqual(2, len(genre_filter_buttons))
+        self.assertEqual(3, len(genre_filter_buttons))
 
         # user clicks on the action filter
         action_filter = str(self.test_action_genre.slug) + '-filter'
@@ -147,30 +147,87 @@ class HomePageTests(FunctionalTest):
         self.assertIn('/?page=2', self.browser.current_url)
         
     def test_visit_home_page_and_visit_publisher_page(self):
-        # does the right title appear? 
-        # do the right publishers appear?
-        self.fail('finish the test')
-    
+        # user visits the home page and clicks on the publisher filter button.
+        self.browser.get(self.live_server_url)        
+        self.browser.find_element_by_link_text('Publishers').click()
+        
+        # user notices that the url has changed and that the page title is "All Publishers"
+        self.assertIn('/publishers', self.browser.current_url)
+        self.assertEqual('All Publishers', self.browser.find_element_by_tag_name('h1').text)
+
+        # user notices 3 publishers on the page, 
+        self.assertEqual(self.test_publisher_throwaway_soft.name, self.browser.find_element_by_link_text(self.test_publisher_throwaway_soft.name).text)
+        self.assertEqual(self.test_publisher_foobar_games.name, self.browser.find_element_by_link_text(self.test_publisher_foobar_games.name).text)
+        self.assertEqual(self.test_publisher_test_soft.name, self.browser.find_element_by_link_text(self.test_publisher_test_soft.name).text)
+
     def test_visit_home_page_and_filter_by_genre(self):
-        # does the right title appear
-        # do the right games appear? 
-        self.fail('finish the test')
+        # user visits the home page and clicks on the genre filter button, selecting the action genre
+        self.browser.get(self.live_server_url)        
+        self.browser.find_element_by_link_text('Genres').click()
+        self.browser.find_element_by_link_text('Action').click()
+        
+        # user notices that the url has changed and that the page title is "All Publishers"
+        self.assertIn('/genre/action', self.browser.current_url)
+        self.assertEqual('Action Games', self.browser.find_element_by_tag_name('h1').text)
+
+        # user notices 4 games in the action genre 
+        self.assertEqual(self.test_dosgame_a.title, self.browser.find_element_by_link_text(self.test_dosgame_a.title).text)
+        self.assertEqual(self.test_dosgame_b.title, self.browser.find_element_by_link_text(self.test_dosgame_b.title).text)
+        self.assertEqual(self.test_dosgame_e.title, self.browser.find_element_by_link_text(self.test_dosgame_e.title).text)
+        self.assertEqual(self.test_dosgame_f.title, self.browser.find_element_by_link_text(self.test_dosgame_f.title).text)
 
 class GamePageTests(FunctionalTest):
-    def test_visit_game_page_and_test_screenshots(self): 
-        # when you visit a game page directly, do the screenshots appear? 
-        self.fail('finish the test')
+    def test_visit_game_page_and_test_screenshots(self):
+        # user visits a game page
+        detailview_url = self.live_server_url + '/game/' + self.test_dosgame_a.slug 
+        self.browser.get(detailview_url)        
 
-    def test_visit_game_page_and_download_game(self): 
-        # when you visit a game page directly, do download_links_appear? 
-        self.fail('finish the test')
+        # user notices that there are screenshots on the page
+        screenshots = self.browser.find_elements_by_class_name('detailView-screenshot')
+        self.assertGreater(len(screenshots), 0)
 
-    def test_visit_game_page_logo_and_all_games_returns_to_homepage(self):
-        # when on a game page, can you click on game logo and go back to home page?
-        # when on a game page, can you click on 'all games'
-        self.fail('finish the test')
+    def test_visit_game_page_and_view_download_links(self): 
+        # user visits a game page
+        detailview_url = self.live_server_url + '/game/' + self.test_dosgame_a.slug 
+        self.browser.get(detailview_url)        
+
+        # user notices that there are download locations listed on the page
+        download_locations = self.browser.find_elements_by_class_name('download-location')
+        self.assertGreater(len(download_locations), 0)
+
+    def test_visit_game_page_all_games_returns_to_homepage(self):
+        # user visits a game page
+        original_homepage_url = self.live_server_url + '/'
+        detailview_url = self.live_server_url + '/game/' + self.test_dosgame_a.slug 
+        self.browser.get(detailview_url)    
+        
+        # user clicks on the 'all games' button to return to the home page. 
+        self.browser.find_element_by_link_text('All Games').click()
+        self.assertEqual(self.browser.current_url, original_homepage_url)
+
+    def test_visit_game_page_navbar_logo_returns_to_homepage(self):
+        # user visits a game page
+        original_homepage_url = self.live_server_url + '/'
+        detailview_url = self.live_server_url + '/game/' + self.test_dosgame_a.slug 
+        self.browser.get(detailview_url)    
+        
+        # user clicks on the 'all games' button to return to the home page. 
+        self.browser.find_element_by_class_name('navbar-brand').click()
+        self.assertEqual(self.browser.current_url, original_homepage_url)        
 
 class PublisherPageTests(FunctionalTest):
     def test_visit_publisher_page_and_select_a_publisher_filter(self):
-        # visit publisher page, click a publisher, do the right games appear? 
-        self.fail('finish the test')
+        # user visits the publisher page
+        self.browser.get(self.live_server_url + '/publishers/')
+
+        # user selects on of the publishers and follows the link
+        self.browser.find_element_by_link_text(self.test_publisher_foobar_games.name).click()
+
+        # user notices that the page title now says something like 'Games by Foo Bar Games'
+        page_title = self.browser.find_element_by_tag_name('h1')
+        self.assertEqual(page_title.text, 'Games by ' + str(self.test_publisher_foobar_games.name))
+
+        # user sees that all the games that Foo Bar Games has ever developed can be found here. in this case. games d, e and f
+        self.assertEqual(self.test_dosgame_d.title, self.browser.find_element_by_link_text(self.test_dosgame_d.title).text)
+        self.assertEqual(self.test_dosgame_e.title, self.browser.find_element_by_link_text(self.test_dosgame_e.title).text)
+        self.assertEqual(self.test_dosgame_f.title, self.browser.find_element_by_link_text(self.test_dosgame_f.title).text)
