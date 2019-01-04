@@ -196,3 +196,38 @@ class PublisherListViewTests(test_objects_mixin, TestCase):
 
         for i in range(5):
             self.assertContains(response, str(i))
+
+class SearchBarTests(test_objects_mixin, TestCase):
+    # the search bar view makes use of the dosgame listview, there are only a small number of tests here so as to not duplicate any existing tests
+    def test_response_code(self):
+        response = self.client.get(reverse('search_listview', kwargs={'query': 'FooBar'}))
+        self.assertEqual(response.status_code, HTTP_OK)
+
+    def test_view_uses_template(self):
+        response = self.client.get(reverse('search_listview', kwargs={'query': 'FooBar'}))
+        self.assertTemplateUsed(response, 'dosgame_listview.html')     
+
+    def test_search_results(self):
+        # create a few additional games to test that search results are working correctly
+        response = self.client.get(reverse('search_listview', kwargs={'query': 'FooBar'}))
+        self.assertContains(response, self.test_dosgame.title)
+        self.fail('finish the test')
+
+    def test_search_results_provides_no_results_message(self):
+        self.fail('finish the test')
+
+    def test_context_object_list_is_passed_to_template(self):
+        #response = self.client.get(reverse('publisher_listview'))
+        # test that the publisher context objects appears and contains our test publisher
+        #self.assertIn(self.test_publisher, response.context['publishers']) 
+        self.fail('finish the test') 
+
+    def test_query_set_returns_paginated_results(self):
+        # we already have one test object, for this test, we'll create another 30, so as to test that pagination only returns the first 10 results or so. 
+        #for i in range(30):
+        #    create_test_publisher(name=str(i))
+
+        #response = self.client.get(reverse('publisher_listview'))
+        #results_on_page = len(response.context['publishers'])
+        #self.assertEqual(results_on_page, MAX_PUBLISHER_RESULTS_LISTVIEW)       
+        self.fail('finish the test')

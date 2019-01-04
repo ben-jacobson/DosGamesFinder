@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.DosGameListView.as_view(), name='dosgame_listview'),
 
+    path('search/', views.DosGameListView.as_view(), name='search_listview'),
     path('game/<slug:slug>', views.DosGameDetailView.as_view(), name='dosgame_detailview'),
     path('genre/<slug:slug>', views.DosGameListView.as_view(), name='genre_filter'),
     path('publisher/<slug:slug>', views.DosGameListView.as_view(), name='publisher_filter'),

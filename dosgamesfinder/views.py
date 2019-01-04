@@ -1,8 +1,13 @@
 from django.views.generic import ListView, DetailView
 from dosgamesfinder.models import DosGame, Publisher, Genre
 
+from django.db.models.functions import Lower
+from django.db.models import CharField
+
 MAX_DOSGAME_RESULTS_LISTVIEW = 18 # max number of results in DosgamesListView
 MAX_PUBLISHER_RESULTS_LISTVIEW = 20 # max number of publishers in PublisherListView 
+
+CharField.register_lookup(Lower)    # needed to create the lower transform, used in our search function below 
 
 # context processor for adding the genres to the drop down menu on every page
 def genre_dropdown(request):
@@ -11,7 +16,6 @@ def genre_dropdown(request):
     }
 
 # our class based views
-
 class DosGameListView(ListView): 
     page_title = 'Games List A-Z'                   # see how this is altered by get_queryset, then passed as context data during get_context_data
     template_name = 'dosgame_listview.html'
@@ -20,7 +24,11 @@ class DosGameListView(ListView):
     queryset = DosGame.objects.all()   
 
     def get_queryset(self):
-        if self.kwargs:
+        if 'search' in self.request.path:
+            search_results = self.request.GET.get('q')
+            self.page_title = f"Search Results for '{search_results}'"
+            return DosGame.objects.filter(title__unaccent__lower__trigram_similar=search_results)     
+        elif self.kwargs:   # if not using search, then we need to check our filters
             if 'genre' in self.request.path:
                 genre_obj = Genre.objects.get(slug=self.kwargs['slug'])
                 self.page_title = f'{genre_obj.name} Games'
@@ -31,6 +39,7 @@ class DosGameListView(ListView):
                 return DosGame.objects.filter(publisher=publisher_obj) 
         else:
             self.page_title = 'Games List A-Z'
+            print(self.request.path)
             return DosGame.objects.all()
 
     def get_context_data(self, **kwargs):
