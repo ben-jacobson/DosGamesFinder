@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from dosgamesfinder.tests.base import create_test_publisher, create_test_genre, create_test_dosgame, create_test_screenshot, create_test_download_location
-from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.common.keys import Keys
 #from time import sleep
 
 MAX_WAIT = 10 # 10 second max wait
@@ -70,16 +70,16 @@ class HomePageTests(FunctionalTest):
         self.browser.get(self.live_server_url)
         search_bar = self.browser.find_element_by_id('search-bar')
         
-        # user types something into the search bar. There is a 'submit' button on this form, but the user prefers to click enter. 
+        # user types something into the search bar. and clicks the search bar. 
         search_bar.send_keys('abracadabra')
-        search_bar.send_keys(Keys.ENTER)
+        self.browser.find_element_by_id('search-button').click()
 
         # user is redirected to a new page, user notices url has a search query in it and 'search results for' in the page header
-        self.assertIn('/search/', self.browser.current_url)
-        self.assertIn('Search results for', self.browser.find_element_by_tag_name('h1'))
+        self.assertIn('search', self.browser.current_url)
+        self.assertIn('Search results for', self.browser.find_element_by_tag_name('h1').text)
 
         # user searched for 'abracadabra', which is test_dosgame_a, user is given exactly one result, that game.
-        self.assertEqual(1, len(self.browser.find_element_by_class_name('game-listview card'))) 
+        self.assertEqual(1, len(self.browser.find_elements_by_class_name('game-listview'))) 
         self.assertEqual(self.test_dosgame_a.title, self.browser.find_element_by_link_text(self.test_dosgame_a.title).text)
         
     def test_visit_home_page_and_test_genre_dropdown(self):
